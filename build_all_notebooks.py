@@ -2608,11 +2608,249 @@ frissit_sar()"""))
 
 
 # ==============================================================================
+# NOTEBOOK 14: Külső POI Adatintegráció és "15 perces város" Index
+# ==============================================================================
+def build_nb14():
+    nb = new_notebook()
+    
+    nb.cells.append(new_markdown_cell("""# 14. Külső POI Adatintegráció és "15 perces város" Elemzés
+
+**Cél**: Kőbánya "15-perces város" jellegének mérése OpenStreetMap (OSM) Point of Interest (POI) adatok integrációjával.
+A modell megvizsgálja, hogy a zöldfelületek, oktatási és vendéglátóipari szolgáltatások közelsége hogyan épül be a lakásárakba.
+
+**Módszertan**: Az `osmnx` csomag segítségével élő térképi adatokat (amenities, parks) kérünk le Kőbányára, majd ezeket összekötjük az ingatlanok koordinátáival."""))
+
+    nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
+import sys, os
+from _utils import *
+setup_plotly()
+import plotly.express as px
+import plotly.graph_objects as go
+import ipywidgets as widgets
+from IPython.display import display, clear_output, HTML
+import pandas as pd
+import numpy as np
+try:
+    import osmnx as ox
+    import geopandas as gpd
+    from shapely.geometry import Point
+    OSMNX_AVAILABLE = True
+except ImportError:
+    OSMNX_AVAILABLE = False
+    print("Figyelem: az 'osmnx' és 'geopandas' csomagok telepítése javasolt a teljes funkcióhoz.")
+
+df = load_szamitott_master()
+df_pontos = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
+print(f"Elemzett minta (garantált pontos): {len(df_pontos)} db.")"""))
+
+    nb.cells.append(new_markdown_cell("""### 1. POI Adatok Lekérése (OSM) és Kőbánya Hálózata
+OSM adatok betöltése Kőbánya közigazgatási határán belül (vagy betöltése cache-ből)."""))
+
+    nb.cells.append(new_code_cell("""if OSMNX_AVAILABLE:
+    # Egyszerűsített bounding box Kőbányára
+    place_name = 'Kőbánya, Budapest, Hungary'
+    
+    try:
+        # Próbáljuk meg lekérni a parkokat és éttermeket
+        tags = {'leisure': 'park', 'amenity': ['restaurant', 'cafe', 'school']}
+        poi_data = ox.features_from_place(place_name, tags)
+        print(f"Sikeresen lekérve {len(poi_data)} db POI adat az OpenStreetMap-ről.")
+        
+        # Geometriai középpontok (centroidok) számítása
+        poi_data = poi_data.to_crs(epsg=3857) # Vetület a távolsághoz
+        poi_data['centroid'] = poi_data.geometry.centroid
+        poi_data = poi_data.to_crs(epsg=4326) # Vissza WGS84-be
+        
+    except Exception as e:
+        print(f"Nem sikerült élőben lekérni az OSM adatokat. Hiba: {e}")
+        poi_data = None
+else:
+    print("OSMNX hiányzik, az elemzés csak demó módban fut.")
+    poi_data = None"""))
+
+    nb.cells.append(new_markdown_cell("""### 2. A "15-Perces Város" Index Kiszámítása
+A hirdetések koordinátái alapján megnézzük, hány szolgáltatás érhető el 15 perc sétán (kb. 1000m) belül."""))
+
+    nb.cells.append(new_code_cell("""# 15 perces index közelítő számítása légvonalban (demó logika, ha a letöltés sikeres)
+if OSMNX_AVAILABLE and poi_data is not None:
+    # Ingatlanok geometriája
+    gdf_ing = gpd.GeoDataFrame(
+        df_pontos, 
+        geometry=gpd.points_from_xy(df_pontos.geokodolt_lon, df_pontos.geokodolt_lat),
+        crs="EPSG:4326"
+    )
+    
+    # 3857 vetületre a méter alapú távolságokhoz
+    gdf_ing_3857 = gdf_ing.to_crs(epsg=3857)
+    poi_3857 = poi_data.to_crs(epsg=3857)
+    
+    # Szolgáltatások száma 1000 méteren belül (brute-force távolság)
+    poi_counts = []
+    for idx, row in gdf_ing_3857.iterrows():
+        point = row.geometry
+        distances = poi_3857.geometry.distance(point)
+        count_1000m = (distances <= 1000).sum()
+        poi_counts.append(count_1000m)
+        
+    df_pontos['poi_1000m_count'] = poi_counts
+    
+    fig = px.scatter_map(
+        df_pontos, lat='geokodolt_lat', lon='geokodolt_lon', color='poi_1000m_count',
+        size='nm_ar_huf', hover_name='cim_teljes', map_style='carto-positron',
+        title='"15 perces város" - Szolgáltatások száma 1000 méteren belül'
+    )
+    fig.update_layout(height=500, margin={"r":0,"t":40,"l":0,"b":0})
+    fig.show()
+else:
+    print("POI adatok hiányában a számítás szimulált adatokat mutat (placeholder).")
+    df_pontos['poi_1000m_count'] = np.random.randint(5, 50, len(df_pontos))
+    
+    kpi_cards = [
+        ("Átlagos POI 1000m-en belül", f"{df_pontos['poi_1000m_count'].mean():.1f} db", "Szimulált adat", "#1e3a8a")
+    ]
+    display(HTML(kpi_grid_html(kpi_cards)))"""))
+
+    nb.cells.append(new_markdown_cell("""### 3. Hedonikus Árprémium a POI Sűrűség alapján
+Az OSM szolgáltatási sűrűség beépítése a lakásárak lineáris regressziójába."""))
+
+    nb.cells.append(new_code_cell("""import statsmodels.api as sm
+
+features = ['korrigalt_alapterulet_nm', 'is_panel', 'tavolsag_metro_halozati_m', 'poi_1000m_count']
+df_reg = df_pontos.dropna(subset=['log_nm_ar'] + features).copy()
+
+X = sm.add_constant(df_reg[features])
+y = df_reg['log_nm_ar']
+model = sm.OLS(y, X).fit()
+
+res_df = pd.DataFrame({
+    'Változó': model.params.index,
+    'Együttható (β)': model.params.values,
+    'p-érték': model.pvalues.values
+})
+display(HTML("<div style='overflow-x:auto; margin: 15px 0;'>" + res_df.round(4).to_html(classes='table table-bordered table-striped', index=False) + "</div>"))
+print(f"Az új modell R² értéke: {model.rsquared:.4f}")"""))
+
+    save_nb(nb, '14_poi_es_15_perces_varos.ipynb')
+
+
+# ==============================================================================
+# NOTEBOOK 15: Lokális Térökonometria (Geographically Weighted Regression - GWR)
+# ==============================================================================
+def build_nb15():
+    nb = new_notebook()
+    
+    nb.cells.append(new_markdown_cell("""# 15. Lokális Térökonometria (Geographically Weighted Regression - GWR)
+
+**Cél**: A térbeli heterogenitás modellezése Kőbányán. Szemben a SAR (NB13) modellel, amely globális $\\rho$ együtthatót becsül, a GWR megengedi, hogy a magyarázó változók (pl. metrótól való távolság hatása) térben dinamikusan változzanak.
+Például: Lehet, hogy Újhegyen a metró közelsége sokkal nagyobb felárat jelent, mint Óhegyen.
+
+**Módszertan**: Az `mgwr` (Multiscale Geographically Weighted Regression) csomag használata. A paraméterfelületeket interaktív hőtérképen ábrázoljuk."""))
+
+    nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
+import sys, os
+from _utils import *
+setup_plotly()
+import plotly.express as px
+import plotly.graph_objects as go
+from IPython.display import display, clear_output, HTML
+import pandas as pd
+import numpy as np
+try:
+    from mgwr.gwr import GWR, MGWR
+    from mgwr.sel_bw import Sel_BW
+    MGWR_AVAILABLE = True
+except ImportError:
+    MGWR_AVAILABLE = False
+    print("Figyelem: az 'mgwr' csomag nincs telepítve.")
+
+df = load_szamitott_master()
+df_pontos = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
+print(f"GWR Mintaelemszám: {len(df_pontos)} db.")"""))
+
+    nb.cells.append(new_markdown_cell("""### 1. GWR Sávszélesség (Bandwidth) Keresése és Modell Illesztése
+A térbeli súlyozáshoz optimális távolságot (sávszélességet) az AICc kritérium minimalizálásával keressük."""))
+
+    nb.cells.append(new_code_cell("""features = ['korrigalt_alapterulet_nm', 'tavolsag_metro_halozati_m']
+df_reg = df_pontos.dropna(subset=['log_nm_ar', 'geokodolt_lon', 'geokodolt_lat'] + features).copy()
+
+coords = list(zip(df_reg['geokodolt_lon'], df_reg['geokodolt_lat']))
+y_gwr = df_reg['log_nm_ar'].values.reshape((-1, 1))
+X_gwr = df_reg[features].values
+
+if MGWR_AVAILABLE:
+    # Sávszélesség (Bandwidth) optimalizáció (kicsit időigényes lehet)
+    print("GWR Sávszélesség optimalizálása folyamatban...")
+    gwr_selector = Sel_BW(coords, y_gwr, X_gwr, fixed=False) # Adaptive bandwidth (KNN alapú)
+    gwr_bw = gwr_selector.search()
+    print(f"Optimális adaptív sávszélesség: {gwr_bw} legközelebbi szomszéd.")
+    
+    # Modell illesztése
+    gwr_model = GWR(coords, y_gwr, X_gwr, gwr_bw, fixed=False)
+    gwr_results = gwr_model.fit()
+    
+    print(f"GWR R²: {gwr_results.R2:.4f} (Adj. R²: {gwr_results.adj_R2:.4f})")
+    print(f"GWR AICc: {gwr_results.aicc:.2f}")
+    
+    # Együtthatók kinyerése a dataframe-be
+    # gwr_results.params egy (N, k) mátrix (k tartalmazza a konstanst is az első oszlopban)
+    df_reg['gwr_const'] = gwr_results.params[:, 0]
+    for i, col in enumerate(features):
+        df_reg[f'gwr_{col}'] = gwr_results.params[:, i+1]
+else:
+    print("Az 'mgwr' csomag nélkül szimulált GWR paraméterfelületet generálunk.")
+    df_reg['gwr_tavolsag_metro_halozati_m'] = -0.0001 + np.random.normal(0, 0.00005, len(df_reg))"""))
+
+    nb.cells.append(new_markdown_cell("""### 2. A Metró Távolság Lokális Hatásának Térképes Vizualizációja
+A hőtérképen (scatter_map) azt láthatjuk, hogy Kőbánya mely részein mennyire bünteti az árat a metrótól való távolság. (Ahol sötétebb kék, ott erősebb a negatív együttható, azaz "fájdalmasabb" a metrótól való távolság)."""))
+
+    nb.cells.append(new_code_cell("""target_col = 'gwr_tavolsag_metro_halozati_m'
+
+if target_col in df_reg.columns:
+    fig = px.scatter_map(
+        df_reg,
+        lat='geokodolt_lat',
+        lon='geokodolt_lon',
+        color=target_col,
+        size='alapterulet_nm',
+        hover_name='cim_teljes',
+        hover_data=[target_col],
+        color_continuous_scale='RdYlBu', # Red: gyenge hatás, Blue: erős negatív hatás
+        map_style='carto-positron',
+        zoom=12.2,
+        title='GWR: A metrótávolság lokális regressziós együtthatója (β)'
+    )
+    fig.update_layout(height=550, margin={"r":0,"t":40,"l":0,"b":0})
+    fig.show()
+else:
+    print("A megjelenítéshez futtassa le a GWR modellt.")"""))
+
+    nb.cells.append(new_markdown_cell("""### 3. Az Együtthatók Térbeli Eloszlása (Boxplot)
+Megvizsgáljuk, hogy az egyes változók hatása mennyire ingadozik a kerületen belül."""))
+
+    nb.cells.append(new_code_cell("""if MGWR_AVAILABLE:
+    # A lokális t-statisztikák és paraméterek eloszlása
+    gwr_summary = pd.DataFrame(gwr_results.params, columns=['Konstans'] + features)
+    
+    fig = px.box(
+        gwr_summary.melt(),
+        x='variable',
+        y='value',
+        color='variable',
+        title='GWR Regressziós Együtthatók Térbeli Szóródása (Heterogenitása)',
+        template=PLOTLY_TEMPLATE
+    )
+    fig.update_layout(height=450, showlegend=False)
+    fig.show()"""))
+
+    save_nb(nb, '15_lokalis_terokonometria_gwr.ipynb')
+
+
+# ==============================================================================
 # MAIN GENERATOR RUNNER
 # ==============================================================================
 def build_all():
     print("=" * 60)
-    print("STARTING FULL NOTEBOOK GENERATION (00 - 13)...")
+    print("STARTING FULL NOTEBOOK GENERATION (00 - 15)...")
     print("=" * 60)
     build_nb00()
     build_nb01()
@@ -2628,8 +2866,10 @@ def build_all():
     build_nb11()
     build_nb12()
     build_nb13()
+    build_nb14()
+    build_nb15()
     print("=" * 60)
-    print("ALL 14 NOTEBOOKS GENERATED SUCCESSFULLY!")
+    print("ALL 16 NOTEBOOKS GENERATED SUCCESSFULLY!")
     print("=" * 60)
 
 if __name__ == '__main__':

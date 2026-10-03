@@ -2500,8 +2500,8 @@ Wy_hat = first_stage.fittedvalues
 X_sar = sm.add_constant(np.column_stack((X_mat, Wy_hat)))
 sar_res = sm.OLS(y_vec, X_sar).fit()
 
-rho_hat = sar_res.params[-1]
-rho_p = sar_res.pvalues[-1]
+rho_hat = float(np.asarray(sar_res.params)[-1])
+rho_p = float(np.asarray(sar_res.pvalues)[-1])
 spatial_multiplier = 1.0 / (1.0 - rho_hat) if rho_hat < 1 else 1.0
 
 # Moran I a maradványokon
@@ -2530,12 +2530,17 @@ A paraméterek stabilitása: látható, hogy a térbeli tovagyűrűzés bevonás
     'Vasútállomás hálózat (m)'
 ]
 
+ols_p = np.asarray(ols_res.params)
+ols_pv = np.asarray(ols_res.pvalues)
+sar_p = np.asarray(sar_res.params)
+sar_pv = np.asarray(sar_res.pvalues)
+
 cmp_rows = []
 for i, name in enumerate(var_names_hu):
     cmp_rows.append({
         'Változó': name,
-        'OLS Együttható (β)': f"{ols_res.params[i]:.5f} (p={ols_res.pvalues[i]:.3f})",
-        'Spatial Lag Együttható (β)': f"{sar_res.params[i]:.5f} (p={sar_res.pvalues[i]:.3f})"
+        'OLS Együttható (β)': f"{ols_p[i]:.5f} (p={ols_pv[i]:.3f})",
+        'Spatial Lag Együttható (β)': f"{sar_p[i]:.5f} (p={sar_pv[i]:.3f})"
     })
 
 cmp_rows.append({
@@ -2582,7 +2587,7 @@ def frissit_sar(*args):
     wy_hat_k = sm.OLS(wy_k, z_k).fit().fittedvalues
     res_k = sm.OLS(y_vec, sm.add_constant(np.column_stack((X_mat, wy_hat_k)))).fit()
     
-    rho_k = res_k.params[-1]
+    rho_k = float(np.asarray(res_k.params)[-1])
     m_resid = Moran(res_k.resid, w_k).I
     
     with out_sar:

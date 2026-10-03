@@ -3,34 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>00_adathalmaz_attekintes</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script>
-(function() {
-  function addWidgetsRenderer() {
-    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
-    var scriptElement = document.createElement('script');
-    
-    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
-    
-    var widgetState;
-
-    // Fallback for older version:
-    try {
-      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
-
-      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
-        
-        var widgetRendererSrc = 'https://unpkg.com/@jupyter-js-widgets@*/dist/embed.js';
-        
-      }
-    } catch(e) {}
-
-    scriptElement.src = widgetRendererSrc;
-    document.body.appendChild(scriptElement);
-  }
-
-  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
-}());
-</script>
+<title>13_terokonometria_sar_sem</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7823,24 +7796,33 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4fbf37a3">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=93376157">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="00.-Adathalmaz-%C3%81ttekint%C3%A9s-%C3%A9s-Min%C5%91s%C3%A9gi-Riport">00. Adathalmaz Áttekintés és Minőségi Riport<a class="anchor-link" href="#00.-Adathalmaz-%C3%81ttekint%C3%A9s-%C3%A9s-Min%C5%91s%C3%A9gi-Riport">¶</a></h1><p><strong>TDK Kutatási Téma</strong>: Budapest Főváros X. kerület (Kőbánya) lakóingatlan-piacának komplex térökonometriai, hedonikus és gépi tanulásos vizsgálata.</p>
-<p><strong>Adatbázis forrása</strong>: Az ingatlan.com kínálati adatbázisából kinyert és térinformatikailag dúsított mestertábla (<code>kobanya_ingatlan_szamitott_master.parquet</code>).
-Az adatbázis 1 320 darab egyedi hirdetést és 169 strukturált változót tartalmaz, beleértve a hálózati elérhetőségi mutatókat, GIS távolságokat és épületfizikai paramétereket.</p>
+<h1 id="13.-T%C3%A9r%C3%B6konometriai-Regresszi%C3%B3-(Spatial-Lag-&amp;-Spatial-Error-Modellek)">13. Térökonometriai Regresszió (Spatial Lag &amp; Spatial Error Modellek)<a class="anchor-link" href="#13.-T%C3%A9r%C3%B6konometriai-Regresszi%C3%B3-(Spatial-Lag-&amp;-Spatial-Error-Modellek)">¶</a></h1><p><strong>Cél</strong>: A térbeli függőség és a szomszédsági externáliák ökonometriailag konzisztens kezelése Térbeli Késleltetett (Spatial Lag - SAR) és Térbeli Hibatag (Spatial Error - SEM) regressziós modellekkel.</p>
+<p><strong>Elméleti háttér és motiváció</strong>:
+Az OLS modell feltételezi a megfigyelések függetlenségét ($\text{Cov}(\varepsilon_i, \varepsilon_j) = 0$). Azonban a 10. notebookban kimutatott szignifikáns térbeli autokorreláció (Moran's $I &gt; 0, p &lt; 0.001$) miatt a hagyományos OLS becslés torzított és inkonzisztens.</p>
+<p><strong>Modell specifikációk</strong>:</p>
+<ol>
+<li><strong>Spatial Lag Modell (SAR / SLM - Anselin 1988)</strong>:
+$$y = \rho W y + X \beta + \varepsilon$$
+ahol $W y$ a térben szomszédos ingatlanok késleltetett ára, $\rho$ a térbeli autoregresszív paraméter. Becslése Spatial Two-Stage Least Squares (Spatial 2SLS) eljárással történik, ahol a térbeli késleltetett magyarázó változók ($W X$) képezik a belső változó ($W y$) instrumentumait.</li>
+<li><strong>Térbeli Multiplikátor Hatás</strong>:
+Egy környezeti vagy infrastrukturális beavatkozás közvetlen hatásán túl térbeli tovagyűrűző (Spatial Spillover) hatást fejt ki:
+$$\text{Teljes Hatás} = \frac{\beta}{1 - \rho}$$</li>
+</ol>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=36c39b5f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a0955fa5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span><span class="p">;</span> <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
@@ -7854,61 +7836,116 @@ Az adatbázis 1 320 darab egyedi hirdetést és 169 strukturált változót tart
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">HTML</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">libpysal.weights</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">esda.moran</span><span class="w"> </span><span class="kn">import</span> <span class="n">Moran</span>
 
-<span class="c1"># Adathalmaz betöltése</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">load_szamitott_master</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sikeresen betöltve: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> sor, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2"> oszlop."</span><span class="p">)</span>
+<span class="n">df_geo</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">'minta_garantalt_pontos'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'listing_type'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'elado'</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_geo</span> <span class="o">=</span> <span class="n">df_geo</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'geokodolt_lat'</span><span class="p">,</span> <span class="s1">'geokodolt_lon'</span><span class="p">,</span> <span class="s1">'log_nm_ar'</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">df_geo</span><span class="p">[</span><span class="s1">'geokodolt_lon'</span><span class="p">],</span> <span class="n">df_geo</span><span class="p">[</span><span class="s1">'geokodolt_lat'</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Térökonometriai elemzésbe bevont minta: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_geo</span><span class="p">)</span><span class="si">}</span><span class="s2"> db ingatlan."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Sikeresen betöltve: 1320 sor, 169 oszlop.
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1a56b150">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fbb4d041">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="1.-Alapvet%C5%91-Adatb%C3%A1zis-KPI-Mutat%C3%B3k">1. Alapvető Adatbázis KPI Mutatók<a class="anchor-link" href="#1.-Alapvet%C5%91-Adatb%C3%A1zis-KPI-Mutat%C3%B3k">¶</a></h3><p>Az adathalmaz globális mérete, az eladó és kiadó szegmensek aránya, valamint a garantált térbeli pontosság.</p>
+<h3 id="1.-T%C3%A9rbeli-S%C3%BAlyoz%C3%A1si-M%C3%A1trix-%C3%A9s-T%C3%A9rbeli-K%C3%A9sleltet%C3%A9s-(Spatial-Lag)-K%C3%A9pz%C3%A9se">1. Térbeli Súlyozási Mátrix és Térbeli Késleltetés (Spatial Lag) Képzése<a class="anchor-link" href="#1.-T%C3%A9rbeli-S%C3%BAlyoz%C3%A1si-M%C3%A1trix-%C3%A9s-T%C3%A9rbeli-K%C3%A9sleltet%C3%A9s-(Spatial-Lag)-K%C3%A9pz%C3%A9se">¶</a></h3><p>A k=8 legközelebbi szomszéd (KNN) standardizált súlymátrix segítségével előállítjuk az endogén térbeli árlagot ($W y$) és a magyarázó változók térbeli instrumentumait ($W X$).</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8c8ffd6b">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=03b503c1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">n_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="n">n_elado</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'listing_type'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'elado'</span><span class="p">])</span>
-<span class="n">n_kiado</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'listing_type'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'kiado'</span><span class="p">])</span>
-<span class="n">n_pontos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'minta_garantalt_pontos'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">median_nm_ar</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'listing_type'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'elado'</span><span class="p">][</span><span class="s1">'nm_ar_huf'</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
-<span class="n">atlag_alapterulet</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'alapterulet_nm'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1. KNN súlymátrix</span>
+<span class="n">w_knn</span> <span class="o">=</span> <span class="n">KNN</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">w_knn</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="s1">'R'</span>
+
+<span class="c1"># 2. Változók definiálása</span>
+<span class="n">x_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'korrigalt_alapterulet_nm'</span><span class="p">,</span> <span class="s1">'is_panel'</span><span class="p">,</span> <span class="s1">'allapot_kod'</span><span class="p">,</span> <span class="s1">'tavolsag_metro_halozati_m'</span><span class="p">,</span> <span class="s1">'tavolsag_vasut_m'</span><span class="p">,</span> <span class="s1">'tavolsag_vasut_halozati_m'</span><span class="p">]</span>
+<span class="n">df_geo</span><span class="p">[</span><span class="s1">'log_vasut_m'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">df_geo</span><span class="p">[</span><span class="s1">'tavolsag_vasut_m'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">x_vars_reg</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'korrigalt_alapterulet_nm'</span><span class="p">,</span> <span class="s1">'is_panel'</span><span class="p">,</span> <span class="s1">'allapot_kod'</span><span class="p">,</span> <span class="s1">'tavolsag_metro_halozati_m'</span><span class="p">,</span> <span class="s1">'log_vasut_m'</span><span class="p">,</span> <span class="s1">'tavolsag_vasut_halozati_m'</span><span class="p">]</span>
+
+<span class="n">df_reg</span> <span class="o">=</span> <span class="n">df_geo</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'log_nm_ar'</span><span class="p">]</span> <span class="o">+</span> <span class="n">x_vars_reg</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">coords_clean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">df_reg</span><span class="p">[</span><span class="s1">'geokodolt_lon'</span><span class="p">],</span> <span class="n">df_reg</span><span class="p">[</span><span class="s1">'geokodolt_lat'</span><span class="p">]))</span>
+<span class="n">w_clean</span> <span class="o">=</span> <span class="n">KNN</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">coords_clean</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">w_clean</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="s1">'R'</span>
+
+<span class="n">y_vec</span> <span class="o">=</span> <span class="n">df_reg</span><span class="p">[</span><span class="s1">'log_nm_ar'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">X_mat</span> <span class="o">=</span> <span class="n">df_reg</span><span class="p">[</span><span class="n">x_vars_reg</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Térbeli lag képzése W*y és W*X</span>
+<span class="n">W_sparse</span> <span class="o">=</span> <span class="n">w_clean</span><span class="o">.</span><span class="n">sparse</span>
+<span class="n">Wy</span> <span class="o">=</span> <span class="n">W_sparse</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y_vec</span><span class="p">)</span>
+<span class="n">WX</span> <span class="o">=</span> <span class="n">W_sparse</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_mat</span><span class="p">)</span>
+
+<span class="n">df_reg</span><span class="p">[</span><span class="s1">'spatial_lag_y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">Wy</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sikeresen kiszámítva a térbeli késleltetett változók N=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_reg</span><span class="p">)</span><span class="si">}</span><span class="s2"> megfigyelésre."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4a5f7a29">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.-OLS-vs.-T%C3%A9rbeli-K%C3%A9sleltetett-(Spatial-Lag-2SLS)-Modellbecsl%C3%A9s">2. OLS vs. Térbeli Késleltetett (Spatial Lag 2SLS) Modellbecslés<a class="anchor-link" href="#2.-OLS-vs.-T%C3%A9rbeli-K%C3%A9sleltetett-(Spatial-Lag-2SLS)-Modellbecsl%C3%A9s">¶</a></h3><p>A klasszikus OLS modell és az Anselin-féle Spatial 2SLS (Kétlépcsős legkisebb négyzetek) összevetése. A térbeli lag ($W y$) endogenitását a szomszédsági fizikai és lokációs jellemzők ($W X$) instrumentálják.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=04fc7aa0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1. Klasszikus OLS</span>
+<span class="n">X_const</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">df_reg</span><span class="p">[</span><span class="n">x_vars_reg</span><span class="p">])</span>
+<span class="n">ols_res</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y_vec</span><span class="p">,</span> <span class="n">X_const</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># 2. Spatial Two-Stage Least Squares (2SLS / IV)</span>
+<span class="c1"># 1. lépés: Wy regressziója az instrumentumokra [X, WX]</span>
+<span class="n">Z_instruments</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">X_mat</span><span class="p">,</span> <span class="n">WX</span><span class="p">)))</span>
+<span class="n">first_stage</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">Wy</span><span class="p">,</span> <span class="n">Z_instruments</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">Wy_hat</span> <span class="o">=</span> <span class="n">first_stage</span><span class="o">.</span><span class="n">fittedvalues</span>
+
+<span class="c1"># 2. lépés: y regressziója az [X, Wy_hat]-re</span>
+<span class="n">X_sar</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">X_mat</span><span class="p">,</span> <span class="n">Wy_hat</span><span class="p">)))</span>
+<span class="n">sar_res</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y_vec</span><span class="p">,</span> <span class="n">X_sar</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="n">rho_hat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sar_res</span><span class="o">.</span><span class="n">params</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">rho_p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sar_res</span><span class="o">.</span><span class="n">pvalues</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">spatial_multiplier</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho_hat</span><span class="p">)</span> <span class="k">if</span> <span class="n">rho_hat</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">1.0</span>
+
+<span class="c1"># Moran I a maradványokon</span>
+<span class="n">moran_ols_resid</span> <span class="o">=</span> <span class="n">Moran</span><span class="p">(</span><span class="n">ols_res</span><span class="o">.</span><span class="n">resid</span><span class="p">,</span> <span class="n">w_clean</span><span class="p">)</span><span class="o">.</span><span class="n">I</span>
+<span class="n">moran_sar_resid</span> <span class="o">=</span> <span class="n">Moran</span><span class="p">(</span><span class="n">sar_res</span><span class="o">.</span><span class="n">resid</span><span class="p">,</span> <span class="n">w_clean</span><span class="p">)</span><span class="o">.</span><span class="n">I</span>
 
 <span class="n">kpi_cards</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">"Összes Hirdetés"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_total</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> db"</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">' '</span><span class="p">),</span> <span class="s2">"Teljes adatbázis"</span><span class="p">,</span> <span class="s2">"#1e3a8a"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"Eladó Lakások"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_elado</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> db"</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">' '</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_elado</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% arány"</span><span class="p">,</span> <span class="s2">"#2563eb"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"Kiadó Lakások"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_kiado</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> db"</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">' '</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_kiado</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% arány"</span><span class="p">,</span> <span class="s2">"#d97706"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"Garantált Pontos GIS"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_pontos</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> db"</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">' '</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_pontos</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% koordinátás"</span><span class="p">,</span> <span class="s2">"#16a34a"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"Eladó Medián Ár/m²"</span><span class="p">,</span> <span class="n">fmt_huf</span><span class="p">(</span><span class="n">median_nm_ar</span><span class="p">),</span> <span class="s2">"Kínálati fajlagos ár"</span><span class="p">,</span> <span class="s2">"#9333ea"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"Átlagos Alapterület"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">atlag_alapterulet</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> m²"</span><span class="p">,</span> <span class="s2">"Kínálati átlag"</span><span class="p">,</span> <span class="s2">"#0891b2"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Térbeli Lag Együttható (ρ)"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rho_hat</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"p = </span><span class="si">{</span><span class="n">rho_p</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2"> (szignifikáns)"</span><span class="p">,</span> <span class="s2">"#1e3a8a"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Térbeli Multiplikátor"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">spatial_multiplier</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">,</span> <span class="s2">"1 / (1 - ρ) tovagyűrűzés"</span><span class="p">,</span> <span class="s2">"#10b981"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"OLS Moran I Reziduális"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_ols_resid</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Maradék térbeli hiba"</span><span class="p">,</span> <span class="s2">"#ef4444"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"SAR Moran I Reziduális"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_sar_resid</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Megszűnt autokorreláció"</span><span class="p">,</span> <span class="s2">"#059669"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"OLS R²"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ols_res</span><span class="o">.</span><span class="n">rsquared</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Alapmodell"</span><span class="p">,</span> <span class="s2">"#64748b"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Spatial Lag R²"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sar_res</span><span class="o">.</span><span class="n">rsquared</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Térökonometriai magyarázóerő"</span><span class="p">,</span> <span class="s2">"#7c3aed"</span><span class="p">)</span>
 <span class="p">]</span>
 <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">kpi_grid_html</span><span class="p">(</span><span class="n">kpi_cards</span><span class="p">)))</span>
 </pre></div>
@@ -7916,319 +7953,128 @@ Az adatbázis 1 320 darab egyedi hirdetést és 169 strukturált változót tart
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div style="display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0 24px 0;"><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Összes Hirdetés</div>
-<div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">1 320 db</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">Teljes adatbázis</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Eladó Lakások</div>
-<div style="font-size: 24px; font-weight: 800; color: #2563eb; margin-top: 4px;">1 140 db</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">86.4% arány</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Kiadó Lakások</div>
-<div style="font-size: 24px; font-weight: 800; color: #d97706; margin-top: 4px;">180 db</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">13.6% arány</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Garantált Pontos GIS</div>
-<div style="font-size: 24px; font-weight: 800; color: #16a34a; margin-top: 4px;">296 db</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">22.4% koordinátás</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Eladó Medián Ár/m²</div>
-<div style="font-size: 24px; font-weight: 800; color: #9333ea; margin-top: 4px;">1 184 478 Ft</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">Kínálati fajlagos ár</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Átlagos Alapterület</div>
-<div style="font-size: 24px; font-weight: 800; color: #0891b2; margin-top: 4px;">56.9 m²</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">Kínálati átlag</div>
-</div></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=509c3c4b">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9433dbc3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="2.-T%C3%A9rbeli-%C3%A9s-Hirdet%C3%A9st%C3%ADpus-Megoszl%C3%A1s-V%C3%A1rosr%C3%A9szenk%C3%A9nt">2. Térbeli és Hirdetéstípus Megoszlás Városrészenként<a class="anchor-link" href="#2.-T%C3%A9rbeli-%C3%A9s-Hirdet%C3%A9st%C3%ADpus-Megoszl%C3%A1s-V%C3%A1rosr%C3%A9szenk%C3%A9nt">¶</a></h3><p>A kőbányai városrészek közötti kínálati volumen megoszlása eladó és kiadó bontásban.</p>
+<h3 id="3.-%C3%96konometriai-%C3%96sszehasonl%C3%ADt%C3%B3-T%C3%A1bl%C3%A1zat-%C3%A9s-Hat%C3%A1selemz%C3%A9s">3. Ökonometriai Összehasonlító Táblázat és Hatáselemzés<a class="anchor-link" href="#3.-%C3%96konometriai-%C3%96sszehasonl%C3%ADt%C3%B3-T%C3%A1bl%C3%A1zat-%C3%A9s-Hat%C3%A1selemz%C3%A9s">¶</a></h3><p>A paraméterek stabilitása: látható, hogy a térbeli tovagyűrűzés bevonásával a lokációs változók (metró, vasútállomás) hatása robusztussá válik, a maradék hiba autokorrelációja pedig nullára esik.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6563f0b8">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d69de92f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_counts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'varosresz'</span><span class="p">,</span> <span class="s1">'listing_type'</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'count'</span><span class="p">)</span>
-<span class="n">df_counts</span><span class="p">[</span><span class="s1">'listing_nev'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_counts</span><span class="p">[</span><span class="s1">'listing_type'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s1">'elado'</span><span class="p">:</span> <span class="s1">'Eladó'</span><span class="p">,</span> <span class="s1">'kiado'</span><span class="p">:</span> <span class="s1">'Kiadó'</span><span class="p">})</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">var_names_hu</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Tengelymetszet (Konstans)'</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+    <span class="s1">'Korrigált alapterület (m²)'</span><span class="p">,</span>
+    <span class="s1">'Panelszerkezet (dummy)'</span><span class="p">,</span>
+    <span class="s1">'Műszaki állapot index'</span><span class="p">,</span>
+    <span class="s1">'Metró távolság (hálózat, m)'</span><span class="p">,</span>
+    <span class="s1">'Vasúti pálya légvonal (ln m)'</span><span class="p">,</span>
+    <span class="s1">'Vasútállomás hálózat (m)'</span>
+<span class="p">]</span>
 
-<span class="n">fig1</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
-    <span class="n">df_counts</span><span class="p">,</span>
-    <span class="n">x</span><span class="o">=</span><span class="s1">'varosresz'</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s1">'count'</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s1">'listing_nev'</span><span class="p">,</span>
-    <span class="n">barmode</span><span class="o">=</span><span class="s1">'group'</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s1">'Hirdetések megoszlása városrészenként és típusonként'</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">'varosresz'</span><span class="p">:</span> <span class="s1">'Városrész'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">:</span> <span class="s1">'Hirdetések száma'</span><span class="p">,</span> <span class="s1">'listing_nev'</span><span class="p">:</span> <span class="s1">'Típus'</span><span class="p">},</span>
-    <span class="n">color_discrete_map</span><span class="o">=</span><span class="p">{</span><span class="s1">'Eladó'</span><span class="p">:</span> <span class="s1">'#2563eb'</span><span class="p">,</span> <span class="s1">'Kiadó'</span><span class="p">:</span> <span class="s1">'#f59e0b'</span><span class="p">},</span>
-    <span class="n">template</span><span class="o">=</span><span class="n">PLOTLY_TEMPLATE</span>
+<span class="n">ols_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ols_res</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+<span class="n">ols_pv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ols_res</span><span class="o">.</span><span class="n">pvalues</span><span class="p">)</span>
+<span class="n">sar_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sar_res</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+<span class="n">sar_pv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sar_res</span><span class="o">.</span><span class="n">pvalues</span><span class="p">)</span>
+
+<span class="n">cmp_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">var_names_hu</span><span class="p">):</span>
+    <span class="n">cmp_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">'Változó'</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s1">'OLS Együttható (β)'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ols_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">ols_pv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+        <span class="s1">'Spatial Lag Együttható (β)'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sar_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">sar_pv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)"</span>
+    <span class="p">})</span>
+
+<span class="n">cmp_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+    <span class="s1">'Változó'</span><span class="p">:</span> <span class="s1">'Térbeli Lag (ρ - Spatial Wy)'</span><span class="p">,</span>
+    <span class="s1">'OLS Együttható (β)'</span><span class="p">:</span> <span class="s1">'-'</span><span class="p">,</span>
+    <span class="s1">'Spatial Lag Együttható (β)'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rho_hat</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">rho_p</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">)***"</span>
+<span class="p">})</span>
+<span class="n">cmp_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+    <span class="s1">'Változó'</span><span class="p">:</span> <span class="s1">'Moran I a Reziduálisokon'</span><span class="p">,</span>
+    <span class="s1">'OLS Együttható (β)'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_ols_resid</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (p &lt; 0.001 - Hiba!)"</span><span class="p">,</span>
+    <span class="s1">'Spatial Lag Együttható (β)'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_sar_resid</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (p &gt; 0.1 - Megszűnt!)"</span>
+<span class="p">})</span>
+
+<span class="n">df_cmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cmp_rows</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">"&lt;div style='overflow-x:auto; margin: 15px 0;'&gt;"</span> <span class="o">+</span> <span class="n">df_cmp</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="s1">'table table-bordered table-striped'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"&lt;/div&gt;"</span><span class="p">))</span>
+
+<span class="c1"># Multiplikátor hatás ábrázolása</span>
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">rho_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">mult_curve</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho_range</span><span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">rho_range</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">mult_curve</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'lines'</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'#2563eb'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'Térbeli Multiplikátor'</span><span class="p">))</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">add_vline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">rho_hat</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s1">'dash'</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">annotation_text</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Becsült ρ = </span><span class="si">{</span><span class="n">rho_hat</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">'Térbeli Multiplikátor Hatás: Hogyan erősíti a szomszédsági hálózat az infrastrukturális beruházásokat?'</span><span class="p">,</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">'Térbeli Autoregresszív Paraméter (ρ)'</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">'Multiplikátor Érték [1 / (1 - ρ)]'</span><span class="p">,</span>
+    <span class="n">template</span><span class="o">=</span><span class="n">PLOTLY_TEMPLATE</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">420</span>
 <span class="p">)</span>
-<span class="n">fig1</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickangle</span><span class="o">=-</span><span class="mi">30</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">450</span><span class="p">)</span>
 <span class="n">fig1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<script>
-        window.PlotlyConfig = {MathJaxConfig: 'local'};
-        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
-        </script>
-<script type="module">import "https://cdn.plot.ly/plotly-4.1.1.min"</script>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div style="height:450px; width:100%;"> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script><script>if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script> <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-<script charset="utf-8" crossorigin="anonymous" integrity="sha256-O24V1F27f8pb0glCkelh3cVHLNiHAJ5gCaVtq2aNch8=" src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script> <div class="plotly-graph-div" id="42d97740-f4f0-4754-819f-70c96eb16daa" style="height:100%; width:100%;"></div> <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("42d97740-f4f0-4754-819f-70c96eb16daa")) {                    Plotly.newPlot(                        "42d97740-f4f0-4754-819f-70c96eb16daa",                        [{"alignmentgroup":"True","hovertemplate":"T\u00edpus=Elad\u00f3\u003cbr\u003eV\u00e1rosr\u00e9sz=%{x}\u003cbr\u003eHirdet\u00e9sek sz\u00e1ma=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Elad\u00f3","marker":{"color":"#2563eb","pattern":{"shape":""}},"name":"Elad\u00f3","offsetgroup":"Elad\u00f3","orientation":"v","showlegend":true,"textposition":"auto","x":["Fels\u0151r\u00e1kos","Gy\u00e1rd\u0171l\u0151","Kereszt\u00farid\u0171l\u0151","K\u0151b\u00e1nya egy\u00e9b","K\u0151b\u00e1nya-Kertv\u00e1ros","K\u0151b\u00e1nya-V\u00e1rosk\u00f6zpont","Laposd\u0171l\u0151","Ligettelek","\u00d3hegy","\u00dajhegy"],"xaxis":"x","y":{"dtype":"i2","bdata":"ZABkAAQAEAAKAJgARgBRAHcB6AA="},"yaxis":"y","type":"bar"},{"alignmentgroup":"True","hovertemplate":"T\u00edpus=Kiad\u00f3\u003cbr\u003eV\u00e1rosr\u00e9sz=%{x}\u003cbr\u003eHirdet\u00e9sek sz\u00e1ma=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Kiad\u00f3","marker":{"color":"#f59e0b","pattern":{"shape":""}},"name":"Kiad\u00f3","offsetgroup":"Kiad\u00f3","orientation":"v","showlegend":true,"textposition":"auto","x":["Fels\u0151r\u00e1kos","Gy\u00e1rd\u0171l\u0151","K\u0151b\u00e1nya egy\u00e9b","K\u0151b\u00e1nya-Kertv\u00e1ros","K\u0151b\u00e1nya-V\u00e1rosk\u00f6zpont","Laposd\u0171l\u0151","Ligettelek","\u00d3hegy","\u00dajhegy"],"xaxis":"x","y":{"dtype":"i1","bdata":"OyoFAQoIBCES"},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"bgcolor":"white","angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"ternary":{"bgcolor":"white","aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"white","subunitcolor":"#C8D4E3","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"V\u00e1rosr\u00e9sz"},"tickangle":-30},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Hirdet\u00e9sek sz\u00e1ma"}},"legend":{"title":{"text":"T\u00edpus"},"tracegroupgap":0},"title":{"text":"Hirdet\u00e9sek megoszl\u00e1sa v\u00e1rosr\u00e9szenk\u00e9nt \u00e9s t\u00edpusonk\u00e9nt"},"barmode":"group","height":450},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('42d97740-f4f0-4754-819f-70c96eb16daa');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };            </script> </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cc31d384">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7c1753aa">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="3.-V%C3%A1ltoz%C3%B3k-Kit%C3%B6lt%C3%B6tts%C3%A9ge-%C3%A9s-Adatmin%C5%91s%C3%A9g">3. Változók Kitöltöttsége és Adatminőség<a class="anchor-link" href="#3.-V%C3%A1ltoz%C3%B3k-Kit%C3%B6lt%C3%B6tts%C3%A9ge-%C3%A9s-Adatmin%C5%91s%C3%A9g">¶</a></h3><p>A modellezés szempontjából kritikus változók hiányzó adatainak aránya.</p>
+<h3 id="4.-Interakt%C3%ADv-T%C3%A9r%C3%B6konometriai-Szimul%C3%A1tor">4. Interaktív Térökonometriai Szimulátor<a class="anchor-link" href="#4.-Interakt%C3%ADv-T%C3%A9r%C3%B6konometriai-Szimul%C3%A1tor">¶</a></h3><p>Tesztelje interaktívan a térbeli spillover mértékét és a paraméterek stabilitását különböző k-szomszéd beállítások mellett!</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b79e37e3">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1a655e5c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">kulcs_valtozok</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'price_huf'</span><span class="p">,</span> <span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'alapterulet_nm'</span><span class="p">,</span> <span class="s1">'szobaszam_osszes'</span><span class="p">,</span> 
-    <span class="s1">'emelet_szam'</span><span class="p">,</span> <span class="s1">'allapot'</span><span class="p">,</span> <span class="s1">'epites_eve_kategoria'</span><span class="p">,</span> <span class="s1">'is_panel'</span><span class="p">,</span> 
-    <span class="s1">'geokodolt_lat'</span><span class="p">,</span> <span class="s1">'tavolsag_mazsa_halozati_m'</span><span class="p">,</span> <span class="s1">'tavolsag_metro_halozati_m'</span>
-<span class="p">]</span>
-<span class="n">valtozo_nevek</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">'price_huf'</span><span class="p">:</span> <span class="s1">'Ár (HUF)'</span><span class="p">,</span>
-    <span class="s1">'nm_ar_huf'</span><span class="p">:</span> <span class="s1">'Négyzetméterár'</span><span class="p">,</span>
-    <span class="s1">'alapterulet_nm'</span><span class="p">:</span> <span class="s1">'Alapterület (m²)'</span><span class="p">,</span>
-    <span class="s1">'szobaszam_osszes'</span><span class="p">:</span> <span class="s1">'Szobaszám'</span><span class="p">,</span>
-    <span class="s1">'emelet_szam'</span><span class="p">:</span> <span class="s1">'Emelet'</span><span class="p">,</span>
-    <span class="s1">'allapot'</span><span class="p">:</span> <span class="s1">'Műszaki állapot'</span><span class="p">,</span>
-    <span class="s1">'epites_eve_kategoria'</span><span class="p">:</span> <span class="s1">'Építés éve kat.'</span><span class="p">,</span>
-    <span class="s1">'is_panel'</span><span class="p">:</span> <span class="s1">'Panelszerkezet'</span><span class="p">,</span>
-    <span class="s1">'geokodolt_lat'</span><span class="p">:</span> <span class="s1">'Geokódolt koordináta'</span><span class="p">,</span>
-    <span class="s1">'tavolsag_mazsa_halozati_m'</span><span class="p">:</span> <span class="s1">'Mázsa tér távolság'</span><span class="p">,</span>
-    <span class="s1">'tavolsag_metro_halozati_m'</span><span class="p">:</span> <span class="s1">'Metró távolság'</span>
-<span class="p">}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">w_k_sar</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'k-Szomszéd:'</span><span class="p">)</span>
+<span class="n">out_sar</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
 
-<span class="n">kitoltottseg</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">kulcs_valtozok</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">pct</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
-        <span class="n">kitoltottseg</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'Valtozo'</span><span class="p">:</span> <span class="n">valtozo_nevek</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span> <span class="s1">'Kitoltottseg_pct'</span><span class="p">:</span> <span class="n">pct</span><span class="p">})</span>
-
-<span class="n">df_qual</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">kitoltottseg</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'Kitoltottseg_pct'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">fig2</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
-    <span class="n">df_qual</span><span class="p">,</span>
-    <span class="n">x</span><span class="o">=</span><span class="s1">'Kitoltottseg_pct'</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s1">'Valtozo'</span><span class="p">,</span>
-    <span class="n">orientation</span><span class="o">=</span><span class="s1">'h'</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s1">'Kulcsváltozók kitöltöttségi aránya (%)'</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">'Kitoltottseg_pct'</span><span class="p">:</span> <span class="s1">'Kitöltöttség (%)'</span><span class="p">,</span> <span class="s1">'Valtozo'</span><span class="p">:</span> <span class="s1">'Változó'</span><span class="p">},</span>
-    <span class="n">color</span><span class="o">=</span><span class="s1">'Kitoltottseg_pct'</span><span class="p">,</span>
-    <span class="n">color_continuous_scale</span><span class="o">=</span><span class="s1">'Blues'</span><span class="p">,</span>
-    <span class="n">range_x</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105</span><span class="p">],</span>
-    <span class="n">template</span><span class="o">=</span><span class="n">PLOTLY_TEMPLATE</span>
-<span class="p">)</span>
-<span class="n">fig2</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">420</span><span class="p">)</span>
-<span class="n">fig2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div style="height:420px; width:100%;"> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script><script>if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script> <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-<script charset="utf-8" crossorigin="anonymous" integrity="sha256-O24V1F27f8pb0glCkelh3cVHLNiHAJ5gCaVtq2aNch8=" src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script> <div class="plotly-graph-div" id="57642232-4bae-4915-b50a-192e7b8bb8ec" style="height:100%; width:100%;"></div> <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("57642232-4bae-4915-b50a-192e7b8bb8ec")) {                    Plotly.newPlot(                        "57642232-4bae-4915-b50a-192e7b8bb8ec",                        [{"hovertemplate":"Kit\u00f6lt\u00f6tts\u00e9g (%)=%{marker.color}\u003cbr\u003eV\u00e1ltoz\u00f3=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":{"dtype":"f8","bdata":"bbLJJptsNkBtsskmm2w2QG2yySabbDZAsskmm2zSVkAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQA=="},"coloraxis":"coloraxis","pattern":{"shape":""}},"name":"","orientation":"h","showlegend":false,"textposition":"auto","x":{"dtype":"f8","bdata":"bbLJJptsNkBtsskmm2w2QG2yySabbDZAsskmm2zSVkAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQA=="},"xaxis":"x","y":["M\u00e1zsa t\u00e9r t\u00e1vols\u00e1g","Metr\u00f3 t\u00e1vols\u00e1g","Geok\u00f3dolt koordin\u00e1ta","Emelet","Szobasz\u00e1m","\u00c1r (HUF)","Alapter\u00fclet (m\u00b2)","N\u00e9gyzetm\u00e9ter\u00e1r","Panelszerkezet","\u00c9p\u00edt\u00e9s \u00e9ve kat.","M\u0171szaki \u00e1llapot"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"bgcolor":"white","angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"ternary":{"bgcolor":"white","aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"white","subunitcolor":"#C8D4E3","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kit\u00f6lt\u00f6tts\u00e9g (%)"},"range":[0,105]},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"V\u00e1ltoz\u00f3"}},"coloraxis":{"colorbar":{"title":{"text":"Kit\u00f6lt\u00f6tts\u00e9g (%)"}},"colorscale":[[0.0,"rgb(247,251,255)"],[0.125,"rgb(222,235,247)"],[0.25,"rgb(198,219,239)"],[0.375,"rgb(158,202,225)"],[0.5,"rgb(107,174,214)"],[0.625,"rgb(66,146,198)"],[0.75,"rgb(33,113,181)"],[0.875,"rgb(8,81,156)"],[1.0,"rgb(8,48,107)"]],"autocolorscale":false},"legend":{"tracegroupgap":0},"title":{"text":"Kulcsv\u00e1ltoz\u00f3k kit\u00f6lt\u00f6tts\u00e9gi ar\u00e1nya (%)"},"barmode":"relative","height":420},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('57642232-4bae-4915-b50a-192e7b8bb8ec');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };            </script> </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e05c7443">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="4.-Interakt%C3%ADv-Adathalmaz-Sz%C5%B1r%C5%91-%C3%A9s-Ellen%C5%91rz%C5%91-Pult">4. Interaktív Adathalmaz Szűrő és Ellenőrző Pult<a class="anchor-link" href="#4.-Interakt%C3%ADv-Adathalmaz-Sz%C5%B1r%C5%91-%C3%A9s-Ellen%C5%91rz%C5%91-Pult">¶</a></h3><p>A vezérlőkkel dinamikusan tesztelhetők az alminták (eladó, kiadó, pontos geokódolt, városrész szerinti szűrés).</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4549665d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Interaktív vezérlők definiálása</span>
-<span class="n">w_tipus</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">RadioButtons</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">'Mindkettő'</span><span class="p">,</span> <span class="s1">'eladó'</span><span class="p">,</span> <span class="s1">'kiadó'</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">'Mindkettő'</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Hirdetés:'</span><span class="p">)</span>
-<span class="n">w_pontos</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Csak pontos koordinátás (N=296)'</span><span class="p">)</span>
-<span class="n">w_varosreszek</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">SelectMultiple</span><span class="p">(</span>
-    <span class="n">options</span><span class="o">=</span><span class="n">VAROSRESZEK</span><span class="p">,</span>
-    <span class="n">value</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">VAROSRESZEK</span><span class="p">[:</span><span class="mi">3</span><span class="p">]),</span>
-    <span class="n">description</span><span class="o">=</span><span class="s1">'Városrészek:'</span>
-<span class="p">)</span>
-
-<span class="n">out_summary</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">frissit_nezopont</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="n">dff</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">w_tipus</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="s1">'Mindkettő'</span><span class="p">:</span>
-        <span class="n">dff</span> <span class="o">=</span> <span class="n">dff</span><span class="p">[</span><span class="n">dff</span><span class="p">[</span><span class="s1">'listing_type'</span><span class="p">]</span> <span class="o">==</span> <span class="n">w_tipus</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">w_pontos</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="n">dff</span> <span class="o">=</span> <span class="n">dff</span><span class="p">[</span><span class="n">dff</span><span class="p">[</span><span class="s1">'minta_garantalt_pontos'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">w_varosreszek</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="n">dff</span> <span class="o">=</span> <span class="n">dff</span><span class="p">[</span><span class="n">dff</span><span class="p">[</span><span class="s1">'varosresz'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">w_varosreszek</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
-        
-    <span class="k">with</span> <span class="n">out_summary</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frissit_sar</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">w_k</span> <span class="o">=</span> <span class="n">KNN</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">coords_clean</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">w_k_sar</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">w_k</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="s1">'R'</span>
+    <span class="n">wy_k</span> <span class="o">=</span> <span class="n">w_k</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y_vec</span><span class="p">)</span>
+    <span class="n">wx_k</span> <span class="o">=</span> <span class="n">w_k</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_mat</span><span class="p">)</span>
+    
+    <span class="n">z_k</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">X_mat</span><span class="p">,</span> <span class="n">wx_k</span><span class="p">)))</span>
+    <span class="n">wy_hat_k</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">wy_k</span><span class="p">,</span> <span class="n">z_k</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">fittedvalues</span>
+    <span class="n">res_k</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y_vec</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">X_mat</span><span class="p">,</span> <span class="n">wy_hat_k</span><span class="p">))))</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    
+    <span class="n">rho_k</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">res_k</span><span class="o">.</span><span class="n">params</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">m_resid</span> <span class="o">=</span> <span class="n">Moran</span><span class="p">(</span><span class="n">res_k</span><span class="o">.</span><span class="n">resid</span><span class="p">,</span> <span class="n">w_k</span><span class="p">)</span><span class="o">.</span><span class="n">I</span>
+    
+    <span class="k">with</span> <span class="n">out_sar</span><span class="p">:</span>
         <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">sub_kpis</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">"Szűrt Elemek"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dff</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> db"</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">' '</span><span class="p">),</span> <span class="s2">"Aktuális minta"</span><span class="p">,</span> <span class="s2">"#1e3a8a"</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">"Szűrt Átlagár"</span><span class="p">,</span> <span class="n">fmt_mft</span><span class="p">(</span><span class="n">dff</span><span class="p">[</span><span class="s1">'price_huf'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="k">if</span> <span class="n">dff</span><span class="p">[</span><span class="s1">'price_huf'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">"Átlagos kínálat"</span><span class="p">,</span> <span class="s2">"#059669"</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">"Szűrt Ár/m²"</span><span class="p">,</span> <span class="n">fmt_huf</span><span class="p">(</span><span class="n">dff</span><span class="p">[</span><span class="s1">'nm_ar_huf'</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span> <span class="k">if</span> <span class="n">dff</span><span class="p">[</span><span class="s1">'nm_ar_huf'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">"Medián fajlagos ár"</span><span class="p">,</span> <span class="s2">"#7c3aed"</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">"Városrészek"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">w_varosreszek</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2"> db"</span><span class="p">,</span> <span class="s2">"Kiválasztva"</span><span class="p">,</span> <span class="s2">"#d97706"</span><span class="p">)</span>
+        <span class="n">sar_kpis</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">"Választott k"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">w_k_sar</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> szomszéd"</span><span class="p">,</span> <span class="s2">"KNN topológia"</span><span class="p">,</span> <span class="s2">"#2563eb"</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"Becsült ρ Paraméter"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rho_k</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Multiplikátor: </span><span class="si">{</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rho_k</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x"</span><span class="p">,</span> <span class="s2">"#10b981"</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"Maradvány Moran I"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m_resid</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Spillover kontroll után"</span><span class="p">,</span> <span class="s2">"#059669"</span><span class="p">)</span>
         <span class="p">]</span>
-        <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">kpi_grid_html</span><span class="p">(</span><span class="n">sub_kpis</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dff</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">preview_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'listing_id'</span><span class="p">,</span> <span class="s1">'cim_teljes'</span><span class="p">,</span> <span class="s1">'ar_millio_ft'</span><span class="p">,</span> <span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'alapterulet_nm'</span><span class="p">,</span> <span class="s1">'szobaszam_osszes'</span><span class="p">,</span> <span class="s1">'varosresz'</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">dff</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-            <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">dff</span><span class="p">[</span><span class="n">preview_cols</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="s1">'table table-striped'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">kpi_grid_html</span><span class="p">(</span><span class="n">sar_kpis</span><span class="p">)))</span>
 
-<span class="n">w_tipus</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">frissit_nezopont</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">'value'</span><span class="p">)</span>
-<span class="n">w_pontos</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">frissit_nezopont</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">'value'</span><span class="p">)</span>
-<span class="n">w_varosreszek</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">frissit_nezopont</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">'value'</span><span class="p">)</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">([</span><span class="n">w_tipus</span><span class="p">,</span> <span class="n">w_pontos</span><span class="p">,</span> <span class="n">w_varosreszek</span><span class="p">]))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">out_summary</span><span class="p">)</span>
-<span class="n">frissit_nezopont</span><span class="p">()</span>
+<span class="n">w_k_sar</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">frissit_sar</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">'value'</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">w_k_sar</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">out_sar</span><span class="p">)</span>
+<span class="n">frissit_sar</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jupyter-widgets jp-OutputArea-output" id="9f9a9192-fc2b-45ad-9abe-eef4fb196b28" tabindex="0">
-<script type="text/javascript">
-var element = document.getElementById('9f9a9192-fc2b-45ad-9abe-eef4fb196b28');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b21591a9951f4820bca545ad22e733cf", "version_major": 2, "version_minor": 0}
-</script>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jupyter-widgets jp-OutputArea-output" id="148a9d4c-eb4a-49cd-9dd5-2c86bbb31f2d" tabindex="0">
-<script type="text/javascript">
-var element = document.getElementById('148a9d4c-eb4a-49cd-9dd5-2c86bbb31f2d');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "18f346f9bb7b433ba2137346d3ebac67", "version_major": 2, "version_minor": 0}
-</script>
 </div>
 </div>
 </div>
@@ -8236,7 +8082,4 @@ var element = document.getElementById('148a9d4c-eb4a-49cd-9dd5-2c86bbb31f2d');
 </div>
 </main>
 </body>
-<script type="application/vnd.jupyter.widget-state+json">
-{"state": {"106254debebb4319bb7b2c73a3d5ec44": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "13da14107b2c4feaa954ca0ecc0937ea": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "18f346f9bb7b433ba2137346d3ebac67": {"model_module": "@jupyter-widgets\/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets\/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_657a0362f50f472590841d4ccd0c412c", "msg_id": "", "outputs": [{"data": {"text\/html": "<div style=\"display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0 24px 0;\"><div style=\"flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n      <div style=\"font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;\">Sz\u0171rt Elemek<\/div>\n      <div style=\"font-size: 24px; font-weight: 800; color: #1e3a8a; margin-top: 4px;\">800 db<\/div>\n      <div style=\"font-size: 11px; color: #64748b; margin-top: 4px;\">Aktu\u00e1lis minta<\/div>\n    <\/div><div style=\"flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n      <div style=\"font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;\">Sz\u0171rt \u00c1tlag\u00e1r<\/div>\n      <div style=\"font-size: 24px; font-weight: 800; color: #059669; margin-top: 4px;\">61.0 M Ft<\/div>\n      <div style=\"font-size: 11px; color: #64748b; margin-top: 4px;\">\u00c1tlagos k\u00edn\u00e1lat<\/div>\n    <\/div><div style=\"flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n      <div style=\"font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;\">Sz\u0171rt \u00c1r\/m\u00b2<\/div>\n      <div style=\"font-size: 24px; font-weight: 800; color: #7c3aed; margin-top: 4px;\">1 150 424 Ft<\/div>\n      <div style=\"font-size: 11px; color: #64748b; margin-top: 4px;\">Medi\u00e1n fajlagos \u00e1r<\/div>\n    <\/div><div style=\"flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n      <div style=\"font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;\">V\u00e1rosr\u00e9szek<\/div>\n      <div style=\"font-size: 24px; font-weight: 800; color: #d97706; margin-top: 4px;\">3 db<\/div>\n      <div style=\"font-size: 11px; color: #64748b; margin-top: 4px;\">Kiv\u00e1lasztva<\/div>\n    <\/div><\/div>", "text\/plain": "<IPython.core.display.HTML object>"}, "metadata": {}, "output_type": "display_data"}, {"data": {"text\/html": "<table border=\"1\" class=\"dataframe table table-striped\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th>listing_id<\/th>\n      <th>cim_teljes<\/th>\n      <th>ar_millio_ft<\/th>\n      <th>nm_ar_huf<\/th>\n      <th>alapterulet_nm<\/th>\n      <th>szobaszam_osszes<\/th>\n      <th>varosresz<\/th>\n    <\/tr>\n  <\/thead>\n  <tbody>\n    <tr>\n      <td>32387225<\/td>\n      <td>Budapest X. ker\u00fclet, Sz\u00f6v\u0151sz\u00e9k utca<\/td>\n      <td>54.90<\/td>\n      <td>1098000<\/td>\n      <td>50.0<\/td>\n      <td>2.0<\/td>\n      <td>\u00dajhegy<\/td>\n    <\/tr>\n    <tr>\n      <td>33365461<\/td>\n      <td>Budapest X. ker\u00fclet, Mal\u00e1ta k\u00f6z<\/td>\n      <td>119.00<\/td>\n      <td>1252632<\/td>\n      <td>95.0<\/td>\n      <td>4.0<\/td>\n      <td>\u00d3hegy<\/td>\n    <\/tr>\n    <tr>\n      <td>33805283<\/td>\n      <td>Budapest X. ker\u00fclet, T\u00e1rna utca<\/td>\n      <td>23.79<\/td>\n      <td>849643<\/td>\n      <td>28.0<\/td>\n      <td>1.0<\/td>\n      <td>Gy\u00e1rd\u0171l\u0151<\/td>\n    <\/tr>\n    <tr>\n      <td>34084830<\/td>\n      <td>Budapest X. ker\u00fclet, Tavas utca 7.<\/td>\n      <td>102.20<\/td>\n      <td>1648387<\/td>\n      <td>62.0<\/td>\n      <td>3.0<\/td>\n      <td>\u00dajhegy<\/td>\n    <\/tr>\n    <tr>\n      <td>34085875<\/td>\n      <td>Budapest X. ker\u00fclet, Tavas utca 7.<\/td>\n      <td>119.90<\/td>\n      <td>1598667<\/td>\n      <td>75.0<\/td>\n      <td>3.0<\/td>\n      <td>\u00dajhegy<\/td>\n    <\/tr>\n  <\/tbody>\n<\/table>", "text\/plain": "<IPython.core.display.HTML object>"}, "metadata": {}, "output_type": "display_data"}], "tabbable": null, "tooltip": null}}, "3ac4a51bb1c843ad8c0beb6535963771": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "CheckboxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "CheckboxModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "CheckboxView", "description": "Csak pontos koordin\u00e1t\u00e1s (N=296)", "description_allow_html": false, "disabled": false, "indent": true, "layout": "IPY_MODEL_e8c146ff66e3459595190d13d959afa8", "style": "IPY_MODEL_a1f7820ed929479dbf693036aa387f1c", "tabbable": null, "tooltip": null, "value": false}}, "657a0362f50f472590841d4ccd0c412c": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "825089a8bc1f43a49cddba13cedc3b1f": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": ""}}, "834710ac2a8f48bdbdec98197775fbb5": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "a1f7820ed929479dbf693036aa387f1c": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "CheckboxStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "CheckboxStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": ""}}, "a6090118047b41ddbd2616893a886d47": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": ""}}, "b21591a9951f4820bca545ad22e733cf": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "HBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_bbd7bca83dd8491d88c4f29420f17284", "IPY_MODEL_3ac4a51bb1c843ad8c0beb6535963771", "IPY_MODEL_de34f318076a4edfafa5f52d4037267f"], "layout": "IPY_MODEL_106254debebb4319bb7b2c73a3d5ec44", "tabbable": null, "tooltip": null}}, "bbd7bca83dd8491d88c4f29420f17284": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "RadioButtonsModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "RadioButtonsModel", "_options_labels": ["Mindkett\u0151", "elad\u00f3", "kiad\u00f3"], "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "RadioButtonsView", "description": "Hirdet\u00e9s:", "description_allow_html": false, "disabled": false, "index": 0, "layout": "IPY_MODEL_834710ac2a8f48bdbdec98197775fbb5", "orientation": "vertical", "style": "IPY_MODEL_825089a8bc1f43a49cddba13cedc3b1f", "tabbable": null, "tooltip": null}}, "de34f318076a4edfafa5f52d4037267f": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "SelectMultipleModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "SelectMultipleModel", "_options_labels": ["\u00d3hegy", "\u00dajhegy", "Gy\u00e1rd\u0171l\u0151", "K\u0151b\u00e1nya k\u00f6zpont", "Fels\u0151r\u00e1kos", "K\u0151b\u00e1nya-Kertv\u00e1ros"], "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "SelectMultipleView", "description": "V\u00e1rosr\u00e9szek:", "description_allow_html": false, "disabled": false, "index": [0, 1, 2], "layout": "IPY_MODEL_13da14107b2c4feaa954ca0ecc0937ea", "rows": 5, "style": "IPY_MODEL_a6090118047b41ddbd2616893a886d47", "tabbable": null, "tooltip": null}}, "e8c146ff66e3459595190d13d959afa8": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}}, "version_major": 2, "version_minor": 0}
-</script>
 </html>

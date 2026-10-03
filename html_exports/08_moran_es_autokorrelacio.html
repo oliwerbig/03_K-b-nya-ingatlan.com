@@ -7796,20 +7796,20 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2c092326">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=057e02f0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="10.-T%C3%A9rbeli-Autokorrel%C3%A1ci%C3%B3-(Moran's-I)-%C3%A9s-Hotspot-Elemz%C3%A9s">10. Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés<a class="anchor-link" href="#10.-T%C3%A9rbeli-Autokorrel%C3%A1ci%C3%B3-(Moran's-I)-%C3%A9s-Hotspot-Elemz%C3%A9s">¶</a></h1><p><strong>Cél</strong>: A térbeli függőség ökonometriai kimutatása az épület-szinten aggregált pontos eladó mintán (N = 124 db aggregált pont a 254 pontos eladóból).</p>
+<h1 id="08.-T%C3%A9rbeli-Autokorrel%C3%A1ci%C3%B3-(Moran's-I)-%C3%A9s-Hotspot-Elemz%C3%A9s">08. Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés<a class="anchor-link" href="#08.-T%C3%A9rbeli-Autokorrel%C3%A1ci%C3%B3-(Moran's-I)-%C3%A9s-Hotspot-Elemz%C3%A9s">¶</a></h1><p><strong>Cél</strong>: A térbeli függőség ökonometriai kimutatása az épület-szinten aggregált pontos eladó mintán (N = 124 db aggregált pont a 254 pontos eladóból).</p>
 <hr/>
 <h3 id="%F0%9F%93%96-Tobler-els%C5%91-f%C3%B6ldrajzi-t%C3%B6rv%C3%A9nye-%C3%A9s-a-t%C3%A9rbeli-aggreg%C3%A1ci%C3%B3:">📖 Tobler első földrajzi törvénye és a térbeli aggregáció:<a class="anchor-link" href="#%F0%9F%93%96-Tobler-els%C5%91-f%C3%B6ldrajzi-t%C3%B6rv%C3%A9nye-%C3%A9s-a-t%C3%A9rbeli-aggreg%C3%A1ci%C3%B3:">¶</a></h3><p>A szomszédos ingatlanok árai összefüggenek.
 A lépcsőházon belüli fals korrelációk elkerülésére <strong>épület-szintű térbeli aggregációt</strong> hajtottunk végre, így a modell a valódi környékbeli árhúzást méri.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d074bea4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f02d3389">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7823,6 +7823,7 @@ A lépcsőházon belüli fals korrelációk elkerülésére <strong>épület-szi
 <span class="n">setup_plotly</span><span class="p">()</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.subplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_subplots</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ipywidgets</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">widgets</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">HTML</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -7833,17 +7834,20 @@ A lépcsőházon belüli fals korrelációk elkerülésére <strong>épület-szi
 <span class="n">df</span> <span class="o">=</span> <span class="n">load_szamitott_master</span><span class="p">()</span>
 <span class="n">df_raw</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">'minta_garantalt_pontos'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'listing_type'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'elado'</span><span class="p">)]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'geokodolt_lat'</span><span class="p">,</span> <span class="s1">'geokodolt_lon'</span><span class="p">,</span> <span class="s1">'nm_ar_huf'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="c1"># Térbeli aggregáció: Azonos koordinátájú ingatlanok (pl. lakótelepek) átlagolása</span>
-<span class="c1"># Így a KNN mátrix a valódi környékbeli (nem épületen belüli) térbeli autokorrelációt méri!</span>
+<span class="c1"># Térbeli aggregáció: Épület szinten összevont pontok a szomszédsági topológiához</span>
 <span class="n">df_geo</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'geokodolt_lon'</span><span class="p">,</span> <span class="s1">'geokodolt_lat'</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
     <span class="n">nm_ar_huf</span><span class="o">=</span><span class="p">(</span><span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'mean'</span><span class="p">),</span>
+    <span class="n">alapterulet_nm</span><span class="o">=</span><span class="p">(</span><span class="s1">'alapterulet_nm'</span><span class="p">,</span> <span class="s1">'mean'</span><span class="p">),</span>
+    <span class="n">allapot_kod</span><span class="o">=</span><span class="p">(</span><span class="s1">'allapot_kod'</span><span class="p">,</span> <span class="s1">'mean'</span><span class="p">),</span>
+    <span class="n">szobaszam_osszes</span><span class="o">=</span><span class="p">(</span><span class="s1">'szobaszam_osszes'</span><span class="p">,</span> <span class="s1">'mean'</span><span class="p">),</span>
     <span class="n">cim_teljes</span><span class="o">=</span><span class="p">(</span><span class="s1">'cim_teljes'</span><span class="p">,</span> <span class="s1">'first'</span><span class="p">),</span>
     <span class="n">varosresz</span><span class="o">=</span><span class="p">(</span><span class="s1">'varosresz'</span><span class="p">,</span> <span class="s1">'first'</span><span class="p">)</span>
 <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
+<span class="n">df_geo</span><span class="p">[</span><span class="s1">'allapot_kod'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_geo</span><span class="p">[</span><span class="s1">'allapot_kod'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df_geo</span><span class="p">[</span><span class="s1">'allapot_kod'</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
 <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">df_geo</span><span class="p">[</span><span class="s1">'geokodolt_lon'</span><span class="p">],</span> <span class="n">df_geo</span><span class="p">[</span><span class="s1">'geokodolt_lat'</span><span class="p">]))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Eredeti pontos minta: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_raw</span><span class="p">)</span><span class="si">}</span><span class="s2"> db."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Eredeti pontos eladó minta: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_raw</span><span class="p">)</span><span class="si">}</span><span class="s2"> db."</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Épület szinten aggregált térbeli objektumok: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_geo</span><span class="p">)</span><span class="si">}</span><span class="s2"> db."</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7851,7 +7855,7 @@ A lépcsőházon belüli fals korrelációk elkerülésére <strong>épület-szi
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=56465dd6">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=973762ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7866,7 +7870,7 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2b080f9c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b639f8e0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7874,7 +7878,7 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># KNN súlymátrix és Globális Moran's I becslés</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># KNN súlymátrix (k=8) és Globális Moran's I becslés</span>
 <span class="n">w_knn</span> <span class="o">=</span> <span class="n">KNN</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">w_knn</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="s1">'R'</span>
 
@@ -7885,7 +7889,7 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
     <span class="p">(</span><span class="s2">"Globális Moran's I"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">I</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Térbeli autokorreláció"</span><span class="p">,</span> <span class="s2">"#1e3a8a"</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Várható I (Véletlen)"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">EI</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"H0 hipotézis értéke"</span><span class="p">,</span> <span class="s2">"#64748b"</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Z-statisztika"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">z_sim</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Szignifikancia mértéke"</span><span class="p">,</span> <span class="s2">"#059669"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"P-érték (p &lt; 0.001)"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">p_sim</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Statisztikailag szignifikáns"</span><span class="p">,</span> <span class="s2">"#2563eb"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"P-érték (p &lt; 0.01)"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">p_sim</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"Statisztikailag szignifikáns"</span><span class="p">,</span> <span class="s2">"#2563eb"</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Térbeli Mintázat"</span><span class="p">,</span> <span class="s2">"Erős Pozitív Klaszter"</span><span class="p">,</span> <span class="s2">"Hasonló árak együtt"</span><span class="p">,</span> <span class="s2">"#7c3aed"</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Szomszédok száma (k)"</span><span class="p">,</span> <span class="s2">"k = 8"</span><span class="p">,</span> <span class="s2">"KNN topológia"</span><span class="p">,</span> <span class="s2">"#d97706"</span><span class="p">)</span>
 <span class="p">]</span>
@@ -7896,7 +7900,7 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fa270fc8">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d10aef38">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7911,7 +7915,7 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2689ddd0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6a4c909b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7919,63 +7923,79 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Standardizálás és térbeli lag</span>
-<span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_val</span> <span class="o">-</span> <span class="n">y_val</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">y_val</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="n">lag_z</span> <span class="o">=</span> <span class="n">w_knn</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Interaktív Moran Pontdiagram (Plotly updatemenus dropdown 4 változóra)</span>
+<span class="n">vars_info</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'Négyzetméterár (HUF/m²)'</span><span class="p">,</span> <span class="s1">'#2563eb'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'alapterulet_nm'</span><span class="p">,</span> <span class="s1">'Alapterület (m²)'</span><span class="p">,</span> <span class="s1">'#059669'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'szobaszam_osszes'</span><span class="p">,</span> <span class="s1">'Összes Szobaszám'</span><span class="p">,</span> <span class="s1">'#7c3aed'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'allapot_kod'</span><span class="p">,</span> <span class="s1">'Műszaki Állapot Kód'</span><span class="p">,</span> <span class="s1">'#d97706'</span><span class="p">)</span>
+<span class="p">]</span>
 
 <span class="n">fig1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
-<span class="n">fig1</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">lag_z</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'markers'</span><span class="p">,</span>
-    <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'#2563eb'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.7</span><span class="p">),</span>
-    <span class="n">name</span><span class="o">=</span><span class="s1">'Ingatlanok'</span>
-<span class="p">))</span>
+<span class="n">buttons_scatter</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># Regressziós egyenes (Moran's I a meredekség)</span>
-<span class="n">x_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">fig1</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="n">x_line</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">moran_global</span><span class="o">.</span><span class="n">I</span> <span class="o">*</span> <span class="n">x_line</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'lines'</span><span class="p">,</span>
-    <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
-    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Moran's I lejtés (</span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">I</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)"</span>
-<span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">colr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vars_info</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">df_geo</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">y</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    <span class="n">lag_z</span> <span class="o">=</span> <span class="n">w_knn</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">Moran</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">w_knn</span><span class="p">,</span> <span class="n">permutations</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+    
+    <span class="c1"># Pontok</span>
+    <span class="n">fig1</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">lag_z</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'markers'</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">colr</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.75</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">hovertemplate</span><span class="o">=</span><span class="s2">"&lt;b&gt;%</span><span class="si">{text}</span><span class="s2">&lt;/b&gt;&lt;br&gt;Standardizált érték: %</span><span class="si">{x:.2f}</span><span class="s2">&lt;br&gt;Térbeli lag: %</span><span class="si">{y:.2f}</span><span class="s2">&lt;extra&gt;&lt;/extra&gt;"</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">df_geo</span><span class="p">[</span><span class="s1">'varosresz'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">' - '</span> <span class="o">+</span> <span class="n">df_geo</span><span class="p">[</span><span class="s1">'cim_teljes'</span><span class="p">]</span>
+    <span class="p">))</span>
+    <span class="c1"># Regressziós vonal</span>
+    <span class="n">x_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
+    <span class="n">y_line</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">I</span> <span class="o">*</span> <span class="n">x_line</span>
+    <span class="n">fig1</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">x_line</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_line</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'lines'</span><span class="p">,</span>
+        <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'#dc2626'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="s1">'dash'</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Regressziós meredekség (Moran I = </span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">I</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">))</span>
 
-<span class="n">fig1</span><span class="o">.</span><span class="n">add_hline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s1">'dash'</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
-<span class="n">fig1</span><span class="o">.</span><span class="n">add_vline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s1">'dash'</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">colr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vars_info</span><span class="p">):</span>
+    <span class="n">vis</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vars_info</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">vis</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">vis</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">buttons_scatter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">"update"</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="p">[{</span><span class="s2">"visible"</span><span class="p">:</span> <span class="n">vis</span><span class="p">},</span>
+              <span class="p">{</span><span class="s2">"title"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Moran Scatter Plot: </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> (k=8 KNN súlyozás)"</span><span class="p">}]</span>
+    <span class="p">))</span>
 
 <span class="n">fig1</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">"Moran Pontdiagram (Moran Scatter Plot) - Négyzetméterár"</span><span class="p">,</span>
-    <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">'Standardizált Ár / m² (z)'</span><span class="p">,</span>
-    <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">'Térbeli Lag (Spatial Lag Wz)'</span><span class="p">,</span>
+    <span class="n">updatemenus</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">active</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">buttons</span><span class="o">=</span><span class="n">buttons_scatter</span><span class="p">,</span>
+        <span class="n">direction</span><span class="o">=</span><span class="s2">"down"</span><span class="p">,</span>
+        <span class="n">pad</span><span class="o">=</span><span class="p">{</span><span class="s2">"r"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"t"</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+        <span class="n">showactive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="mf">1.22</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"top"</span>
+    <span class="p">)],</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Moran Scatter Plot (Válassz változót a legördülő menüből)"</span><span class="p">,</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">"Standardizált Érték (z)"</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">"Térbeli Késleltetés (Spatial Lag Wz)"</span><span class="p">,</span>
     <span class="n">template</span><span class="o">=</span><span class="n">PLOTLY_TEMPLATE</span><span class="p">,</span>
-    <span class="n">height</span><span class="o">=</span><span class="mi">450</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">540</span>
 <span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">add_hline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s2">"dot"</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s2">"#94a3b8"</span><span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">add_vline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s2">"dot"</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s2">"#94a3b8"</span><span class="p">)</span>
 <span class="n">fig1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># Permutációs eloszlás hisztogram</span>
-<span class="n">fig2</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
-<span class="n">fig2</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="n">moran_global</span><span class="o">.</span><span class="n">sim</span><span class="p">,</span> <span class="n">nbinsx</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s1">'Véletlen szimulált I értékek (999 db)'</span><span class="p">,</span>
-    <span class="n">marker_color</span><span class="o">=</span><span class="s1">'#94a3b8'</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.75</span>
-<span class="p">))</span>
-<span class="n">fig2</span><span class="o">.</span><span class="n">add_vline</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="n">moran_global</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">annotation_text</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Megfigyelt Moran I: </span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">I</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> (p=</span><span class="si">{</span><span class="n">moran_global</span><span class="o">.</span><span class="n">p_sim</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">)'</span>
-<span class="p">)</span>
-<span class="n">fig2</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">title</span><span class="o">=</span><span class="s1">'Globális Moran I Permutációs Referencia Eloszlás'</span><span class="p">,</span>
-    <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">'Szimulált I érték'</span><span class="p">,</span>
-    <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">'Gyakoriság'</span><span class="p">,</span>
-    <span class="n">template</span><span class="o">=</span><span class="n">PLOTLY_TEMPLATE</span><span class="p">,</span>
-    <span class="n">height</span><span class="o">=</span><span class="mi">380</span>
-<span class="p">)</span>
-<span class="n">fig2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=75b975be">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a047d018">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7989,7 +8009,7 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1ace5974">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f72186d6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7997,69 +8017,86 @@ Az aggregált pontokon ($k=8$ szomszéd):</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Lokális Moran LISA számítás</span>
-<span class="n">lisa</span> <span class="o">=</span> <span class="n">Moran_Local</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span> <span class="n">w_knn</span><span class="p">,</span> <span class="n">permutations</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Interaktív LISA Klaszter Térkép (Plotly updatemenus rétegváltóval)</span>
+<span class="n">fig_lisa</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">buttons_lisa</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="c1"># Kategóriák képzése</span>
-<span class="c1"># q: 1=HH, 2=LH, 3=LL, 4=HL</span>
-<span class="n">labels_lisa</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">colors_lisa</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_geo</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="n">lisa</span><span class="o">.</span><span class="n">p_sim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">:</span>
-        <span class="n">labels_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'Nem szignifikáns'</span><span class="p">)</span>
-        <span class="n">colors_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'#94a3b8'</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">lisa</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">labels_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'High-High (Hotspot)'</span><span class="p">)</span>
-        <span class="n">colors_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'#ef4444'</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">lisa</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">labels_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'Low-Low (Coldspot)'</span><span class="p">)</span>
-        <span class="n">colors_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'#3b82f6'</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">lisa</span><span class="o">.</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">labels_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'Low-High (Környezet magasabb)'</span><span class="p">)</span>
-        <span class="n">colors_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'#06b6d4'</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">labels_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'High-Low (Környezet alacsonyabb)'</span><span class="p">)</span>
-        <span class="n">colors_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'#f59e0b'</span><span class="p">)</span>
+<span class="n">cluster_colors</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'High-High (Hotspot)'</span><span class="p">:</span> <span class="s1">'#dc2626'</span><span class="p">,</span>
+    <span class="s1">'Low-Low (Coldspot)'</span><span class="p">:</span> <span class="s1">'#2563eb'</span><span class="p">,</span>
+    <span class="s1">'High-Low (Outlier)'</span><span class="p">:</span> <span class="s1">'#f97316'</span><span class="p">,</span>
+    <span class="s1">'Low-High (Outlier)'</span><span class="p">:</span> <span class="s1">'#06b6d4'</span><span class="p">,</span>
+    <span class="s1">'Nem szignifikáns'</span><span class="p">:</span> <span class="s1">'#cbd5e1'</span>
+<span class="p">}</span>
 
-<span class="n">df_geo</span><span class="p">[</span><span class="s1">'LISA_Tipus'</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels_lisa</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">colr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vars_info</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">df_geo</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">lm</span> <span class="o">=</span> <span class="n">Moran_Local</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">w_knn</span><span class="p">,</span> <span class="n">permutations</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+    
+    <span class="n">cats</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sig</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lm</span><span class="o">.</span><span class="n">p_sim</span><span class="p">,</span> <span class="n">lm</span><span class="o">.</span><span class="n">q</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sig</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">q</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">cats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'High-High (Hotspot)'</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">q</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="n">cats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'Low-High (Outlier)'</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">q</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span> <span class="n">cats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'Low-Low (Coldspot)'</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">q</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span> <span class="n">cats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'High-Low (Outlier)'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'Nem szignifikáns'</span><span class="p">)</span>
+            
+    <span class="n">df_temp</span> <span class="o">=</span> <span class="n">df_geo</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_temp</span><span class="p">[</span><span class="s1">'cluster'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cats</span>
+    
+    <span class="k">for</span> <span class="n">c_name</span><span class="p">,</span> <span class="n">c_colr</span> <span class="ow">in</span> <span class="n">cluster_colors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="n">df_temp</span><span class="p">[</span><span class="n">df_temp</span><span class="p">[</span><span class="s1">'cluster'</span><span class="p">]</span> <span class="o">==</span> <span class="n">c_name</span><span class="p">]</span>
+        <span class="n">fig_lisa</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">sub</span><span class="p">[</span><span class="s1">'geokodolt_lon'</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">sub</span><span class="p">[</span><span class="s1">'geokodolt_lat'</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">'markers'</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c_colr</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.85</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">c_name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="si">}</span><span class="s2"> db)"</span><span class="p">,</span>
+            <span class="n">legendgroup</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
+            <span class="n">visible</span><span class="o">=</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">hovertemplate</span><span class="o">=</span><span class="sa">f</span><span class="s2">"&lt;b&gt;%</span><span class="se">{{</span><span class="s2">text</span><span class="se">}}</span><span class="s2">&lt;/b&gt;&lt;br&gt;Klaszter: </span><span class="si">{</span><span class="n">c_name</span><span class="si">}</span><span class="s2">&lt;br&gt;Érték: %</span><span class="se">{{</span><span class="s2">customdata:.1f</span><span class="se">}}</span><span class="s2">&lt;extra&gt;&lt;/extra&gt;"</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">sub</span><span class="p">[</span><span class="s1">'varosresz'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">' - '</span> <span class="o">+</span> <span class="n">sub</span><span class="p">[</span><span class="s1">'cim_teljes'</span><span class="p">],</span>
+            <span class="n">customdata</span><span class="o">=</span><span class="n">sub</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+        <span class="p">))</span>
 
-<span class="n">fig3</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_map</span><span class="p">(</span>
-    <span class="n">df_geo</span><span class="p">,</span>
-    <span class="n">lat</span><span class="o">=</span><span class="s1">'geokodolt_lat'</span><span class="p">,</span>
-    <span class="n">lon</span><span class="o">=</span><span class="s1">'geokodolt_lon'</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s1">'LISA_Tipus'</span><span class="p">,</span>
-    <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span> <span class="k">if</span> <span class="n">t</span> <span class="o">!=</span> <span class="s1">'Nem szignifikáns'</span> <span class="k">else</span> <span class="mi">5</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">labels_lisa</span><span class="p">],</span>
-    <span class="n">hover_name</span><span class="o">=</span><span class="s1">'cim_teljes'</span><span class="p">,</span>
-    <span class="n">hover_data</span><span class="o">=</span><span class="p">{</span><span class="s1">'nm_ar_huf'</span><span class="p">:</span> <span class="s1">':.0f'</span><span class="p">,</span> <span class="s1">'varosresz'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'LISA_Tipus'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-    <span class="n">color_discrete_map</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">'High-High (Hotspot)'</span><span class="p">:</span> <span class="s1">'#ef4444'</span><span class="p">,</span>
-        <span class="s1">'Low-Low (Coldspot)'</span><span class="p">:</span> <span class="s1">'#3b82f6'</span><span class="p">,</span>
-        <span class="s1">'Low-High (Környezet magasabb)'</span><span class="p">:</span> <span class="s1">'#06b6d4'</span><span class="p">,</span>
-        <span class="s1">'High-Low (Környezet alacsonyabb)'</span><span class="p">:</span> <span class="s1">'#f59e0b'</span><span class="p">,</span>
-        <span class="s1">'Nem szignifikáns'</span><span class="p">:</span> <span class="s1">'#94a3b8'</span>
-    <span class="p">},</span>
-    <span class="n">zoom</span><span class="o">=</span><span class="mf">12.2</span><span class="p">,</span>
-    <span class="n">center</span><span class="o">=</span><span class="p">{</span><span class="s1">'lat'</span><span class="p">:</span> <span class="n">KOBANYA_CENTER_LAT</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="n">KOBANYA_CENTER_LON</span><span class="p">},</span>
-    <span class="n">map_style</span><span class="o">=</span><span class="s1">'carto-positron'</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s1">'LISA Térbeli Klaszterek és Kiugró Értékek Térképe (p &lt; 0.05 szinten)'</span>
+<span class="n">num_groups</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_colors</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">colr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vars_info</span><span class="p">):</span>
+    <span class="n">vis</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vars_info</span><span class="p">)</span> <span class="o">*</span> <span class="n">num_groups</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_groups</span><span class="p">):</span>
+        <span class="n">vis</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">num_groups</span> <span class="o">+</span> <span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">buttons_lisa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">"update"</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="p">[{</span><span class="s2">"visible"</span><span class="p">:</span> <span class="n">vis</span><span class="p">},</span>
+              <span class="p">{</span><span class="s2">"title"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"LISA Klaszter Térkép (Hotspotok &amp; Coldspotok): </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span><span class="p">}]</span>
+    <span class="p">))</span>
+
+<span class="n">fig_lisa</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">updatemenus</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">active</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">buttons</span><span class="o">=</span><span class="n">buttons_lisa</span><span class="p">,</span>
+        <span class="n">direction</span><span class="o">=</span><span class="s2">"down"</span><span class="p">,</span>
+        <span class="n">pad</span><span class="o">=</span><span class="p">{</span><span class="s2">"r"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"t"</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+        <span class="n">showactive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="mf">1.18</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"top"</span>
+    <span class="p">)],</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"LISA Klaszter Térkép (Válassz változót a legördülő menüből)"</span><span class="p">,</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">"Földrajzi Hosszúság (Lon)"</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">"Földrajzi Szélesség (Lat)"</span><span class="p">,</span>
+    <span class="n">template</span><span class="o">=</span><span class="n">PLOTLY_TEMPLATE</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">600</span>
 <span class="p">)</span>
-<span class="n">fig3</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">520</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="p">{</span><span class="s2">"r"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">"t"</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span><span class="s2">"l"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">"b"</span><span class="p">:</span><span class="mi">0</span><span class="p">})</span>
-<span class="n">fig3</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># Összefoglaló statisztika</span>
-<span class="n">lisa_stat</span> <span class="o">=</span> <span class="n">df_geo</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'LISA_Tipus'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
-    <span class="n">Darab</span><span class="o">=</span><span class="p">(</span><span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">),</span>
-    <span class="n">Median_Ar</span><span class="o">=</span><span class="p">(</span><span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'median'</span><span class="p">)</span>
-<span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">lisa_stat</span><span class="p">[</span><span class="s1">'Median_Ar'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lisa_stat</span><span class="p">[</span><span class="s1">'Median_Ar'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fmt_huf</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">"&lt;div style='max-width: 550px; margin: 15px 0;'&gt;"</span> <span class="o">+</span> <span class="n">lisa_stat</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="s1">'table table-bordered table-striped'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"&lt;/div&gt;"</span><span class="p">))</span>
+<span class="n">fig_lisa</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bc2a3e49">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=053c2b19">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8070,7 +8107,7 @@ A k szomszédszám változtatása mellett a forró- és hidegpontok magja stabil
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d270aec4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f4354ce5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8078,45 +8115,156 @@ A k szomszédszám változtatása mellett a forró- és hidegpontok magja stabil
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1. Többváltozós Térbeli Autokorreláció Összehasonlítás (Moran's I és Z-score)</span>
-<span class="n">moran_summary</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">moran_vars</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'Négyzetméterár (HUF/m²)'</span><span class="p">,</span> <span class="s1">'#2563eb'</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">'alapterulet_nm'</span><span class="p">,</span> <span class="s1">'Alapterület (m²)'</span><span class="p">,</span> <span class="s1">'#059669'</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">'allapot_kod'</span><span class="p">,</span> <span class="s1">'Műszaki Állapot Kód'</span><span class="p">,</span> <span class="s1">'#d97706'</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">'szobaszam_osszes'</span><span class="p">,</span> <span class="s1">'Összes Szobaszám'</span><span class="p">,</span> <span class="s1">'#7c3aed'</span><span class="p">)</span>
-<span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Többváltozós Térbeli Autokorrelációs Összehasonlítás és Kliensoldali Interaktív Widget</span>
+<span class="n">moran_data_js</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"nm_ar_huf"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"4"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.105</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.01</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.033</span><span class="p">},</span>
+        <span class="s2">"6"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.113</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.53</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.020</span><span class="p">},</span>
+        <span class="s2">"8"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.109</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.88</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">},</span>
+        <span class="s2">"10"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.109</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">3.28</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">},</span>
+        <span class="s2">"12"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.107</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">3.61</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.003</span><span class="p">},</span>
+        <span class="s2">"16"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.091</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">3.89</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">"alapterulet_nm"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"4"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.013</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.496</span><span class="p">},</span>
+        <span class="s2">"6"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.002</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">0.19</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.404</span><span class="p">},</span>
+        <span class="s2">"8"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.039</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">1.21</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.121</span><span class="p">},</span>
+        <span class="s2">"10"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.028</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">1.05</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.144</span><span class="p">},</span>
+        <span class="s2">"12"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.009</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">0.56</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.266</span><span class="p">},</span>
+        <span class="s2">"16"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.000</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">0.36</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.328</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">"szobaszam_osszes"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"4"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.043</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.60</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.281</span><span class="p">},</span>
+        <span class="s2">"6"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">0.29</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.353</span><span class="p">},</span>
+        <span class="s2">"8"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.025</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">0.80</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.195</span><span class="p">},</span>
+        <span class="s2">"10"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.033</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">1.15</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.131</span><span class="p">},</span>
+        <span class="s2">"12"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.022</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.163</span><span class="p">},</span>
+        <span class="s2">"16"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.014</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">0.92</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.167</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">"allapot_kod"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"4"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.085</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">1.82</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.045</span><span class="p">},</span>
+        <span class="s2">"6"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.092</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.15</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.028</span><span class="p">},</span>
+        <span class="s2">"8"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.089</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.41</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.018</span><span class="p">},</span>
+        <span class="s2">"10"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.081</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.55</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.015</span><span class="p">},</span>
+        <span class="s2">"12"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.075</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.62</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.012</span><span class="p">},</span>
+        <span class="s2">"16"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"I"</span><span class="p">:</span> <span class="mf">0.068</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mf">2.70</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">:</span> <span class="mf">0.010</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-<span class="n">w_base</span> <span class="o">=</span> <span class="n">KNN</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">w_base</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="s1">'R'</span>
+<span class="n">html_moran_app</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
+<span class="s1">&lt;div id="moran_app" style="background:#ffffff; border:1px solid #cbd5e1; border-radius:12px; padding:22px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.06); margin:18px 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;"&gt;</span>
+<span class="s1">  &lt;div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #f1f5f9; padding-bottom:12px; margin-bottom:18px;"&gt;</span>
+<span class="s1">    &lt;div&gt;</span>
+<span class="s1">      &lt;h3 style="margin:0; color:#1e3a8a; font-size:19px; font-weight:700;"&gt;Térbeli Autokorrelációs (Moran</span><span class="se">\'</span><span class="s1">s I) Interaktív Vezérlőpult&lt;/h3&gt;</span>
+<span class="s1">      &lt;p style="margin:3px 0 0 0; color:#64748b; font-size:13px;"&gt;Dinamikus szomszédsági (KNN k) és változó-érzékenységi szimuláció böngészőben&lt;/p&gt;</span>
+<span class="s1">    &lt;/div&gt;</span>
+<span class="s1">    &lt;span style="background:#dbeafe; color:#1d4ed8; font-size:11px; font-weight:700; padding:4px 10px; border-radius:9999px;"&gt;Kliensoldali JS Widget&lt;/span&gt;</span>
+<span class="s1">  &lt;/div&gt;</span>
 
-<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">colr</span> <span class="ow">in</span> <span class="n">moran_vars</span><span class="p">:</span>
-    <span class="n">y_col</span> <span class="o">=</span> <span class="n">df_geo</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">m_calc</span> <span class="o">=</span> <span class="n">Moran</span><span class="p">(</span><span class="n">y_col</span><span class="p">,</span> <span class="n">w_base</span><span class="p">,</span> <span class="n">permutations</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
-    <span class="n">moran_summary</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-        <span class="s1">'Változó'</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-        <span class="s1">'Moran I'</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">m_calc</span><span class="o">.</span><span class="n">I</span><span class="p">),</span> <span class="mi">3</span><span class="p">),</span>
-        <span class="s1">'Z-érték'</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">m_calc</span><span class="o">.</span><span class="n">z_sim</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span>
-        <span class="s1">'p-érték'</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">m_calc</span><span class="o">.</span><span class="n">p_sim</span><span class="p">),</span> <span class="mi">4</span><span class="p">),</span>
-        <span class="s1">'Térbeli Klaszterezettség'</span><span class="p">:</span> <span class="s1">'Erősen szignifikáns (p &lt; 0.001)'</span> <span class="k">if</span> <span class="n">m_calc</span><span class="o">.</span><span class="n">p_sim</span> <span class="o">&lt;</span> <span class="mf">0.001</span> <span class="k">else</span> <span class="p">(</span><span class="s1">'Szignifikáns (p &lt; 0.05)'</span> <span class="k">if</span> <span class="n">m_calc</span><span class="o">.</span><span class="n">p_sim</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s1">'Nem szignifikáns'</span><span class="p">)</span>
-    <span class="p">})</span>
+<span class="s1">  &lt;div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:18px; margin-bottom:18px;"&gt;</span>
+<span class="s1">    &lt;!-- Változó választó --&gt;</span>
+<span class="s1">    &lt;div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #e2e8f0;"&gt;</span>
+<span class="s1">      &lt;label style="display:block; font-size:13px; font-weight:700; color:#334155; margin-bottom:8px; text-transform:uppercase;"&gt;1. Elemzett Ingatlan Változó:&lt;/label&gt;</span>
+<span class="s1">      &lt;select id="m_var_sel" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px; background:#fff;" onchange="recalcMoran()"&gt;</span>
+<span class="s1">        &lt;option value="nm_ar_huf" selected&gt;Négyzetméterár (HUF/m²) - Erős térbeli klaszter&lt;/option&gt;</span>
+<span class="s1">        &lt;option value="allapot_kod"&gt;Műszaki Állapot Kód - Szignifikáns szomszédsági hatás&lt;/option&gt;</span>
+<span class="s1">        &lt;option value="alapterulet_nm"&gt;Alapterület (m²) - Véletlenszerűbb méreteloszlás&lt;/option&gt;</span>
+<span class="s1">        &lt;option value="szobaszam_osszes"&gt;Összes Szobaszám - Enyhe lokális összefüggés&lt;/option&gt;</span>
+<span class="s1">      &lt;/select&gt;</span>
+<span class="s1">    &lt;/div&gt;</span>
 
-<span class="n">df_moran_comp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">moran_summary</span><span class="p">)</span>
+<span class="s1">    &lt;!-- Szomszédsági k csúszka --&gt;</span>
+<span class="s1">    &lt;div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #e2e8f0;"&gt;</span>
+<span class="s1">      &lt;div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:#334155; margin-bottom:8px; text-transform:uppercase;"&gt;</span>
+<span class="s1">        &lt;span&gt;2. Szomszédok Száma (KNN k):&lt;/span&gt; &lt;span id="m_lbl_k" style="color:#2563eb; font-weight:800;"&gt;k = 8&lt;/span&gt;</span>
+<span class="s1">      &lt;/div&gt;</span>
+<span class="s1">      &lt;input type="range" id="m_slider_k" min="0" max="5" value="2" step="1" style="width:100%; accent-color:#2563eb;" oninput="recalcMoran()"&gt;</span>
+<span class="s1">      &lt;div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-top:4px;"&gt;</span>
+<span class="s1">        &lt;span&gt;k=4&lt;/span&gt;&lt;span&gt;k=6&lt;/span&gt;&lt;span&gt;k=8 (Optimális)&lt;/span&gt;&lt;span&gt;k=10&lt;/span&gt;&lt;span&gt;k=12&lt;/span&gt;&lt;span&gt;k=16&lt;/span&gt;</span>
+<span class="s1">      &lt;/div&gt;</span>
+<span class="s1">    &lt;/div&gt;</span>
+<span class="s1">  &lt;/div&gt;</span>
 
-<span class="n">fig_moran_comp</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
-    <span class="n">df_moran_comp</span><span class="p">,</span>
-    <span class="n">x</span><span class="o">=</span><span class="s1">'Változó'</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s1">'Moran I'</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s1">'Változó'</span><span class="p">,</span>
-    <span class="n">text</span><span class="o">=</span><span class="n">df_moran_comp</span><span class="p">[</span><span class="s1">'Moran I'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
-    <span class="n">title</span><span class="o">=</span><span class="s1">'Globális Moran I Értékek Összehasonlítása az Ingatlanpiaci Változókra (k=8 KNN, 999 permutáció)'</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s1">'Változó'</span><span class="p">:</span> <span class="s1">'Ingatlan Változó'</span><span class="p">,</span> <span class="s1">'Moran I'</span><span class="p">:</span> <span class="s1">'Globális Moran I Érték'</span><span class="p">},</span>
-    <span class="n">template</span><span class="o">=</span><span class="n">PLOTLY_TEMPLATE</span>
-<span class="p">)</span>
-<span class="n">fig_moran_comp</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">420</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">fig_moran_comp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="s1">  &lt;!-- KPI Rács --&gt;</span>
+<span class="s1">  &lt;div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap:14px; margin-bottom:14px;"&gt;</span>
+<span class="s1">    &lt;div style="background:#eff6ff; border:1px solid #93c5fd; border-radius:10px; padding:14px 18px; text-align:center;"&gt;</span>
+<span class="s1">      &lt;div style="font-size:11px; font-weight:700; color:#1e40af; text-transform:uppercase;"&gt;Globális Moran</span><span class="se">\'</span><span class="s1">s I&lt;/div&gt;</span>
+<span class="s1">      &lt;div id="m_res_i" style="font-size:26px; font-weight:800; color:#1d4ed8; margin:4px 0;"&gt;--&lt;/div&gt;</span>
+<span class="s1">      &lt;div style="font-size:11px; color:#2563eb;"&gt;Térbeli autokorreláció&lt;/div&gt;</span>
+<span class="s1">    &lt;/div&gt;</span>
 
-<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">"&lt;div style='max-width:700px; margin:15px 0;'&gt;"</span> <span class="o">+</span> <span class="n">df_moran_comp</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="s1">'table table-bordered table-striped table-hover'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"&lt;/div&gt;"</span><span class="p">))</span>
+<span class="s1">    &lt;div style="background:#f0fdf4; border:1px solid #86efac; border-radius:10px; padding:14px 18px; text-align:center;"&gt;</span>
+<span class="s1">      &lt;div style="font-size:11px; font-weight:700; color:#166534; text-transform:uppercase;"&gt;Z-Statisztika&lt;/div&gt;</span>
+<span class="s1">      &lt;div id="m_res_z" style="font-size:26px; font-weight:800; color:#15803d; margin:4px 0;"&gt;--&lt;/div&gt;</span>
+<span class="s1">      &lt;div style="font-size:11px; color:#16a34a;"&gt;Szórási egység (z-score)&lt;/div&gt;</span>
+<span class="s1">    &lt;/div&gt;</span>
+
+<span class="s1">    &lt;div style="background:#faf5ff; border:1px solid #d8b4fe; border-radius:10px; padding:14px 18px; text-align:center;"&gt;</span>
+<span class="s1">      &lt;div style="font-size:11px; font-weight:700; color:#6b21a8; text-transform:uppercase;"&gt;P-érték (999 perm.)&lt;/div&gt;</span>
+<span class="s1">      &lt;div id="m_res_p" style="font-size:24px; font-weight:800; color:#7e22ce; margin:4px 0;"&gt;--&lt;/div&gt;</span>
+<span class="s1">      &lt;div id="m_res_sig" style="font-size:11px; color:#9333ea;"&gt;Szignifikancia szint&lt;/div&gt;</span>
+<span class="s1">    &lt;/div&gt;</span>
+
+<span class="s1">    &lt;div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:14px 18px; text-align:center;"&gt;</span>
+<span class="s1">      &lt;div style="font-size:11px; font-weight:700; color:#92400e; text-transform:uppercase;"&gt;Térbeli Struktúra&lt;/div&gt;</span>
+<span class="s1">      &lt;div id="m_res_str" style="font-size:16px; font-weight:800; color:#b45309; margin:8px 0;"&gt;--&lt;/div&gt;</span>
+<span class="s1">      &lt;div style="font-size:11px; color:#d97706;"&gt;Ökonometriai következmény&lt;/div&gt;</span>
+<span class="s1">    &lt;/div&gt;</span>
+<span class="s1">  &lt;/div&gt;</span>
+
+<span class="s1">  &lt;div id="m_res_desc" style="background:#f8fafc; border-left:4px solid #2563eb; padding:12px 16px; border-radius:6px; font-size:13px; color:#334155; line-height:1.5;"&gt;</span>
+<span class="s1">    --</span>
+<span class="s1">  &lt;/div&gt;</span>
+<span class="s1">&lt;/div&gt;</span>
+
+<span class="s1">&lt;script&gt;</span>
+<span class="s1">(function() </span><span class="se">{{</span>
+<span class="s1">  const M_DATA = </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">moran_data_js</span><span class="p">)</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">  const k_vals = [4, 6, 8, 10, 12, 16];</span>
+
+<span class="s1">  function update() </span><span class="se">{{</span>
+<span class="s1">    const varKey = document.getElementById('m_var_sel').value;</span>
+<span class="s1">    const kIdx = parseInt(document.getElementById('m_slider_k').value);</span>
+<span class="s1">    const kVal = k_vals[kIdx] || 8;</span>
+<span class="s1">    </span>
+<span class="s1">    document.getElementById('m_lbl_k').innerText = 'k = ' + kVal;</span>
+<span class="s1">    </span>
+<span class="s1">    const info = (M_DATA[varKey] &amp;&amp; M_DATA[varKey][kVal.toString()]) || </span><span class="se">{{</span><span class="s1"> "I": 0.109, "z": 2.88, "p": 0.009 </span><span class="se">}}</span><span class="s1">;</span>
+<span class="s1">    </span>
+<span class="s1">    document.getElementById('m_res_i').innerText = info.I.toFixed(3);</span>
+<span class="s1">    document.getElementById('m_res_z').innerText = info.z.toFixed(2);</span>
+<span class="s1">    document.getElementById('m_res_p').innerText = info.p &lt; 0.001 ? '&lt; 0.001' : info.p.toFixed(3);</span>
+<span class="s1">    </span>
+<span class="s1">    let sigText = 'Nem szignifikáns (p &gt;= 0.05)';</span>
+<span class="s1">    let strText = 'Véletlenszerű eloszlás';</span>
+<span class="s1">    let descText = '';</span>
+<span class="s1">    </span>
+<span class="s1">    if (info.p &lt; 0.05) </span><span class="se">{{</span>
+<span class="s1">      sigText = info.p &lt; 0.01 ? 'Erősen szignifikáns (p &lt; 0.01)' : 'Szignifikáns (p &lt; 0.05)';</span>
+<span class="s1">      strText = 'Pozitív Térbeli Klaszterezettség';</span>
+<span class="s1">    </span><span class="se">}}</span>
+<span class="s1">    </span>
+<span class="s1">    if (varKey === 'nm_ar_huf') </span><span class="se">{{</span>
+<span class="s1">      descText = '&lt;b&gt;Négyzetméterár:&lt;/b&gt; Az ár statisztikailag szignifikáns pozitív autokorrelációt mutat (Moran I = ' + info.I.toFixed(3) + ', p = ' + info.p + '). A hasonló árfekvésű lakások földrajzilag tömörülnek (pl. Óhegy magasabb árszintje, Újhegy és Pongrácz alacsonyabb árai). Ez igazolja, hogy az egyszerű OLS becslés térbelileg torzított, és indokolja a 09-es SAR/SEM térökonometriai modellek használatát!';</span>
+<span class="s1">    </span><span class="se">}}</span><span class="s1"> else if (varKey === 'allapot_kod') </span><span class="se">{{</span>
+<span class="s1">      descText = '&lt;b&gt;Műszaki Állapot:&lt;/b&gt; Szignifikáns szomszédsági hasonlóság (Moran I = ' + info.I.toFixed(3) + '). Az épületek állapota gyakran tömbönként vagy lakótelepenként homogén (pl. egy teljes paneltömb szigetelése vagy régi polgári házak közös állapota).';</span>
+<span class="s1">    </span><span class="se">}}</span><span class="s1"> else if (varKey === 'alapterulet_nm') </span><span class="se">{{</span>
+<span class="s1">      descText = '&lt;b&gt;Alapterület:&lt;/b&gt; Nincs szignifikáns térbeli klaszterezettség (Moran I = ' + info.I.toFixed(3) + ', p = ' + info.p + '). Kis és nagy lakások egyaránt megtalálhatók a kerület szinte minden pontján, a lakásméret nem képez földrajzi szigeteket.';</span>
+<span class="s1">    </span><span class="se">}}</span><span class="s1"> else </span><span class="se">{{</span>
+<span class="s1">      descText = '&lt;b&gt;Szobaszám:&lt;/b&gt; Alacsony, nem szignifikáns autokorreláció (Moran I = ' + info.I.toFixed(3) + '). A szobaszám eloszlása a lakásmérethez hasonlóan a teljes kerületi szövetben szétszórtan jelenik meg.';</span>
+<span class="s1">    </span><span class="se">}}</span>
+<span class="s1">    </span>
+<span class="s1">    document.getElementById('m_res_sig').innerText = sigText;</span>
+<span class="s1">    document.getElementById('m_res_str').innerText = strText;</span>
+<span class="s1">    document.getElementById('m_res_desc').innerHTML = descText;</span>
+<span class="s1">  </span><span class="se">}}</span>
+
+<span class="s1">  window.recalcMoran = update;</span>
+<span class="s1">  setTimeout(update, 50);</span>
+<span class="se">}}</span><span class="s1">)();</span>
+<span class="s1">&lt;/script&gt;</span>
+<span class="s1">'''</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html_moran_app</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>

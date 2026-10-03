@@ -3,14 +3,14 @@
 notebook_docs.py
 Részletes, közérthető és a számított adatokkal 100%-ban megegyező
 szöveges magyarázatok és interpretációk mind a 16 notebookhoz.
-Minden számadat, arány, medián és együttható szigorúan az adathalmazból
-és a lefutott modellekből származik.
+A számozás szigorúan és következetesen 00-tól 15-ig illeszkedik a
+fájlnevekhez és a projekt hivatalos storyline-jához.
 """
 
 NOTEBOOK_DOCS = {
-    # =========================================================================
-    # NB00: Adathalmaz Áttekintés és Minőségi Riport
-    # =========================================================================
+    # ===========================================================================
+    # NB00: # 00. Adathalmaz Áttekintés és Minőségi Riport
+    # ===========================================================================
     'nb00': {
         'intro': r"""# 00. Adathalmaz Áttekintés és Minőségi Riport
 
@@ -90,12 +90,13 @@ Az alábbi vezérlőkkel dinamikus szűréseket hajthat végre az adathalmazon:
 **🔍 Mit lát az eredménytáblázatban?**
 A szűrés után azonnal újraszámolódik a kiválasztott minta darabszáma, a szűrt átlagár, a medián négyzetméterár, és megjelenik a hirdetések valós előnézete a valós címekkel és árakkal.
 
-**💡 Próbálja ki bátran!** Váltson át a „kiadó” opcióra, és figyelje meg, hogyan változik meg a mintaméret és az árszínvonal!"""
+**💡 Próbálja ki bátran!** Váltson át a „kiadó” opcióra, és figyelje meg, hogyan változik meg a mintaméret és az árszínvonal!""",
+
     },
 
-    # =========================================================================
-    # NB01: Leíró Statisztika és EDA
-    # =========================================================================
+    # ===========================================================================
+    # NB01: # 01. Leíró Statisztika és Feltáró Adatelemzés (EDA)
+    # ===========================================================================
     'nb01': {
         'intro': r"""# 01. Leíró Statisztika és Feltáró Adatelemzés (EDA)
 
@@ -136,7 +137,7 @@ A kőbányai eladó lakások (N = 1 140 db) tényleges, számított statisztiká
 
 **🔍 Miért van szükség logaritmusra a tudományos modellekben?**
 1. **A Gauss-görbe biztosítása**: A lineáris regresszió feltételezi, hogy a hibatagok szimmetrikus harang alakú normál eloszlást követnek. A logaritmus alkalmazásával az árak eloszlása közel tökéletesen normálissá válik.
-2. **Közvetlen százalékos értelmezhetőség**: A logaritmikus modellekben (NB04, NB13, NB15) az együtthatók közvetlenül **százalékos prémiumként vagy diszkontként** értelmezhetők (pl. a panel jelleg vagy az állapot hatása).
+2. **Közvetlen százalékos értelmezhetőség**: A logaritmikus modellekben (NB07, NB09, NB10) az együtthatók közvetlenül **százalékos prémiumként vagy diszkontként** értelmezhetők (pl. a panel jelleg vagy az állapot hatása).
 
 **💡 Eredmény**: Az árak log-transzformációja stabilizálja a szórásokat és megalapozza az ökonometriai becsléseket.""",
 
@@ -163,12 +164,13 @@ A változók közötti lineáris kapcsolatot méri -1 és +1 között:
 - **Negatív érték (piros)**: Ellentétesen mozognak (pl. alapterület és m² ár: a garzon-effektus miatt a nagyobb lakások m² ára enyhén alacsonyabb).
 - **Panelszerkezet (is_panel)**: Szignifikáns negatív kapcsolatot mutat a négyzetméterárral.
 
-**💡 Fő tanulság**: A méret, a panel szerkezet, az állapot és a közlekedési csomópontok távolsága a kőbányai piac legfőbb mozgatórugói."""
+**💡 Fő tanulság**: A méret, a panel szerkezet, az állapot és a közlekedési csomópontok távolsága a kőbányai piac legfőbb mozgatórugói.""",
+
     },
 
-    # =========================================================================
-    # NB02: Árstruktúra és Szegmentáció
-    # =========================================================================
+    # ===========================================================================
+    # NB02: # 02. Lakáspiaci Árstruktúra és Szegmentáció
+    # ===========================================================================
     'nb02': {
         'intro': r"""# 02. Lakáspiaci Árstruktúra és Szegmentáció
 
@@ -204,7 +206,7 @@ A házgyári technológia merev válaszfalai, a gyengébb hangszigetelés és a 
 A lakások állapota (felújítandó, átlagos, felújított, újszerű, új építésű) szerint vizsgált négyzetméterárak:
 - **Felújítandó lakások**: A legalsó ársávban mozognak (~950 ezer – 1.05 millió Ft/m² körül).
 - **Felújított / Újszerű lakások**: Átlépik az 1.25 – 1.35 millió Ft/m²-es szintet.
-- **Kategóriánkénti ugrás**: A hedonikus regressziós modellünk szerint (NB04) minden egyes minőségi kategórialépés átlagosan **+7.6%-os tiszta árprémiumot** jelent négyzetméterenként!
+- **Kategóriánkénti ugrás**: A hedonikus regressziós modellünk szerint (NB07) minden egyes minőségi kategórialépés átlagosan **+7.6%-os tiszta árprémiumot** jelent négyzetméterenként!
 
 **💡 Befektetői stratégia**: Az elhanyagolt lakások megvásárlása és minőségi felújítása stabil, forintosítható értéktöbbletet hoz létre.""",
 
@@ -223,12 +225,13 @@ A kőbányai piacon az átlagos szobaszám **2.4 szoba**, a leggyakoribb kategó
 **📌 Mire használható a vezérlőfelület?**
 A lenyíló menükkel városrészenként szűrheti a panel és tégla lakások megoszlását.
 - Figyelje meg: Újhegyen szinte kizárólag panelek találhatók, míg Óhegyen a téglalakások dominálnak.
-- Ez magyarázza a két városrész közötti általános árszint-különbséget is!"""
+- Ez magyarázza a két városrész közötti általános árszint-különbséget is!""",
+
     },
 
-    # =========================================================================
-    # NB03: Térbeli Elemzés és Hőtérképek
-    # =========================================================================
+    # ===========================================================================
+    # NB03: # 03. Térbeli Elemzés és Interaktív Hőtérképek
+    # ===========================================================================
     'nb03': {
         'intro': r"""# 03. Térbeli Elemzés és Interaktív Hőtérképek
 
@@ -268,66 +271,15 @@ A kerületen átívelő ártrendeket:
         'sec4': r"""### 4. Interaktív Térképi Szűrő Pult
 
 **📌 Mire használható a szűrő?**
-Árkategória és alapterület szerint fókuszálhat a térképen lévő ingatlanokra, megfigyelve a különböző kategóriák térbeli tömörülését."""
+Árkategória és alapterület szerint fókuszálhat a térképen lévő ingatlanokra, megfigyelve a különböző kategóriák térbeli tömörülését.""",
+
     },
 
-    # =========================================================================
-    # NB04: Hedonikus Ármodell (OLS & Kettős TOD)
-    # =========================================================================
+    # ===========================================================================
+    # NB04: # 04. Vasúti Diszkont és Gyalogos Izokrón Elemzés
+    # ===========================================================================
     'nb04': {
-        'intro': r"""# 04. Hedonikus Ármodellezés és a Kettős TOD Hatás
-
-**Cél**: A lakásárakat meghatározó fizikai és lokációs tényezők tiszta hatásának szétválasztása többváltozós regressziós (OLS) modellel a pontos eladó almintán (N = 222 db tisztított megfigyelés).
-
----
-
-### 📖 Mi a hedonikus ármodell lényege?
-Egy lakás vételára sok tulajdonság (alapterület, szobaszám, panel jelleg, állapot, metrótávolság, vasút közelsége) együttes értéke.
-A többváltozós hedonikus regresszió képes arra, hogy **minden egyéb tényezőt állandónak tekintve (ceteris paribus)** kiszámítsa egyetlen tulajdonság tiszta hatását.
-
----
-
-### 🚆 A Kettős TOD elmélet Kőbányán:
-1. **Vasúti zaj externália (negatív hatás)**: A nyílt pályatest közvetlen közelsége zajt és rezgést okoz $\rightarrow$ árcsökkentő.
-2. **Vasútállomási TOD elérhetőség (pozitív hatás)**: Az állomás gyalogos közelsége gyors belvárosi eljutást biztosít $\rightarrow$ áremelő.""",
-
-        'sec1': r"""### 1. A Hedonikus Regressziós Modell Eredményei
-
-**📌 Mit mutatnak a fenti KPI kártyák és a részletes táblázat?**
-A tisztított eladó almintán (N = 222 db) lefutott OLS modell pontos eredményei:
-- **Modell magyarázóereje: $R^2 = 0.576$ (Adj. $R^2 = 0.560$)**: A beépített változók a logaritmikus négyzetméterár varianciájának **57.6%-át** magyarázzák!
-- **Vasúti zaj együttható ($\log(\text{távolság})$)**: **$\beta = +0.0747$ ($p = 0.0032$)** $\rightarrow$ szignifikáns! Mivel a vágányoktól való távolság növekedésével az ár emelkedik, a modell tiszta **+7.8%-os implicit hatást** mutat a vasúti pálya zajzónájából való eltávolodáskor.
-- **Panelszerkezet hatása**: **$\beta = -0.1134$ ($p = 0.0012$)** $\rightarrow$ ceteris paribus **-10.7%-os tiszta paneldiszkontot** jelent a téglalakásokhoz képest, azonos méret és állapot mellett!
-- **Műszaki állapotindex**: **$\beta = +0.0733$ ($p = 1.06 \times 10^{-15}$)** $\rightarrow$ kategóriánként **+7.6%-os tiszta árprémium**!
-- **Metróállomás hálózati távolsága**: **$\beta = -0.00003$ ($p = 0.0194$)** $\rightarrow$ statisztikailag szignifikáns negatív hatás: minden 100 méter távolodás a metrótól mérhetően csökkenti a négyzetméterárat.
-
-**💡 Eredmény**: A modell igazolja, hogy mind a fizikai (állapot, panel), mind a térbeli (metró, vasút zaj) tényezők szignifikáns árképzők Kőbányán.""",
-
-        'sec2': r"""### 2. A Becsült Együtthatók Részletes Értelmezése
-
-**📌 Mit jelentenek a számok a valóságban?**
-1. **Állapot-prémium (+7.6%/kategória)**: Egy felújítandó lakás felújítottá alakítása (2 kategórialépés) önmagában ~15-16%-os értéknövekedést indukál a vételárban.
-2. **Vasúti zajdiszkont**: A pálya melletti 50-100 méterről 300-500 méterre távolodva a lakások ára szignifikánsan emelkedik az akusztikai terhelés csökkenésével.
-3. **Paneldiszkont (-10.7%)**: Minden más tényezőt kiszűrve a panel szerkezet önmagában ~10.7%-kal olcsóbbá teszi az ingatlant a téglához viszonyítva.""",
-
-        'sec3': r"""### 3. Együtthatók és Konfidencia Intervallumok (Forest Plot)
-
-**📌 Hogyan olvassuk a grafikont?**
-A kék pontok az együtthatókat, a vízszintes vonalak a 95%-os konfidencia intervallumokat mutatják:
-- Ha a vonal nem metszi a 0-t, a hatás statisztikailag szignifikáns.
-- Az állapotkód, a panelszerkezet és a log vasúttávolság hibasávjai szigorúan elkerülik a nullát, igazolva robusztusságukat.""",
-
-        'sec4': r"""### 4. Interaktív Hedonikus Modellező Laboratórium
-
-**📌 Próbálja ki saját modell-specifikációit!**
-Válasszon ki tetszőleges változókat és becslési eljárást (OLS, HC3 robusztus vagy WLS), és a rendszer élőben újraszámolja az együtthatókat és az $R^2$ értéket!"""
-    },
-
-    # =========================================================================
-    # NB05: Vasúti Diszkont és Izokrónok
-    # =========================================================================
-    'nb05': {
-        'intro': r"""# 05. Vasúti Diszkont és Gyalogos Izokrón Elemzés
+        'intro': r"""# 04. Vasúti Diszkont és Gyalogos Izokrón Elemzés
 
 **Cél**: A vasút környezeti terhelésének (zaj és rezgés) és gyalogos elérhetőségének (izokrónok) empirikus vizsgálata az eladó lakásokon.
 
@@ -375,14 +327,301 @@ A Kőbánya alsó vasútállomás 5-10 perces gyalogos körzetében lévő laká
         'sec4': r"""### 4. Interaktív Célpont- és Távolságelemző Pult
 
 **📌 Tesztelje a távolsági összefüggéseket!**
-Válasszon ki egy távolságtípust (légvonalbeli vasúttávolság vagy hálózati metrótávolság), és a rendszer kirajzolja a négyzetméterárakkal való összefüggést!"""
+Válasszon ki egy távolságtípust (légvonalbeli vasúttávolság vagy hálózati metrótávolság), és a rendszer kirajzolja a négyzetméterárakkal való összefüggést!""",
+
     },
 
-    # =========================================================================
-    # NB06: Bérleti Piac és Rent Gap
-    # =========================================================================
+    # ===========================================================================
+    # NB05: # 05. Intézményi Ellátottság (POI) és a 15-Perces Város Index
+    # ===========================================================================
+    'nb05': {
+        'intro': r"""# 05. Intézményi Ellátottság (POI) és a 15-Perces Város Index
+
+**Cél**: Az OpenStreetMap intézményi adatainak (POI) feldolgozása a határhatás kiküszöbölésével, és a 15 perces város gyalogos elérhetőségének vizsgálata (375m, 750m, 1125m sávokban).
+
+---
+
+### 📖 A 15 perces város és a határhatás (Edge Effect) korrekció:
+Carlos Moreno koncepciója szerint minden alapvető funkciónak elérhetőnek kell lennie 15 perc sétával.
+A peremhatás elkerülésére **1200 méteres védőzónával (pufferrel)** kérdeztük le az adatokat, így a szomszédos kerületek intézményei is beleszámítanak az elérhetőségbe.""",
+
+        'sec1': r"""### 1. Pufferelt POI Adatbázis (N = 319 db)
+
+**📌 Mit tartalmaz az adatbázis?**
+A szigorú közigazgatási határon belüli 144 db POI helyett a határokon átnyúló pufferrel **összesen 319 db szolgáltatás** (parkok, éttermek, kávézók, iskolák) került be az elemzésbe, megszüntetve a határ menti ingatlanok mesterséges büntetését.""",
+
+        'sec2': r"""### 2. A Három Gyalogos Sáv Szolgáltatás-Sűrűsége
+
+**📌 Mit mutat a térkép és a KPI pult?**
+Az 5 perces (375m), 10 perces (750m) és 15 perces (1125m) sávokban elérhető szolgáltatások száma:
+- **Kőbánya-Városközpont**: átlagosan **30.4 db** POI 15 percen belül.
+- **Felsőrákos (Zugló felé nyitott)**: átlagosan **30.4 db** POI (korábban alig kapott pontot!).
+- **Óhegy**: átlagosan **21.5 db** POI.
+- **Gyárdűlő (Népliget felé)**: átlagosan **20.4 db** POI.
+- **Újhegy**: átlagosan **12.8 db** POI.
+
+**💡 Eredmény**: A pufferelés után a valós, határmenti szolgáltatási ellátottság reálisan tükröződik a térképen.""",
+
+        'sec3': r"""### 3. A Szolgáltatási Sűrűség Hedonikus Árprémiuma
+
+**📌 Mit mutat a regressziós modell?**
+A közvetlen közelben (5 perces sétatávolságban) lévő szolgáltatások bírnak a legmagasabb fajlagos árnövelő hatással a lakásárakban.""",
+
+    },
+
+    # ===========================================================================
+    # NB06: # 06. Gépi Tanulásos Klaszterezés és Lakáspiaci Tipológia
+    # ===========================================================================
     'nb06': {
-        'intro': r"""# 06. Bérleti Piac, Hozamszámítás és a Neil Smith-féle Rent Gap
+        'intro': r"""# 06. Gépi Tanulásos Klaszterezés és Lakáspiaci Tipológia
+
+**Cél**: A kőbányai ingatlanállomány automatikus piaci szegmentálása felügyelet nélküli (K-Means & Hierarchikus) gépi tanulási algoritmusokkal.
+
+---
+
+### 📖 Mi a gépi klaszterezés célja?
+Az algoritmus emberi előítélet nélkül, tisztán a többdimenziós adatok (ár, méret, szobaszám, állapot, panel) matematikai távolságai alapján azonosítja az összetartozó lakástípusokat.""",
+
+        'sec1': r"""### 1. Optimális Klaszterszám (Elbow Plot & Silhouette Score)
+
+**📌 Mit mutat a könyök- és sziluett-diagram?**
+- A könyök-módszer (Inertia) töréspontja és a sziluett pontszám maximuma a **$K = 4$ klaszternél** adja az optimális szegmentációt.
+- A kőbányai lakáspiac természetes módon 4 jól elkülönülő archetípusra tagolódik.""",
+
+        'sec2': r"""### 2. A Négy Fő Lakáspiaci Klaszter Profilja (Radar Diagram)
+
+**📌 Kik a piac 4 archetípusa?**
+1. **Belépő kislakások / panel garzonok**: kis méret, magas fajlagos ár, alacsony összvételár.
+2. **Családi lakótelepi panelek**: 50-65 m², 2-2.5 szoba, szabványos elrendezés.
+3. **Klasszikus felújítandó téglalakások**: nagyobb méret, tégla falazat, alacsonyabb állapotindex.
+4. **Prémium zöldövezeti / új építésű lakások**: kiváló állapot, nagy alapterület, magas ár.""",
+
+        'sec3': r"""### 3. Klaszterek 2D PCA Vetülete
+
+**📌 Mit látunk a főkomponens vetületen?**
+A többdimenziós tér 2D síkra vetítve igazolja, hogy a 4 klaszter szépen elkülönülő, zárt csoportokat alkot.""",
+
+        'sec4': r"""### 4. Városrész és Klaszter Kereszttábla Hőtérkép
+
+**📌 Hol találhatók az egyes típusok?**
+- Újhegy a családi panelek zónája,
+- Óhegy a prémium zöldövezeti és nagypolgári téglák fellegvára,
+- Városközpont vegyes képet mutat.""",
+
+    },
+
+    # ===========================================================================
+    # NB07: # 07. Hedonikus Ármodellezés és a Kettős TOD Hatás
+    # ===========================================================================
+    'nb07': {
+        'intro': r"""# 07. Hedonikus Ármodellezés és a Kettős TOD Hatás
+
+**Cél**: A lakásárakat meghatározó fizikai és lokációs tényezők tiszta hatásának szétválasztása többváltozós regressziós (OLS) modellel a pontos eladó almintán (N = 222 db tisztított megfigyelés).
+
+---
+
+### 📖 Mi a hedonikus ármodell lényege?
+Egy lakás vételára sok tulajdonság (alapterület, szobaszám, panel jelleg, állapot, metrótávolság, vasút közelsége) együttes értéke.
+A többváltozós hedonikus regresszió képes arra, hogy **minden egyéb tényezőt állandónak tekintve (ceteris paribus)** kiszámítsa egyetlen tulajdonság tiszta hatását.
+
+---
+
+### 🚆 A Kettős TOD elmélet Kőbányán:
+1. **Vasúti zaj externália (negatív hatás)**: A nyílt pályatest közvetlen közelsége zajt és rezgést okoz $\rightarrow$ árcsökkentő.
+2. **Vasútállomási TOD elérhetőség (pozitív hatás)**: Az állomás gyalogos közelsége gyors belvárosi eljutást biztosít $\rightarrow$ áremelő.""",
+
+        'sec1': r"""### 1. A Hedonikus Regressziós Modell Eredményei
+
+**📌 Mit mutatnak a fenti KPI kártyák és a részletes táblázat?**
+A tisztított eladó almintán (N = 222 db) lefutott OLS modell pontos eredményei:
+- **Modell magyarázóereje: $R^2 = 0.576$ (Adj. $R^2 = 0.560$)**: A beépített változók a logaritmikus négyzetméterár varianciájának **57.6%-át** magyarázzák!
+- **Vasúti zaj együttható ($\log(\text{távolság})$)**: **$\beta = +0.0747$ ($p = 0.0032$)** $\rightarrow$ szignifikáns! Mivel a vágányoktól való távolság növekedésével az ár emelkedik, a modell tiszta **+7.8%-os implicit hatást** mutat a vasúti pálya zajzónájából való eltávolodáskor.
+- **Panelszerkezet hatása**: **$\beta = -0.1134$ ($p = 0.0012$)** $\rightarrow$ ceteris paribus **-10.7%-os tiszta paneldiszkontot** jelent a téglalakásokhoz képest, azonos méret és állapot mellett!
+- **Műszaki állapotindex**: **$\beta = +0.0733$ ($p = 1.06 \times 10^{-15}$)** $\rightarrow$ kategóriánként **+7.6%-os tiszta árprémium**!
+- **Metróállomás hálózati távolsága**: **$\beta = -0.00003$ ($p = 0.0194$)** $\rightarrow$ statisztikailag szignifikáns negatív hatás: minden 100 méter távolodás a metrótól mérhetően csökkenti a négyzetméterárat.
+
+**💡 Eredmény**: A modell igazolja, hogy mind a fizikai (állapot, panel), mind a térbeli (metró, vasút zaj) tényezők szignifikáns árképzők Kőbányán.""",
+
+        'sec2': r"""### 2. A Becsült Együtthatók Részletes Értelmezése
+
+**📌 Mit jelentenek a számok a valóságban?**
+1. **Állapot-prémium (+7.6%/kategória)**: Egy felújítandó lakás felújítottá alakítása (2 kategórialépés) önmagában ~15-16%-os értéknövekedést indukál a vételárban.
+2. **Vasúti zajdiszkont**: A pálya melletti 50-100 méterről 300-500 méterre távolodva a lakások ára szignifikánsan emelkedik az akusztikai terhelés csökkenésével.
+3. **Paneldiszkont (-10.7%)**: Minden más tényezőt kiszűrve a panel szerkezet önmagában ~10.7%-kal olcsóbbá teszi az ingatlant a téglához viszonyítva.""",
+
+        'sec3': r"""### 3. Együtthatók és Konfidencia Intervallumok (Forest Plot)
+
+**📌 Hogyan olvassuk a grafikont?**
+A kék pontok az együtthatókat, a vízszintes vonalak a 95%-os konfidencia intervallumokat mutatják:
+- Ha a vonal nem metszi a 0-t, a hatás statisztikailag szignifikáns.
+- Az állapotkód, a panelszerkezet és a log vasúttávolság hibasávjai szigorúan elkerülik a nullát, igazolva robusztusságukat.""",
+
+        'sec4': r"""### 4. Interaktív Hedonikus Modellező Laboratórium
+
+**📌 Próbálja ki saját modell-specifikációit!**
+Válasszon ki tetszőleges változókat és becslési eljárást (OLS, HC3 robusztus vagy WLS), és a rendszer élőben újraszámolja az együtthatókat és az $R^2$ értéket!""",
+
+    },
+
+    # ===========================================================================
+    # NB08: # 08. Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés
+    # ===========================================================================
+    'nb08': {
+        'intro': r"""# 08. Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés
+
+**Cél**: A térbeli függőség ökonometriai kimutatása az épület-szinten aggregált pontos eladó mintán (N = 124 db aggregált pont a 254 pontos eladóból).
+
+---
+
+### 📖 Tobler első földrajzi törvénye és a térbeli aggregáció:
+A szomszédos ingatlanok árai összefüggenek. 
+A lépcsőházon belüli fals korrelációk elkerülésére **épület-szintű térbeli aggregációt** hajtottunk végre, így a modell a valódi környékbeli árhúzást méri.""",
+
+        'sec1': r"""### 1. Globális Moran's I Eredmények
+
+**📌 Mit mutatnak az ökonometriai mutatók?**
+Az aggregált pontokon ($k=8$ szomszéd):
+- **Globális Moran's I: $I \approx +0.062$ (z = 1.75, p = 0.079)**.
+- Az épület-szintű aggregáció kiszűrte az épületen belüli azonos árak torzító hatását, így a tiszta tömbök közötti autokorrelációt kapjuk meg.""",
+
+        'sec2': r"""### 2. Moran Pontdiagram (Scatter Plot)
+
+**📌 Hogyan értelmezzük a 4 kvadránst?**
+- **High-High (HH)**: Magas ár magas szomszédokkal $\rightarrow$ Hotspot.
+- **Low-Low (LL)**: Alacsony ár alacsony szomszédokkal $\rightarrow$ Coldspot.
+- **High-Low és Low-High**: Térbeli kiugró értékek (outlierek).""",
+
+        'sec3': r"""### 3. LISA Klaszter Térkép (Hotspotok és Coldspotok)
+
+**📌 Mit látunk a térképen?**
+- **Piros (Hotspot)**: Óhegy és Ligettelek zöldövezeti részei.
+- **Kék (Coldspot)**: A külső vasúti és rozsdaövezeti zónák.""",
+
+        'sec4': r"""### 4. Szignifikancia és Érzékenységvizsgálat
+
+**📌 Mennyire stabilak az eredmények?**
+A k szomszédszám változtatása mellett a forró- és hidegpontok magja stabilan megmarad.""",
+
+    },
+
+    # ===========================================================================
+    # NB09: # 09. Térökonometriai Regresszió: Spatial Lag (SAR) és Spatial Error (SEM)
+    # ===========================================================================
+    'nb09': {
+        'intro': r"""# 09. Térökonometriai Regresszió: Spatial Lag (SAR) és Spatial Error (SEM)
+
+**Cél**: A térbeli függőség és a szomszédsági tovagyűrűzés ökonometriailag konzisztens modellezése Spatial Lag (SAR) modellel az aggregált pontokon (N = 124 db).
+
+---
+
+### 📖 Miért kötelező a térökonometria?
+A sima OLS feltételezi a megfigyelések függetlenségét. A valóságban a szomszédos lakások árai kölcsönösen hatnak egymásra. A SAR modell beépíti a térben késleltetett árat ($Wy$), és számszerűsíti a térbeli multiplikátort.""",
+
+        'sec1': r"""### 1. Térbeli Súlyozási Mátrix és Késleltetett Változók
+
+**📌 Hogyan készül a modell?**
+Az épület-szinten aggregált pontokon $k=8$ KNN szomszédsági mátrixot ($W$) építünk fel, előállítva az endogén térbeli árlagot ($Wy$).""",
+
+        'sec2': r"""### 2. SAR Modell Eredmények és a Térbeli Multiplikátor
+
+**📌 Mit mutatnak az ökonometriai számok?**
+- **Térbeli autoregresszív paraméter: $\rho = 0.2650$ ($p < 0.0001$)** $\rightarrow$ szignifikáns térbeli árhúzás!
+- **Térbeli Multiplikátor: $1 / (1 - \rho) = \mathbf{1.361\times}$**:
+  - Ez a kutatás egyik legfontosabb elméleti eredménye!
+  - Egy helyi beavatkozás közvetlen hasznához képest a térbeli tovagyűrűzés révén **további +36.1%-nyi vagyongyarapodás** keletkezik a környező ingatlanokban!
+
+**💡 Szakpolitikai tanulság**: A közberuházások tervezésekor a közvetlen hatáson felül a 1.361-szeres térbeli multiplikátorral kell számolni.""",
+
+        'sec3': r"""### 3. OLS vs. SAR Paraméter Összehasonlítás
+
+**📌 Miért változnak az együtthatók?**
+A SAR modellben a közvetlen fizikai változók együtthatói tisztulnak, mert a térbeli tovagyűrűzés hatása már külön változóként szerepel.""",
+
+        'sec4': r"""### 4. Térbeli Hibatag (SEM) és Robusztusság
+
+**📌 Modell ellenőrzés**:
+A SAR specifikáció után a hibatagok térbeli autokorrelációja megszűnik, igazolva a modell torzítatlanságát.""",
+
+    },
+
+    # ===========================================================================
+    # NB10: # 10. Lokális Térökonometria: Földrajzilag Súlyozott Regresszió (GWR)
+    # ===========================================================================
+    'nb10': {
+        'intro': r"""# 10. Lokális Térökonometria: Földrajzilag Súlyozott Regresszió (GWR)
+
+**Kontextus és Kapcsolódás:** A SAR/SEM modellek (13-as notebook) globálisan korrigálták a térbeli hibát, de továbbra is azt feltételezik, hogy a paraméterek (pl. a metró hatása) egész Kőbányán állandóak. Ebben a notebookban ezt a korlátot oldjuk fel.
+
+**Cél**: A térbeli heterogenitás modellezése Kőbányán multiskálás földrajzilag súlyozott regresszióval (GWR / MGWR), épület-szintű térbeli aggregációval.
+
+---
+
+### 📖 Miért nem ér mindenhol ugyanannyit a metró?
+A globális modellek egyetlen átlagos hatást mérnek. A GWR viszont megengedi, hogy a paraméterek (pl. a metrótávolság ára) térben pontról pontra változzanak.""",
+
+        'sec1': r"""### 1. Adaptív Sávszélesség Keresés és GWR Illeszkedés
+
+**📌 Modell illeszkedési eredmények:**
+Az algoritmus adaptív (KNN alapú) sávszélességet optimalizál az AICc minimalizálásával.
+- A GWR modell magyarázóereje felülmúlja a globális OLS-t, igazolva a térbeli heterogenitás jelenlétét a kőbányai piacon.""",
+
+        'sec2': r"""### 2. A Metróprémium Térbeli Változékonysága
+
+**📌 Mit mutat a lokális együtthatók térképe?**
+A Hungária körút és a Népliget vonzáskörzetében a metró közelségének prémiuma a legerősebb, míg az óhegyi kertes zöldövezetben jóval enyhébb a hatása.""",
+
+        'sec3': r"""### 3. Helyi Állapot-Prémium és Összegzés
+
+**📌 Fő konklúzió**:
+A felújítási prémium a sűrűbb lakóövezetekben magasabb, igazolva, hogy az ingatlantulajdonságok értéke mikrolokációtól függően dinamikusan változik.""",
+
+    },
+
+    # ===========================================================================
+    # NB11: # 11. Gépi Tanulásos Ármeghatározás és Piaci Arbitrázs
+    # ===========================================================================
+    'nb11': {
+        'intro': r"""# 11. Gépi Tanulásos Ármeghatározás és Piaci Arbitrázs
+
+**Kontextus és Kapcsolódás:** Az eddigi parametrikus modellek (OLS, SAR, GWR) jól magyaráznak, de a nemlineáris interakciókat nehezen kezelik. A prediktív pontosság maximalizálása érdekében most áttérünk a gépi tanulásra (Random Forest).
+
+**Cél**: Random Forest árbecslő modell tanítása, a változók fontossági rangsorának (Feature Importance) feltárása és a piacilag alulárazott (arbitrázs) lakások automatikus azonosítása.
+
+---
+
+### 📖 Mi az a piaci arbitrázs?
+Ha a gépi tanulási modell nagy pontossággal ($R^2 > 0.80$) megbecsüli a lakás reális értékét, a modell jóslatánál jóval olcsóbban hirdetett ingatlanok **alulárazott arbitrázs lehetőséget** jelentenek.""",
+
+        'sec1': r"""### 1. Random Forest Modell Illeszkedés és Diagnosztika
+
+**📌 Mennyire pontos az algoritmus?**
+A Random Forest modell az adatok több mint 80%-át magyarázza a teszthalmazon, átlagosan 3-4 millió forintos hibahatárral becsülve meg a vételárat.""",
+
+        'sec2': r"""### 2. Változók Relatív Fontossága (Feature Importance MDI)
+
+**📌 Mely tulajdonságok a legfontosabbak?**
+1. Korrigált alapterület (m²) – a legfőbb magyarázó erő,
+2. Lokáció (metró és vasút távolság),
+3. Műszaki állapotindex,
+4. Építőanyag (panel vs. tégla).""",
+
+        'sec3': r"""### 3. A Legjobb Piaci Arbitrázs Lehetőségek Toplistája
+
+**📌 Mit tartalmaz a táblázat?**
+A modell által azonosított legnagyobb mértékben alulárazott kőbányai lakások listáját a hirdetett és becsült ár különbségével.""",
+
+        'sec4': r"""### 4. Interaktív Árbecslő Kalkulátor
+
+**📌 Próbálja ki az árbecslőt!**
+Adja meg a lakás méretét, állapotát, szobaszámát és elhelyezkedését, és a Random Forest modell azonnal megbecsüli a piaci értéket!""",
+
+    },
+
+    # ===========================================================================
+    # NB12: # 12. Bérleti Piac, Hozamszámítás és a Neil Smith-féle Rent Gap
+    # ===========================================================================
+    'nb12': {
+        'intro': r"""# 12. Bérleti Piac, Hozamszámítás és a Neil Smith-féle Rent Gap
 
 **Cél**: A kőbányai bérleti piac (N = 180 db) elemzése, a bruttó hozamok és a Price-to-Rent ráta kiszámítása, valamint a Neil Smith-féle bérleti rés vizsgálata.
 
@@ -425,57 +664,15 @@ A havi bérleti díj alakulását a lakásméret függvényében:
         'sec4': r"""### 4. Interaktív Bérleti Hozam és Megtérülés Kalkulátor
 
 **📌 Számolja ki saját befektetésének megtérülését!**
-Állítsa be a vételárat, a várt bérleti díjat, a költségeket és az üresedési időt, a kalkulátor pedig azonnal megadja a valós nettó hozamot és a megtérülési időt!"""
+Állítsa be a vételárat, a várt bérleti díjat, a költségeket és az üresedési időt, a kalkulátor pedig azonnal megadja a valós nettó hozamot és a megtérülési időt!""",
+
     },
 
-    # =========================================================================
-    # NB07: LVC Szimuláció (Mázsa tér)
-    # =========================================================================
-    'nb07': {
-        'intro': r"""# 07. Land Value Capture (LVC) Városfejlesztési Szimuláció
-
-**Cél**: A tervezett Mázsa téri városrehabilitáció által a környező magáningatlanokban generált értéknövekmény számszerűsítése és a közösségi értékvisszanyerés (LVC) 20 éves DCF pénzügyi szimulációja.
-
----
-
-### 📖 Mi az a Land Value Capture (LVC)?
-A közösségi beruházások (pl. sportközpont, parkosítás) felértékelik a környező magánlakásokat. Az LVC célja, hogy ezen értéktöbblet egy méltányos részét a város visszanyerje és abból finanszírozza a közberuházást.""",
-
-        'sec1': r"""### 1. Beruházási Szintek (CAPEX) és Érintett Vagyon
-
-**📌 Mit látunk a szcenáriókban?**
-Három beruházási szintet modellezünk:
-- **Tier 1 (Közterület-rendezés)**: 1.5 milliárd Ft CAPEX $\rightarrow$ +5% lokális felértékelődés.
-- **Tier 2 (Komplex városi park & zöldinfrastruktúra)**: 4.5 milliárd Ft CAPEX $\rightarrow$ +12% felértékelődés.
-- **Tier 3 (Mázsa téri Sportközpont & Csomópont)**: 12.0 milliárd Ft CAPEX $\rightarrow$ +22% felértékelődés.
-
-**🔍 Mekkora a hatásterület vagyontömege?**
-A Mázsa tér 15 perces gyalogos vonzáskörzetében lévő lakásállomány összértéke meghaladja a 100 milliárd forintot, így még mérsékelt felértékelődés is milliárdos értéktöbbletet generál.""",
-
-        'sec2': r"""### 2. Kumulált Pénzáram és Megtérülési Idő (Cash Flow Profil)
-
-**📌 Hogyan alakul a beruházás pénzügyi egyenlege?**
-A 20 éves modellben a kezdeti kivitelezési évek negatív cash flow-ját a 4. évtől beérkező értéknövekményi hozzájárulások fordítják pozitívba.
-- A projekt 20%-os visszanyerési kulcs mellett a 8-10. év környékén éri el a megtérülési pontot (Break-even).""",
-
-        'sec3': r"""### 3. Érzékenységvizsgálati Mátrix (Diszkontráta vs. Visszanyerési Kulcs)
-
-**📌 Mit mutat a hőtérkép?**
-Az NPV (Nettó Jelenérték) alakulását különböző kamatkörnyezetben (3-8% diszkontráta) és visszanyerési kulcsok (10-35%) mellett.
-- Zöld mezők: gazdaságilag megtérülő, nyereséges kimenetelek.
-- Piros mezők: veszteséges szcenáriók alacsony visszanyerés mellett.""",
-
-        'sec4': r"""### 4. Interaktív LVC Döntéstámogató Szimulátor
-
-**📌 Tesztelje a szcenáriókat!**
-Válassza ki a beruházási szintet és állítsa be a paramétereket, hogy megnézze a projekt 20 éves nettó jelenértékét!"""
-    },
-
-    # =========================================================================
-    # NB08: Monte Carlo Kockázatelemzés
-    # =========================================================================
-    'nb08': {
-        'intro': r"""# 08. Monte Carlo Kockázatelemzés és Hozamszimuláció
+    # ===========================================================================
+    # NB13: # 13. Monte Carlo Kockázatelemzés és Hozamszimuláció
+    # ===========================================================================
+    'nb13': {
+        'intro': r"""# 13. Monte Carlo Kockázatelemzés és Hozamszimuláció
 
 **Cél**: Az ingatlanbefektetés pénzügyi kockázatainak sztochasztikus modellezése 10 000 piaci forgatókönyv szimulációjával.
 
@@ -509,270 +706,105 @@ A Tornado diagram megmutatja, mely változók okozzák a legnagyobb kilengést:
         'sec4': r"""### 4. Interaktív Monte Carlo Vezérlőpult
 
 **📌 Futtasson szimulációt!**
-Állítsa be az iterációk számát és a bizonytalansági szórásokat, és kattintson a futtatás gombra!"""
+Állítsa be az iterációk számát és a bizonytalansági szórásokat, és kattintson a futtatás gombra!""",
+
     },
 
-    # =========================================================================
-    # NB09: Klaszter és Tipológia
-    # =========================================================================
-    'nb09': {
-        'intro': r"""# 09. Gépi Tanulásos Klaszterezés és Lakáspiaci Tipológia
-
-**Cél**: A kőbányai ingatlanállomány automatikus piaci szegmentálása felügyelet nélküli (K-Means & Hierarchikus) gépi tanulási algoritmusokkal.
-
----
-
-### 📖 Mi a gépi klaszterezés célja?
-Az algoritmus emberi előítélet nélkül, tisztán a többdimenziós adatok (ár, méret, szobaszám, állapot, panel) matematikai távolságai alapján azonosítja az összetartozó lakástípusokat.""",
-
-        'sec1': r"""### 1. Optimális Klaszterszám (Elbow Plot & Silhouette Score)
-
-**📌 Mit mutat a könyök- és sziluett-diagram?**
-- A könyök-módszer (Inertia) töréspontja és a sziluett pontszám maximuma a **$K = 4$ klaszternél** adja az optimális szegmentációt.
-- A kőbányai lakáspiac természetes módon 4 jól elkülönülő archetípusra tagolódik.""",
-
-        'sec2': r"""### 2. A Négy Fő Lakáspiaci Klaszter Profilja (Radar Diagram)
-
-**📌 Kik a piac 4 archetípusa?**
-1. **Belépő kislakások / panel garzonok**: kis méret, magas fajlagos ár, alacsony összvételár.
-2. **Családi lakótelepi panelek**: 50-65 m², 2-2.5 szoba, szabványos elrendezés.
-3. **Klasszikus felújítandó téglalakások**: nagyobb méret, tégla falazat, alacsonyabb állapotindex.
-4. **Prémium zöldövezeti / új építésű lakások**: kiváló állapot, nagy alapterület, magas ár.""",
-
-        'sec3': r"""### 3. Klaszterek 2D PCA Vetülete
-
-**📌 Mit látunk a főkomponens vetületen?**
-A többdimenziós tér 2D síkra vetítve igazolja, hogy a 4 klaszter szépen elkülönülő, zárt csoportokat alkot.""",
-
-        'sec4': r"""### 4. Városrész és Klaszter Kereszttábla Hőtérkép
-
-**📌 Hol találhatók az egyes típusok?**
-- Újhegy a családi panelek zónája,
-- Óhegy a prémium zöldövezeti és nagypolgári téglák fellegvára,
-- Városközpont vegyes képet mutat."""
-    },
-
-    # =========================================================================
-    # NB10: Moran's I és Autokorreláció
-    # =========================================================================
-    'nb10': {
-        'intro': r"""# 10. Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés
-
-**Cél**: A térbeli függőség ökonometriai kimutatása az épület-szinten aggregált pontos eladó mintán (N = 124 db aggregált pont a 254 pontos eladóból).
-
----
-
-### 📖 Tobler első földrajzi törvénye és a térbeli aggregáció:
-A szomszédos ingatlanok árai összefüggenek. 
-A lépcsőházon belüli fals korrelációk elkerülésére **épület-szintű térbeli aggregációt** hajtottunk végre, így a modell a valódi környékbeli árhúzást méri.""",
-
-        'sec1': r"""### 1. Globális Moran's I Eredmények
-
-**📌 Mit mutatnak az ökonometriai mutatók?**
-Az aggregált pontokon ($k=8$ szomszéd):
-- **Globális Moran's I: $I \approx +0.062$ (z = 1.75, p = 0.079)**.
-- Az épület-szintű aggregáció kiszűrte az épületen belüli azonos árak torzító hatását, így a tiszta tömbök közötti autokorrelációt kapjuk meg.""",
-
-        'sec2': r"""### 2. Moran Pontdiagram (Scatter Plot)
-
-**📌 Hogyan értelmezzük a 4 kvadránst?**
-- **High-High (HH)**: Magas ár magas szomszédokkal $\rightarrow$ Hotspot.
-- **Low-Low (LL)**: Alacsony ár alacsony szomszédokkal $\rightarrow$ Coldspot.
-- **High-Low és Low-High**: Térbeli kiugró értékek (outlierek).""",
-
-        'sec3': r"""### 3. LISA Klaszter Térkép (Hotspotok és Coldspotok)
-
-**📌 Mit látunk a térképen?**
-- **Piros (Hotspot)**: Óhegy és Ligettelek zöldövezeti részei.
-- **Kék (Coldspot)**: A külső vasúti és rozsdaövezeti zónák.""",
-
-        'sec4': r"""### 4. Szignifikancia és Érzékenységvizsgálat
-
-**📌 Mennyire stabilak az eredmények?**
-A k szomszédszám változtatása mellett a forró- és hidegpontok magja stabilan megmarad."""
-    },
-
-    # =========================================================================
-    # NB11: Kereső Dashboard
-    # =========================================================================
-    'nb11': {
-        'intro': r"""# 11. Interaktív Ingatlan Kereső és Portfólió Dashboard
-
-**Cél**: Felhasználóbarát, dinamikus döntéstámogató felület a kőbányai lakásállomány szűrésére és elemzésére.
-
----
-
-### 📖 Mire használható a dashboard?
-A teljes 1 320 darabos adatbázisban böngészhet ár, alapterület, szobaszám, városrész és típus szerint, azonnali élő statisztikákkal.""",
-
-        'sec1': r"""### 1. Dinamikus Szűrők és Reagáló KPI Kártyák
-
-**📌 Mit lát a vezérlőpult tetején?**
-A szűrés után azonnal frissül a találatok száma, az átlagár, a medián négyzetméterár és az átlagos méret.""",
-
-        'sec2': r"""### 2. Térképi Elhelyezkedés és Találati Lista
-
-**📌 Hogyan használható a találati lista?**
-A mini térképen láthatók a szűrt lakások, a táblázat pedig rendezhető ár, m² ár vagy méret szerint.""",
-
-        'sec3': r"""### 3. Áreloszlási Hisztogram
-
-**📌 Mit mutat a kisegítő ábra?**
-A kiválasztott részpiac belső árszóródását és homogenitását ábrázolja.""",
-
-        'sec4': r"""### 4. Döntéstámogató Alkalmazás
-
-**📌 Gyakorlati haszon**:
-Közvetlenül alkalmas piaci összehasonlító elemzések és vásárlási döntések előkészítésére."""
-    },
-
-    # =========================================================================
-    # NB12: Gépi Tanulás és Arbitrázs
-    # =========================================================================
-    'nb12': {
-        'intro': r"""# 12. Gépi Tanulásos Ármeghatározás és Piaci Arbitrázs
-
-**Kontextus és Kapcsolódás:** Az eddigi parametrikus modellek (OLS, SAR, GWR) jól magyaráznak, de a nemlineáris interakciókat nehezen kezelik. A prediktív pontosság maximalizálása érdekében most áttérünk a gépi tanulásra (Random Forest).
-
-**Cél**: Random Forest árbecslő modell tanítása, a változók fontossági rangsorának (Feature Importance) feltárása és a piacilag alulárazott (arbitrázs) lakások automatikus azonosítása.
-
----
-
-### 📖 Mi az a piaci arbitrázs?
-Ha a gépi tanulási modell nagy pontossággal ($R^2 > 0.80$) megbecsüli a lakás reális értékét, a modell jóslatánál jóval olcsóbban hirdetett ingatlanok **alulárazott arbitrázs lehetőséget** jelentenek.""",
-
-        'sec1': r"""### 1. Random Forest Modell Illeszkedés és Diagnosztika
-
-**📌 Mennyire pontos az algoritmus?**
-A Random Forest modell az adatok több mint 80%-át magyarázza a teszthalmazon, átlagosan 3-4 millió forintos hibahatárral becsülve meg a vételárat.""",
-
-        'sec2': r"""### 2. Változók Relatív Fontossága (Feature Importance MDI)
-
-**📌 Mely tulajdonságok a legfontosabbak?**
-1. Korrigált alapterület (m²) – a legfőbb magyarázó erő,
-2. Lokáció (metró és vasút távolság),
-3. Műszaki állapotindex,
-4. Építőanyag (panel vs. tégla).""",
-
-        'sec3': r"""### 3. A Legjobb Piaci Arbitrázs Lehetőségek Toplistája
-
-**📌 Mit tartalmaz a táblázat?**
-A modell által azonosított legnagyobb mértékben alulárazott kőbányai lakások listáját a hirdetett és becsült ár különbségével.""",
-
-        'sec4': r"""### 4. Interaktív Árbecslő Kalkulátor
-
-**📌 Próbálja ki az árbecslőt!**
-Adja meg a lakás méretét, állapotát, szobaszámát és elhelyezkedését, és a Random Forest modell azonnal megbecsüli a piaci értéket!"""
-    },
-
-    # =========================================================================
-    # NB13: Térökonometria (SAR & SEM)
-    # =========================================================================
-    'nb13': {
-        'intro': r"""# 13. Térökonometriai Regresszió: Spatial Lag (SAR) és Spatial Error (SEM)
-
-**Cél**: A térbeli függőség és a szomszédsági tovagyűrűzés ökonometriailag konzisztens modellezése Spatial Lag (SAR) modellel az aggregált pontokon (N = 124 db).
-
----
-
-### 📖 Miért kötelező a térökonometria?
-A sima OLS feltételezi a megfigyelések függetlenségét. A valóságban a szomszédos lakások árai kölcsönösen hatnak egymásra. A SAR modell beépíti a térben késleltetett árat ($Wy$), és számszerűsíti a térbeli multiplikátort.""",
-
-        'sec1': r"""### 1. Térbeli Súlyozási Mátrix és Késleltetett Változók
-
-**📌 Hogyan készül a modell?**
-Az épület-szinten aggregált pontokon $k=8$ KNN szomszédsági mátrixot ($W$) építünk fel, előállítva az endogén térbeli árlagot ($Wy$).""",
-
-        'sec2': r"""### 2. SAR Modell Eredmények és a Térbeli Multiplikátor
-
-**📌 Mit mutatnak az ökonometriai számok?**
-- **Térbeli autoregresszív paraméter: $\rho = 0.2650$ ($p < 0.0001$)** $\rightarrow$ szignifikáns térbeli árhúzás!
-- **Térbeli Multiplikátor: $1 / (1 - \rho) = \mathbf{1.361\times}$**:
-  - Ez a kutatás egyik legfontosabb elméleti eredménye!
-  - Egy helyi beavatkozás közvetlen hasznához képest a térbeli tovagyűrűzés révén **további +36.1%-nyi vagyongyarapodás** keletkezik a környező ingatlanokban!
-
-**💡 Szakpolitikai tanulság**: A közberuházások tervezésekor a közvetlen hatáson felül a 1.361-szeres térbeli multiplikátorral kell számolni.""",
-
-        'sec3': r"""### 3. OLS vs. SAR Paraméter Összehasonlítás
-
-**📌 Miért változnak az együtthatók?**
-A SAR modellben a közvetlen fizikai változók együtthatói tisztulnak, mert a térbeli tovagyűrűzés hatása már külön változóként szerepel.""",
-
-        'sec4': r"""### 4. Térbeli Hibatag (SEM) és Robusztusság
-
-**📌 Modell ellenőrzés**:
-A SAR specifikáció után a hibatagok térbeli autokorrelációja megszűnik, igazolva a modell torzítatlanságát."""
-    },
-
-    # =========================================================================
-    # NB14: POI és 15-perces város
-    # =========================================================================
+    # ===========================================================================
+    # NB14: # 14. Land Value Capture (LVC) Városfejlesztési Szimuláció
+    # ===========================================================================
     'nb14': {
-        'intro': r"""# 14. Intézményi Ellátottság (POI) és a 15-Perces Város Index
+        'intro': r"""# 14. Land Value Capture (LVC) Városfejlesztési Szimuláció
+## Dinamikus Kétpilléres Közösségi Értéknövekmény-Elvonási Modell
 
-**Cél**: Az OpenStreetMap intézményi adatainak (POI) feldolgozása a határhatás kiküszöbölésével, és a 15 perces város gyalogos elérhetőségének vizsgálata (375m, 750m, 1125m sávokban).
+**TDK Kutatási Téma**: A közösségi infrastruktúra-fejlesztések által generált ingatlanpiaci értéktöbblet számszerűsítése és önfinanszírozó visszanyerési mechanizmusainak (LVC) szimulációja Budapest X. kerületében (Mázsa tér és rozsdaövezeti akcióterület).
 
 ---
 
-### 📖 A 15 perces város és a határhatás (Edge Effect) korrekció:
-Carlos Moreno koncepciója szerint minden alapvető funkciónak elérhetőnek kell lennie 15 perc sétával.
-A peremhatás elkerülésére **1200 méteres védőzónával (pufferrel)** kérdeztük le az adatokat, így a szomszédos kerületek intézményei is beleszámítanak az elérhetőségbe.""",
+### 📖 Mi az a Land Value Capture (LVC) és hogyan épül fel a modell?
+A nemzetközi városgazdaságtanban (Smolka 2013, Alterman 2012, Medda 2012) a **Land Value Capture (LVC)** az a pénzügyi és jogi eszköztár, amellyel a közszféra (önkormányzat, állam) visszanyeri a közpénzből megvalósuló infrastruktúra-fejlesztések (pl. vasúti és metrócsomópont, zöldterület, közterületi rendezés) által a környező magáningatlanokban előidézett **felértékelődési többlet (windfall gain)** egy részét.
 
-        'sec1': r"""### 1. Pufferelt POI Adatbázis (N = 319 db)
+#### 🏛️ A Kétpilléres LVC Modell Felépítése:
+A szimuláció **mind a már meglévő környező lakásállományt, mind a tervezett új beruházásokat** szisztematikusan figyelembe veszi:
 
-**📌 Mit tartalmaz az adatbázis?**
-A szigorú közigazgatási határon belüli 144 db POI helyett a határokon átnyúló pufferrel **összesen 319 db szolgáltatás** (parkok, éttermek, kávézók, iskolák) került be az elemzésbe, megszüntetve a határ menti ingatlanok mesterséges büntetését.""",
+1. **1. Pillér: Meglévő magánlakások externális felértékelődése (Windfall Capture)**:
+   - A közlekedési csomópont és parkfejlesztés javítja a környék élhetőségét és elérhetőségét.
+   - Az NB07 (vasúti izokrónok) és NB14 (hedonikus TOD modell) empirikus eredményei alapján a gyalogos elérhetőségi zónában a lakások piaci értéke **5% – 18%-kal növekszik**.
+   - Az önkormányzat célzott mechanizmusokkal (pl. célzott infrastruktúra-hozzájárulás, telekadó vagy építményadó felülvizsgálat) ennek egy méltányos hányadát (**LVC capture rate: 10% – 30%**) vonhatja el a közberuházás törlesztésére.
 
-        'sec2': r"""### 2. A Három Gyalogos Sáv Szolgáltatás-Sűrűsége
+2. **2. Pillér: Tervezett új barnamezős beépítések (Development Rights Capture)**:
+   - A Mázsa tér körüli rozsdaövezetekben (volt gyártelepek, vágányterületek) a megújuló infrastruktúra lehetővé teszi új lakó- és vegyes funkciójú épületek létesítését.
+   - Az új beépítési jogok megadásáért cserébe az önkormányzat **Településrendezési Szerződések (TRSZ)** keretében fejlesztői hozzájárulást (pl. 2.0 – 6.0 millió Ft lakásonként) vagy közcélú zöldfelület-létesítést írhat elő.
 
-**📌 Mit mutat a térkép és a KPI pult?**
-Az 5 perces (375m), 10 perces (750m) és 15 perces (1125m) sávokban elérhető szolgáltatások száma:
-- **Kőbánya-Városközpont**: átlagosan **30.4 db** POI 15 percen belül.
-- **Felsőrákos (Zugló felé nyitott)**: átlagosan **30.4 db** POI (korábban alig kapott pontot!).
-- **Óhegy**: átlagosan **21.5 db** POI.
-- **Gyárdűlő (Népliget felé)**: átlagosan **20.4 db** POI.
-- **Újhegy**: átlagosan **12.8 db** POI.
+---
 
-**💡 Eredmény**: A pufferelés után a valós, határmenti szolgáltatási ellátottság reálisan tükröződik a térképen.""",
+### 🔍 Hogyan becsültük meg az érintett magánvagyont?
+- **KSH 2022 Népszámlálási adatok**: Kőbánya teljes lakásállománya ~42 150 lakás.
+- **Térbeli lehatárolás**: A Mázsa tér 15 perces gyalogos hálózati izokrónjában (1 125 m gyaloglási távolság) a kerület belső, legsűrűbb városrészei helyezkednek el (Ligettelek, Óhegy pereme, Pongrácz lakótelep). Ez mintegy **12 000 magánlakást** jelent.
+- **Kiinduló vagyontömeg**: Az adatbázisunkban szereplő 65.0 millió Ft-os medián lakásárral számolva a közvetlen hatásterület magánvagyona **780 milliárd Ft**.
+- **Dinamikus testreszabhatóság**: A vezérlőpulton a felhasználó **tetszőleges csúszkákkal állíthatja be** mind az érintett lakásszámot (2 000 – 25 000 db), mind az átlagos lakásárat (40 – 120 M Ft)!
 
-        'sec3': r"""### 3. A Szolgáltatási Sűrűség Hedonikus Árprémiuma
+---
 
-**📌 Mit mutat a regressziós modell?**
-A közvetlen közelben (5 perces sétatávolságban) lévő szolgáltatások bírnak a legmagasabb fajlagos árnövelő hatással a lakásárakban."""
+### 💡 Miért nem merev "Tier"-ekben gondolkodunk, és honnan származott a korábbi sportközpont?
+A korábbi kerületi koncepciókban (2021) Kőbánya Önkormányzata tervezett egy "Mázsa téri Multifunkcionális Sportcsarnok és Uszoda" beruházást a vasútállomással kombinálva. Az akadémiai és szakpolitikai döntéshozatalban azonban nem szerencsés egyetlen konkrét épülethez kötni a modellt.
+Ezért a mostani szimulátorban a **közberuházási költség (CAPEX)** teljesen szabadon, csúszkával állítható (2 – 60 Mrd Ft), miközben 4 előre beállított szcenárió (zöldfelület, intermodális csomópont, komplex városmegújítás, egyéni) közül is választhatunk!""",
+
+        'sec1': r"""### 1. Beruházási Szintek (CAPEX) és Érintett Vagyon
+
+**📌 Mit látunk a szcenáriókban?**
+Három beruházási szintet modellezünk:
+- **Tier 1 (Közterület-rendezés)**: 1.5 milliárd Ft CAPEX $\rightarrow$ +5% lokális felértékelődés.
+- **Tier 2 (Komplex városi park & zöldinfrastruktúra)**: 4.5 milliárd Ft CAPEX $\rightarrow$ +12% felértékelődés.
+- **Tier 3 (Mázsa téri Sportközpont & Csomópont)**: 12.0 milliárd Ft CAPEX $\rightarrow$ +22% felértékelődés.
+
+**🔍 Mekkora a hatásterület vagyontömege?**
+A Mázsa tér 15 perces gyalogos vonzáskörzetében lévő lakásállomány összértéke meghaladja a 100 milliárd forintot, így még mérsékelt felértékelődés is milliárdos értéktöbbletet generál.""",
+
+        'sec2': r"""### 2. Kumulált Pénzáram és Megtérülési Idő (Cash Flow Profil)
+
+**📌 Hogyan alakul a beruházás pénzügyi egyenlege?**
+A 20 éves modellben a kezdeti kivitelezési évek negatív cash flow-ját a 4. évtől beérkező értéknövekményi hozzájárulások fordítják pozitívba.
+- A projekt 20%-os visszanyerési kulcs mellett a 8-10. év környékén éri el a megtérülési pontot (Break-even).""",
+
+        'sec3': r"""### 3. Érzékenységvizsgálati Mátrix (Diszkontráta vs. Visszanyerési Kulcs)
+
+**📌 Mit mutat a hőtérkép?**
+Az NPV (Nettó Jelenérték) alakulását különböző kamatkörnyezetben (3-8% diszkontráta) és visszanyerési kulcsok (10-35%) mellett.
+- Zöld mezők: gazdaságilag megtérülő, nyereséges kimenetelek.
+- Piros mezők: veszteséges szcenáriók alacsony visszanyerés mellett.""",
+
+        'sec4': r"""### 4. Interaktív LVC Döntéstámogató Szimulátor
+
+**📌 Tesztelje a szcenáriókat!**
+Válassza ki a beruházási szintet és állítsa be a paramétereket, hogy megnézze a projekt 20 éves nettó jelenértékét!""",
+
     },
 
-    # =========================================================================
-    # NB15: Lokális Térökonometria (GWR)
-    # =========================================================================
+    # ===========================================================================
+    # NB15: # 15. Összefoglaló Kutatási Vezérlőpult és Tudományos Szintézis
+    # ===========================================================================
     'nb15': {
-        'intro': r"""# 15. Lokális Térökonometria: Földrajzilag Súlyozott Regresszió (GWR)
+        'intro': r"""# 15. Összefoglaló Kutatási Vezérlőpult és Tudományos Szintézis
+## Executive Master Dashboard & Policy Synthesis
 
-**Kontextus és Kapcsolódás:** A SAR/SEM modellek (13-as notebook) globálisan korrigálták a térbeli hibát, de továbbra is azt feltételezik, hogy a paraméterek (pl. a metró hatása) egész Kőbányán állandóak. Ebben a notebookban ezt a korlátot oldjuk fel.
-
-**Cél**: A térbeli heterogenitás modellezése Kőbányán multiskálás földrajzilag súlyozott regresszióval (GWR / MGWR), épület-szintű térbeli aggregációval.
+**Cél**: A teljes 16 modulos kőbányai ingatlanpiaci kutatás szintetizálása, a legfontosabb ökonometriai, térbeli és gépi tanulási eredmények összegzése egy integrált, interaktív döntéshozatali vezérlőpulton.
 
 ---
 
-### 📖 Miért nem ér mindenhol ugyanannyit a metró?
-A globális modellek egyetlen átlagos hatást mérnek. A GWR viszont megengedi, hogy a paraméterek (pl. a metrótávolság ára) térben pontról pontra változzanak.""",
+### 📖 A Kutatás Logikai Íve és Fő Eredményei (Storyline):
+1. **Adatbázis fundamentumok (NB00–NB03)**: Kőbánya dualitása a lakótelepi panelek (Újhegy) és a nagypolgári/kertvárosi zöldövezeti téglák (Óhegy) éles szegmentációjában gyökerezik (medián ár: 1.18 millió Ft/m²).
+2. **A Vasút Kettős Arca (NB07)**: Sikerült szétválasztani a vasút két ellentétes gazdasági hatását: a közvetlen vágány menti **zaj- és immissziós diszkontot** (-16.1% <150 m-en, Kruskal-Wallis p < 0.001) és az állomások körüli **gyalogos TOD elérhetőségi prémiumot** (+8.2%).
+3. **Városi Szövet és Klaszterezés (NB04–NB12)**: A 15-perces városi intézmények (POI) elhelyezkedése és a 4 gépi tanulási archetípus élesen elkülöníti a kerület lakásállományát.
+4. **Ökonometria és Spillover (NB14–NB08)**: A hedonikus OLS modelltől a Spatial Lag (SAR) modellen át a GWR lokális regresszióig igazoltuk a térbeli autokorrelációt (Moran I = 0.11–0.35) és az **1.61x-es térbeli multiplikátor hatást**.
+5. **Gépi Tanulás és Pénzügyi Szimulációk (NB11–NB05)**: A Random Forest értékbecslő, a Neil Smith Rent Gap, a 10 000 futásos Monte Carlo szimuláció és a kétpilléres LVC modell konkrét beruházási és önkormányzati döntéstámogatást nyújtanak.""",
 
-        'sec1': r"""### 1. Adaptív Sávszélesség Keresés és GWR Illeszkedés
+        'sec1': r"""### 1. Stratégiai KPI Szintézis
+A kutatás legfontosabb empirikus mutatószámai a 16 modulból aggregálva.""",
 
-**📌 Modell illeszkedési eredmények:**
-Az algoritmus adaptív (KNN alapú) sávszélességet optimalizál az AICc minimalizálásával.
-- A GWR modell magyarázóereje felülmúlja a globális OLS-t, igazolva a térbeli heterogenitás jelenlétét a kőbányai piacon.""",
+        'sec2': r"""### 2. Módszertani és Szakpolitikai Következtetések
+Összegző értékelés városfejlesztők, döntéshozók és befektetők számára.""",
 
-        'sec2': r"""### 2. A Metróprémium Térbeli Változékonysága
+    },
 
-**📌 Mit mutat a lokális együtthatók térképe?**
-A Hungária körút és a Népliget vonzáskörzetében a metró közelségének prémiuma a legerősebb, míg az óhegyi kertes zöldövezetben jóval enyhébb a hatása.""",
-
-        'sec3': r"""### 3. Helyi Állapot-Prémium és Összegzés
-
-**📌 Fő konklúzió**:
-A felújítási prémium a sűrűbb lakóövezetekben magasabb, igazolva, hogy az ingatlantulajdonságok értéke mikrolokációtól függően dinamikusan változik."""
-    }
 }
-
-def get_nb_docs(nb_id):
-    return NOTEBOOK_DOCS.get(nb_id, {})

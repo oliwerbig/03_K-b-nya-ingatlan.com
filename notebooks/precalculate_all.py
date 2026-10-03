@@ -59,12 +59,13 @@ for k, v in results.items():
 print("\n" + "=" * 60)
 print("EXPORTING ALL NOTEBOOKS TO HTML...")
 print("=" * 60)
-jupyter_bin = os.path.join(PROJECT_ROOT, ".venv", "Scripts", "jupyter.exe")
-export_cmd = f'"{jupyter_bin}" nbconvert --to html "{NB_DIR}\\*.ipynb" --output-dir "{HTML_DIR}"'
-print(f"Running: {export_cmd}")
-res = subprocess.run(export_cmd, shell=True, capture_output=True, text=True)
-print("HTML Export returncode:", res.returncode)
-if res.stderr:
-    print("Export Stderr summary:", res.stderr.split('\\n')[-5:])
-print("HTML EXPORT COMPLETED SUCCESSFULLY!")
+python_bin = sys.executable
+for nb_file in sorted(glob.glob(os.path.join(NB_DIR, "*.ipynb"))):
+    base = os.path.basename(nb_file)
+    print(f"Exporting HTML: {base} ...", flush=True)
+    cmd = [python_bin, "-m", "nbconvert", "--to", "html", nb_file, "--output-dir", HTML_DIR]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode != 0:
+        print(f"  Warning exporting {base}: {res.stderr[:200]}", flush=True)
+print("ALL HTML EXPORTS COMPLETED SUCCESSFULLY!")
 

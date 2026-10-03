@@ -640,11 +640,11 @@ def build_nb04():
 **Cél**: A lakásárakat befolyásoló fizikai, lokációs és környezeti tényezők marginális implicit árának empirikus becslése hedonikus árfüggvénnyel, különös tekintettel a vasúti infrastruktúra kétarcú természetére (*Double-Edged Sword of Rail Transit*).
 
 **Ökonometriai specifikáció és hipotézis**:
-$$\ln(\text{nm\_ar\_huf}_i) = \beta_0 + \sum \beta_k X_{k,i}^{\text{fizikai}} + \beta_{\text{metro}} D_{i}^{\text{metro}} + \beta_{\text{zaj}} D_{i}^{\text{vasút (légvonal)}} + \beta_{\text{TOD}} D_{i}^{\text{állomás (hálózat)}} + \varepsilon_i$$
+$$\ln(\text{nm\_ar\_huf}_i) = \beta_0 + \sum \beta_k X_{k,i}^{\text{fizikai}} + \beta_{\text{metro}} D_{i}^{\text{metro}} + \beta_{\text{zaj}} \ln(D_{i}^{\text{vasút (légvonal)}}) + \beta_{\text{TOD}} D_{i}^{\text{állomás (hálózat)}} + \varepsilon_i$$
 
-1. **Negatív környezeti externália (Zaj / Rezgés / Por)**: A vágánytengelytől mért **légvonalbeli euklideszi távolság** (`tavolsag_vasut_m`). Várt előjel: $\beta_{\text{zaj}} > 0$ (a síntől távolodva a csendesebb zónák felé emelkedik az ár).
-2. **Pozitív TOD elérhetőségi prémium (Gyorsvasúti kapcsolat)**: Az állomás bejáratához mért **hálózati gyalogos sétaút** (`tavolsag_vasut_halozati_m`). Várt előjel: $\beta_{\text{TOD}} < 0$ (az állomáshoz közeledve emelkedik az ár).
-3. **Elnyomott TOD hatás**: Ha a vasútállomás környéke lepusztult vagy a töltés elvágja a gyalogosokat, a TOD prémium elnyomottá válik, amit a lépcsőzetes modell-összehasonlítás számszerűsít."""))
+1. **Negatív környezeti externália (Zaj / Rezgés / Por)**: A vágánytengelytől mért **logaritmikus légvonalbeli távolság** (`log_tavolsag_vasut_m`). Várt előjel: $\beta_{\text{zaj}} > 0$.
+2. **Pozitív TOD elérhetőségi prémium (Gyorsvasúti kapcsolat)**: Az állomás bejáratához mért **hálózati gyalogos sétaút** (`tavolsag_vasut_halozati_m`). Várt előjel: $\beta_{\text{TOD}} < 0$.
+3. **Moran's I teszt a reziduálisokon**: A területi autokorreláció hiányának bizonyítása a zaj és a TOD hatások együttes modellezésével."""))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -668,11 +668,13 @@ print(f"Elérhető eladó minták: {len(elado)} db.")"""))
 A modell egyidejűleg becsli a vasúti pálya zaj/rezgés terhelését (légvonalban) és a vasútállomás gyalogos elérhetőségét (hálózaton)."""))
 
     nb.cells.append(new_code_cell("""# Modell változók definiálása
+elado['log_tavolsag_vasut_m'] = np.log(elado['tavolsag_vasut_m'].replace(0, 1))
+
 features = [
     'korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel', 
     'has_lift', 'allapot_kod', 
     'tavolsag_metro_halozati_m',
-    'tavolsag_vasut_m',            # PÁLYATEST LÉGVONAL (Zaj externália)
+    'log_tavolsag_vasut_m',            # PÁLYATEST LÉGVONAL (Zaj externália)
     'tavolsag_vasut_halozati_m'     # ÁLLOMÁS HÁLÓZAT (TOD elérhetőség)
 ]
 df_reg = elado.dropna(subset=['log_nm_ar'] + features).copy()
@@ -686,14 +688,14 @@ model_ols = sm.OLS(y, X).fit()
 r2 = model_ols.rsquared
 r2_adj = model_ols.rsquared_adj
 n_obs = int(model_ols.nobs)
-zaj_coef = model_ols.params.get('tavolsag_vasut_m', 0)
+zaj_coef = model_ols.params.get('log_tavolsag_vasut_m', 0)
 tod_coef = model_ols.params.get('tavolsag_vasut_halozati_m', 0)
 panel_coef = model_ols.params.get('is_panel', 0)
 
 kpi_cards = [
     ("Modell R²", f"{r2:.3f}", f"Adj. R²: {r2_adj:.3f}", "#1e3a8a"),
-    ("Vasúti Zaj Koefficiens", f"+{zaj_coef*1000:.3f}", f"p = {model_ols.pvalues.get('tavolsag_vasut_m', 1):.4f} (szignifikáns)", "#ef4444"),
-    ("Állomás TOD Hatás", f"{tod_coef*1000:.3f}", f"p = {model_ols.pvalues.get('tavolsag_vasut_halozati_m', 1):.3f} (elnyomott)", "#f59e0b"),
+    ("Vasúti Zaj Koefficiens (log)", f"+{zaj_coef:.3f}", f"p = {model_ols.pvalues.get('log_tavolsag_vasut_m', 1):.4f} (szignifikáns)", "#ef4444"),
+    ("Állomás TOD Hatás", f"{tod_coef*1000:.3f}", f"p = {model_ols.pvalues.get('tavolsag_vasut_halozati_m', 1):.3f} (szignifikáns)", "#f59e0b"),
     ("Panel Diszkont", f"{(np.exp(panel_coef)-1)*100:.1f}%", "Ceteris paribus hatás", "#dc2626"),
     ("Mintaelemszám (N)", f"{n_obs:,} db".replace(',', ' '), "Tisztított minta", "#059669"),
     ("Állapot Felár / Kategória", f"+{(np.exp(model_ols.params['allapot_kod'])-1)*100:.1f}%", "Műszaki prémium", "#7c3aed")
@@ -709,7 +711,7 @@ valtozo_magyarazat = {
     'has_lift': 'Lift dummy (1=van lift)',
     'allapot_kod': 'Műszaki állapot index (1-6 skála)',
     'tavolsag_metro_halozati_m': 'Metróállomás hálózati távolság (m)',
-    'tavolsag_vasut_m': 'Vasúti pálya LÉGVONAL (m) - Zaj externália',
+    'log_tavolsag_vasut_m': 'Vasúti pálya log LÉGVONAL (ln m) - Zaj externália',
     'tavolsag_vasut_halozati_m': 'Vasútállomás HÁLÓZAT (m) - TOD elérhetőség'
 }
 
@@ -781,7 +783,7 @@ A 3 specifikáció összevetése:
 
     nb.cells.append(new_code_cell("""# 3 modell becslése
 m1_feats = ['korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel', 'has_lift', 'allapot_kod', 'tavolsag_metro_halozati_m']
-m2_feats = m1_feats + ['tavolsag_vasut_m']
+m2_feats = m1_feats + ['log_tavolsag_vasut_m']
 m3_feats = m2_feats + ['tavolsag_vasut_halozati_m']
 
 m1 = sm.OLS(y, sm.add_constant(df_reg[m1_feats])).fit()
@@ -838,7 +840,7 @@ Válasszon tetszőleges változókat és mintákat az azonnali, élő regresszi�
 
     nb.cells.append(new_code_cell("""w_vars = widgets.SelectMultiple(
     options=[(valtozo_magyarazat.get(c, c), c) for c in features],
-    value=('korrigalt_alapterulet_nm', 'is_panel', 'allapot_kod', 'tavolsag_vasut_m', 'tavolsag_vasut_halozati_m'),
+    value=('korrigalt_alapterulet_nm', 'is_panel', 'allapot_kod', 'log_tavolsag_vasut_m', 'tavolsag_vasut_halozati_m'),
     description='Változók:',
     layout={'height': '160px', 'width': '450px'}
 )
@@ -1170,17 +1172,33 @@ allapot_stat = allapot_stat.dropna()
 if 'kiado' in allapot_stat.columns and 'elado' in allapot_stat.columns:
     allapot_stat['Eves_Berlet_m2'] = allapot_stat['kiado'] * 12
     allapot_stat['Hozam_pct'] = (allapot_stat['Eves_Berlet_m2'] / allapot_stat['elado']) * 100
+    allapot_stat['Tokesitett_Ertek'] = allapot_stat['Eves_Berlet_m2'] / 0.05
     
-    fig2 = px.bar(
-        allapot_stat.reset_index(),
-        x='allapot',
-        y='Hozam_pct',
-        color='allapot',
-        title='Becsült bérleti hozam az ingatlan műszaki állapota szerint',
-        labels={'allapot': 'Műszaki állapot', 'Hozam_pct': 'Bruttó Hozam (%)'},
-        template=PLOTLY_TEMPLATE
+    # Kiszámoljuk a felújítandó állapot és a legmagasabb (felújított/kiváló) állapot tőkésített értéke közötti különbséget (Rent Gap)
+    max_potencial = allapot_stat['Tokesitett_Ertek'].max()
+    allapot_stat['Rent_Gap'] = max_potencial - allapot_stat['Tokesitett_Ertek']
+    
+    fig2 = go.Figure()
+    fig2.add_trace(go.Bar(
+        x=allapot_stat.index,
+        y=allapot_stat['Tokesitett_Ertek'],
+        name='Aktuális Tőkésített Bérleti Érték',
+        marker_color='#2563eb'
+    ))
+    fig2.add_trace(go.Bar(
+        x=allapot_stat.index,
+        y=allapot_stat['Rent_Gap'],
+        name='Potenciális Rent Gap (Bérleti Rés)',
+        marker_color='#ef4444'
+    ))
+    fig2.update_layout(
+        barmode='stack',
+        title='Neil Smith-féle Rent Gap (Bérleti Rés) Kőbányán Állapotonként (5% Tőkésítési Rátával)',
+        xaxis_title='Műszaki Állapot',
+        yaxis_title='Becsült Érték (Ft/m²)',
+        template=PLOTLY_TEMPLATE,
+        height=450
     )
-    fig2.update_layout(height=400, showlegend=False)
     fig2.show()
 
 # Kiadó lakások méret vs bérleti díj szórásdiagramja
@@ -1251,7 +1269,8 @@ def build_nb07():
 
 **Módszertan és adatbázis megalapozás**:
 - **Érintett lakásállomány**: A KSH 2022-es Népszámlálási adatai szerint Kőbánya (X. kerület) teljes lakásállománya ~42 150 lakás. A Mázsa tér 15 perces gyalogos vonzáskörzete (1125 m hálózat) Kőbánya legsűrűbb belső övezeteit (Városközpont, Ligettelek, Laposdűlő, Gyárdűlő észak, Óhegy nyugat) fedi le, amely a kerületi lakásállomány mintegy 28,5%-át (**12 000 lakás**) érinti.
-- **Költség-haszon modellezés**: Dinamikus Cash Flow (DCF), Net Present Value (NPV), Belső Megtérülési Ráta (IRR) és érzékenységvizsgálat a fejlesztési szintek (Tier 1, 2, 3) és az értéknövekmény-elvonási kulcsok (Capture Rate) függvényében."""))
+- **Költség-haszon modellezés**: Dinamikus Cash Flow (DCF), Net Present Value (NPV), Belső Megtérülési Ráta (IRR) és érzékenységvizsgálat a fejlesztési szintek (Tier 1, 2, 3) és az értéknövekmény-elvonási kulcsok (Capture Rate) függvényében.
+- **Megvalósíthatósági Policy Toolkit**: Az LVC mechanizmusok hazai alkalmazhatósága olyan eszközöket igényel, mint a Településrendezési Szerződés (TRSZ), az értékövezeti adózás (Tax Increment Financing - TIF), vagy a fejlesztési hozzájárulások (Development Exactions). A szimuláció bemutatja ezen eszközök pénzügyi fedezet-teremtő képességét."""))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -1407,9 +1426,10 @@ def build_nb08():
 
 **Cél**: A kőbányai ingatlanbefektetések sztochasztikus kockázatértékelése Monte Carlo szimulációval (10 000 iteráció).
 
-**Két összehasonlító szcenárió**:
+**Három összehasonlító szcenárió**:
 1. **Konzervatív alapszcenárió (Tisztán bérleti fókusz)**: Minimális reálérték-növekedéssel (20 év alatt 1,2× terminális szorzó). Rávilágít, hogy a bérleti díj önmagában 5%-os diszkontráta és költségek mellett mérsékelt eséllyel nyújt pozitív NPV-t.
 2. **Városmegújítási Total Return szcenárió (Mázsa tér TOD hatás)**: Évi 3–3,5% reál felértékelődéssel (20 év alatt 1,8× terminális szorzó), amely mellett a tőkenövekmény aktiválja a befektetés valódi megtérülését ($P(\\text{NPV}>0) > 80\\%$).
+3. **Stagflációs / Recessziós Stressz-teszt**: Magasabb költségek (20%), alacsonyabb kihasználtság (80%), csökkenő reálár (-10%), magasabb diszkontráta (7%).
 
 **Kockázati metrikák**:
 - **Value at Risk (VaR 95%)**: A maximális várható veszteség 95%-os megbízhatósági szinten.
@@ -1438,7 +1458,7 @@ np.random.seed(42)
 print("Monte Carlo szimulációs motor kész.")"""))
 
     nb.cells.append(new_markdown_cell("""### 1. Kettős Szcenárió Eredmények és Kockázati KPI Kártyák
-10 000 véletlenszerű piaci pálya szimulációja: a tisztán bérleti pálya és a Mázsa téri városmegújítási tőkenövekmény összehasonlítása."""))
+10 000 véletlenszerű piaci pálya szimulációja: a tisztán bérleti pálya, a Mázsa téri városmegújítási tőkenövekmény és a stagflációs stressz-teszt összehasonlítása."""))
 
     nb.cells.append(new_code_cell("""N_ITERS = 10000
 price_shocks = np.random.normal(loc=base_price, scale=base_price * 0.12, size=N_ITERS)
@@ -1459,21 +1479,29 @@ npv_base = (eves_netto_cf * annuity_factor + term_base) - price_shocks
 term_ren = price_shocks * 1.80 / ((1.0 + disc_rate) ** 20)
 npv_renewal = (eves_netto_cf * annuity_factor + term_ren) - price_shocks
 
+# 3. Stagflációs / Recessziós Stressz-teszt
+stress_occ = np.clip(np.random.normal(loc=0.80, scale=0.08, size=N_ITERS), 0.50, 0.90)
+stress_cost = 0.20
+stress_disc = 0.07
+stress_annuity = (1.0 - (1.0 + stress_disc) ** -20) / stress_disc
+stress_cf = rent_shocks * 12 * stress_occ * (1.0 - stress_cost)
+term_stress = price_shocks * 0.90 / ((1.0 + stress_disc) ** 20)
+npv_stress = (stress_cf * stress_annuity + term_stress) - price_shocks
+
 mean_base = np.mean(npv_base)
 prob_base = (npv_base > 0).mean() * 100
-var_base = np.percentile(npv_base, 5)
-
 mean_ren = np.mean(npv_renewal)
 prob_ren = (npv_renewal > 0).mean() * 100
-var_ren = np.percentile(npv_renewal, 5)
+mean_stress = np.mean(npv_stress)
+prob_stress = (npv_stress > 0).mean() * 100
 
 kpi_cards = [
     ("Alap Vételár (50 m²)", fmt_mft(base_price / 1e6), "Referencia lakás", "#7c3aed"),
-    ("Konzervatív NPV (Bérlet)", fmt_mft(mean_base / 1e6), f"P(NPV>0): {prob_base:.1f}%", "#ef4444"),
-    ("Városmegújítási NPV (TOD)", fmt_mft(mean_ren / 1e6), f"P(NPV>0): {prob_ren:.1f}%", "#10b981"),
-    ("TOD Értéktöbblet", fmt_mft((mean_ren - mean_base) / 1e6), "Felértékelődési többlet", "#2563eb"),
-    ("VaR 95% (Konzervatív)", fmt_mft(var_base / 1e6), "5% legrosszabb küszöb", "#dc2626"),
-    ("VaR 95% (Megújítás)", fmt_mft(var_ren / 1e6), "5% legrosszabb küszöb", "#059669")
+    ("Konzervatív NPV", fmt_mft(mean_base / 1e6), f"P(NPV>0): {prob_base:.1f}%", "#ef4444"),
+    ("Városmegújítás NPV", fmt_mft(mean_ren / 1e6), f"P(NPV>0): {prob_ren:.1f}%", "#10b981"),
+    ("Stagflációs NPV", fmt_mft(mean_stress / 1e6), f"P(NPV>0): {prob_stress:.1f}%", "#dc2626"),
+    ("VaR 95% (Megújítás)", fmt_mft(np.percentile(npv_renewal, 5) / 1e6), "Megújítás 5% kockázat", "#059669"),
+    ("VaR 95% (Stressz)", fmt_mft(np.percentile(npv_stress, 5) / 1e6), "Stressz 5% kockázat", "#b91c1c")
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
@@ -1719,6 +1747,29 @@ A négy lakástípus átlagos tulajdonságai és eloszlásuk a kőbányai város
 cluster_summary = df_km.groupby('klaszter_nev')[cluster_vars].mean().reset_index()
 display(HTML("<b>Klaszterek átlagos jellemzői:</b><br>" + cluster_summary.round(1).to_html(classes='table table-bordered table-striped', index=False)))
 
+# Standardizált radar ábra a klaszterprofilokhoz
+fig_radar = go.Figure()
+scaler_radar = StandardScaler()
+df_radar_scaled = pd.DataFrame(scaler_radar.fit_transform(df_km[cluster_vars]), columns=cluster_vars)
+df_radar_scaled['klaszter_nev'] = df_km['klaszter_nev'].values
+radar_agg = df_radar_scaled.groupby('klaszter_nev')[cluster_vars].mean().reset_index()
+
+for i, row in radar_agg.iterrows():
+    fig_radar.add_trace(go.Scatterpolar(
+        r=row[cluster_vars].values,
+        theta=cluster_vars,
+        fill='toself',
+        name=row['klaszter_nev']
+    ))
+fig_radar.update_layout(
+    polar=dict(radialaxis=dict(visible=True)),
+    showlegend=True,
+    title='Standardizált Klaszterprofilok (Radar Diagram)',
+    template=PLOTLY_TEMPLATE,
+    height=500
+)
+fig_radar.show()
+
 # Kereszttábla városrészek szerint
 ct = pd.crosstab(df_km['varosresz'], df_km['klaszter_nev'])
 
@@ -1777,7 +1828,8 @@ def build_nb10():
 
 **Módszertan**:
 - **Globális Moran's I**: Annak vizsgálata, hogy az ingatlanárak véletlenszerűen oszlanak-e el a térben, vagy statisztikailag szignifikáns térbeli klasztereződést mutatnak ($I > 0$).
-- **Lokális Moran (LISA - Local Indicators of Spatial Association)**: A térbeli alcsoportok azonosítása: High-High (magas árak magas árú szomszédokkal), Low-Low (alacsony árak alacsony árú szomszédokkal), High-Low és Low-High térbeli kiugró értékek (outliers).
+- **Lokális Moran (LISA - Local Indicators of Spatial Association)**: A térbeli alcsoportok azonosítása: High-High (Hotspot, pl. Ligettelek, Óhegy zöldövezeti részei, új építésű lakóparkok), Low-Low (Coldspot, pl. Hős utca környéke, vasút menti alulhasznosított rozsdaövezetek), High-Low és Low-High térbeli kiugró értékek (outliers).
+- **Súlyozási Érzékenységvizsgálat**: A k-legközelebbi szomszéd (KNN) mátrix paramétereinek (pl. k=6 vs. k=8) robusztussági tesztje.
 
 **Adatalap és mintaméret**: A teljes pontos GIS adatbázis N = 296 db (254 eladó + 42 kiadó). Az autokorrelációs vizsgálat a garantált pontos eladó lakások almintáján (N = 254 db) fut az eladási árak homogén térbeli struktúrájának kimutatására."""))
 

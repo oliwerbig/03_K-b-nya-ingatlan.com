@@ -2777,6 +2777,11 @@ coords = list(zip(df_reg['geokodolt_lon'], df_reg['geokodolt_lat']))
 y_gwr = df_reg['log_nm_ar'].values.reshape((-1, 1))
 X_gwr = df_reg[features].values
 
+# Jitter hozzáadása a pontos koordináta / távolság egyezések miatti szinguláris mátrix elkerülésére
+np.random.seed(42)
+X_gwr = X_gwr + np.random.normal(0, 0.001, X_gwr.shape)
+coords = [(lon + np.random.normal(0, 0.00001), lat + np.random.normal(0, 0.00001)) for lon, lat in coords]
+
 if MGWR_AVAILABLE:
     # Sávszélesség (Bandwidth) optimalizáció (kicsit időigényes lehet)
     print("GWR Sávszélesség optimalizálása folyamatban...")

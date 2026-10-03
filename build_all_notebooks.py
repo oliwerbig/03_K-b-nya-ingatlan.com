@@ -835,7 +835,7 @@ display(widgets.HBox([w_vars, widgets.VBox([w_model_type, btn_reg])]))
 display(out_reg)
 futtat_modell()"""))
 
-    save_nb(nb, '04_hedonikus_armodell.ipynb')
+    save_nb(nb, '07_hedonikus_armodell.ipynb')
 
 
 # ==============================================================================
@@ -1000,7 +1000,7 @@ display(widgets.HBox([w_cel, w_max_dist]))
 display(out_dist)
 frissit_dist()"""))
 
-    save_nb(nb, '05_vasuti_diszkont_es_izokronok.ipynb')
+    save_nb(nb, '04_vasuti_diszkont_es_izokronok.ipynb')
 
 
 # ==============================================================================
@@ -1178,7 +1178,7 @@ display(widgets.VBox([
 display(out_yield)
 szamol_hozam()"""))
 
-    save_nb(nb, '06_berleti_piac_es_rent_gap.ipynb')
+    save_nb(nb, '12_berleti_piac_es_rent_gap.ipynb')
 
 # ==============================================================================
 # NOTEBOOK 07: Land Value Capture (LVC) Szimuláció
@@ -1325,7 +1325,7 @@ display(widgets.HBox([w_tier, w_cap, w_disc]))
 display(out_lvc)
 frissit_lvc()"""))
 
-    save_nb(nb, '07_lvc_szimulacio.ipynb')
+    save_nb(nb, '14_lvc_szimulacio.ipynb')
 
 
 # ==============================================================================
@@ -1525,7 +1525,7 @@ display(widgets.HBox([w_n_sim, w_p_vol, w_r_vol]))
 display(out_mc)
 futtat_mc()"""))
 
-    save_nb(nb, '08_monte_carlo_kockazat.ipynb')
+    save_nb(nb, '13_monte_carlo_kockazat.ipynb')
 
 
 # ==============================================================================
@@ -1712,7 +1712,7 @@ display(w_k_slider)
 display(out_km)
 frissit_km()"""))
 
-    save_nb(nb, '09_klaszter_es_tipologia.ipynb')
+    save_nb(nb, '06_klaszter_es_tipologia.ipynb')
 
 # ==============================================================================
 # NOTEBOOK 10: Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés
@@ -1916,7 +1916,7 @@ display(widgets.HBox([w_var, w_k]))
 display(out_moran)
 frissit_moran()"""))
 
-    save_nb(nb, '10_moran_es_autokorrelacio.ipynb')
+    save_nb(nb, '08_moran_es_autokorrelacio.ipynb')
 
 
 # ==============================================================================
@@ -2065,7 +2065,7 @@ display(widgets.VBox([
 display(out_search)
 frissit_kereses()"""))
 
-    save_nb(nb, '11_ingatlan_kereso_dashboard.ipynb')
+    save_nb(nb, '15_ingatlan_kereso_dashboard.ipynb')
 
 
 # ==============================================================================
@@ -2269,7 +2269,7 @@ display(widgets.VBox([
 display(out_calc)
 szamol_ertek()"""))
 
-    save_nb(nb, '12_gepi_tanulas_es_arbitrazs.ipynb')
+    save_nb(nb, '11_gepi_tanulas_es_arbitrazs.ipynb')
 
 
 # ==============================================================================
@@ -2452,7 +2452,7 @@ display(w_k_sar)
 display(out_sar)
 frissit_sar()"""))
 
-    save_nb(nb, '13_terokonometria_sar_sem.ipynb')
+    save_nb(nb, '09_terokonometria_sar_sem.ipynb')
 
 
 # ==============================================================================
@@ -2583,7 +2583,7 @@ res_df = pd.DataFrame({
 display(HTML("<div style='overflow-x:auto; margin: 15px 0;'>" + res_df.round(4).to_html(classes='table table-bordered table-striped', index=False) + "</div>"))
 print(f"Az új modell R² értéke: {model.rsquared:.4f}")"""))
 
-    save_nb(nb, '14_poi_es_15_perces_varos.ipynb')
+    save_nb(nb, '05_poi_es_15_perces_varos.ipynb')
 
 
 # ==============================================================================
@@ -2692,7 +2692,7 @@ else:
     fig.update_layout(height=450, showlegend=False)
     fig.show()"""))
 
-    save_nb(nb, '15_lokalis_terokonometria_gwr.ipynb')
+    save_nb(nb, '10_lokalis_terokonometria_gwr.ipynb')
 
 
 # ==============================================================================

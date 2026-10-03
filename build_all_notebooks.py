@@ -2773,14 +2773,15 @@ A térbeli súlyozáshoz optimális távolságot (sávszélességet) az AICc kri
     nb.cells.append(new_code_cell("""features = ['korrigalt_alapterulet_nm', 'tavolsag_metro_halozati_m']
 df_reg = df_pontos.dropna(subset=['log_nm_ar', 'geokodolt_lon', 'geokodolt_lat'] + features).copy()
 
-coords = list(zip(df_reg['geokodolt_lon'], df_reg['geokodolt_lat']))
-y_gwr = df_reg['log_nm_ar'].values.reshape((-1, 1))
-X_gwr = df_reg[features].values
+# Tudományos megoldás a lokális multikollinearitás elkerülésére: 
+# Térbeli aggregáció (egybeeső koordináták átlagolása épület/pont szinten)
+df_agg = df_reg.groupby(['geokodolt_lon', 'geokodolt_lat'])[features + ['log_nm_ar']].mean().reset_index()
+print(f"Eredeti hirdetések száma: {len(df_reg)} db.")
+print(f"Térbeli aggregáció utáni egyedi pontok (épületek) száma: {len(df_agg)} db.")
 
-# Jitter hozzáadása a pontos koordináta / távolság egyezések miatti szinguláris mátrix elkerülésére
-np.random.seed(42)
-X_gwr = X_gwr + np.random.normal(0, 0.001, X_gwr.shape)
-coords = [(lon + np.random.normal(0, 0.00001), lat + np.random.normal(0, 0.00001)) for lon, lat in coords]
+coords = list(zip(df_agg['geokodolt_lon'], df_agg['geokodolt_lat']))
+y_gwr = df_agg['log_nm_ar'].values.reshape((-1, 1))
+X_gwr = df_agg[features].values
 
 if MGWR_AVAILABLE:
     # Sávszélesség (Bandwidth) optimalizáció (kicsit időigényes lehet)
@@ -2798,31 +2799,30 @@ if MGWR_AVAILABLE:
     
     # Együtthatók kinyerése a dataframe-be
     # gwr_results.params egy (N, k) mátrix (k tartalmazza a konstanst is az első oszlopban)
-    df_reg['gwr_const'] = gwr_results.params[:, 0]
+    df_agg['gwr_const'] = gwr_results.params[:, 0]
     for i, col in enumerate(features):
-        df_reg[f'gwr_{col}'] = gwr_results.params[:, i+1]
+        df_agg[f'gwr_{col}'] = gwr_results.params[:, i+1]
 else:
     print("Az 'mgwr' csomag nélkül szimulált GWR paraméterfelületet generálunk.")
-    df_reg['gwr_tavolsag_metro_halozati_m'] = -0.0001 + np.random.normal(0, 0.00005, len(df_reg))"""))
+    df_agg['gwr_tavolsag_metro_halozati_m'] = -0.0001 + np.random.normal(0, 0.00005, len(df_agg))"""))
 
     nb.cells.append(new_markdown_cell("""### 2. A Metró Távolság Lokális Hatásának Térképes Vizualizációja
 A hőtérképen (scatter_map) azt láthatjuk, hogy Kőbánya mely részein mennyire bünteti az árat a metrótól való távolság. (Ahol sötétebb kék, ott erősebb a negatív együttható, azaz "fájdalmasabb" a metrótól való távolság)."""))
 
     nb.cells.append(new_code_cell("""target_col = 'gwr_tavolsag_metro_halozati_m'
 
-if target_col in df_reg.columns:
+if target_col in df_agg.columns:
     fig = px.scatter_map(
-        df_reg,
+        df_agg,
         lat='geokodolt_lat',
         lon='geokodolt_lon',
         color=target_col,
-        size='alapterulet_nm',
-        hover_name='cim_teljes',
-        hover_data=[target_col],
+        size='korrigalt_alapterulet_nm',
+        hover_data=[target_col, 'log_nm_ar'],
         color_continuous_scale='RdYlBu', # Red: gyenge hatás, Blue: erős negatív hatás
         map_style='carto-positron',
         zoom=12.2,
-        title='GWR: A metrótávolság lokális regressziós együtthatója (β)'
+        title='GWR: A metrótávolság lokális regressziós együtthatója (Épület szinten aggregálva)'
     )
     fig.update_layout(height=550, margin={"r":0,"t":40,"l":0,"b":0})
     fig.show()

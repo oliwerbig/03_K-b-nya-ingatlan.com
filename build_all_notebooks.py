@@ -1842,7 +1842,7 @@ def build_nb10():
 - **Lokális Moran (LISA - Local Indicators of Spatial Association)**: A térbeli alcsoportok azonosítása: High-High (Hotspot, pl. Ligettelek, Óhegy zöldövezeti részei, új építésű lakóparkok), Low-Low (Coldspot, pl. Hős utca környéke, vasút menti alulhasznosított rozsdaövezetek), High-Low és Low-High térbeli kiugró értékek (outliers).
 - **Súlyozási Érzékenységvizsgálat**: A k-legközelebbi szomszéd (KNN) mátrix paramétereinek (pl. k=6 vs. k=8) robusztussági tesztje.
 
-**Adatalap és mintaméret**: A teljes pontos GIS adatbázis N = 296 db (254 eladó + 42 kiadó). Az autokorrelációs vizsgálat a garantált pontos eladó lakások almintáján (N = 254 db) fut az eladási árak homogén térbeli struktúrájának kimutatására."""))
+**Adatalap és mintaméret**: A teljes pontos GIS adatbázisból indulunk ki. A térbeli súlyozási mátrix szingularitásának elkerülése, illetve az épületen belüli ("intra-building") falszomszédsági korrelációk kiszűrése érdekében **térbeli aggregációt** hajtunk végre. Az azonos koordinátára eső ingatlanokat épület-szinten átlagoljuk, így a Moran statisztika a valódi, utcák és tömbök közötti térbeli tovagyűrűzést méri."""))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -2441,7 +2441,9 @@ Az OLS modell feltételezi a megfigyelések függetlenségét ($\text{Cov}(\vare
    ahol $W y$ a térben szomszédos ingatlanok késleltetett ára, $\rho$ a térbeli autoregresszív paraméter. Becslése Spatial Two-Stage Least Squares (Spatial 2SLS) eljárással történik, ahol a térbeli késleltetett magyarázó változók ($W X$) képezik a belső változó ($W y$) instrumentumait.
 2. **Térbeli Multiplikátor Hatás**:
    Egy környezeti vagy infrastrukturális beavatkozás közvetlen hatásán túl térbeli tovagyűrűző (Spatial Spillover) hatást fejt ki:
-   $$\text{Teljes Hatás} = \frac{\beta}{1 - \rho}$$"""))
+   $$\text{Teljes Hatás} = \frac{\beta}{1 - \rho}$$
+
+**Adatalap**: Az OLS regresszióval ellentétben a térbeli modellezést megelőzi egy **térbeli aggregáció**: az azonos címen/koordinátán található lakásokat egyetlen épület-szintű megfigyeléssé átlagoljuk, biztosítva, hogy a W mátrix tisztán az épületek/tömbök közötti "spillover" hatásokat mérje."""))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -2768,7 +2770,9 @@ def build_nb15():
 **Cél**: A térbeli heterogenitás modellezése Kőbányán. Szemben a SAR (NB13) modellel, amely globális $\\rho$ együtthatót becsül, a GWR megengedi, hogy a magyarázó változók (pl. metrótól való távolság hatása) térben dinamikusan változzanak.
 Például: Lehet, hogy Újhegyen a metró közelsége sokkal nagyobb felárat jelent, mint Óhegyen.
 
-**Módszertan**: Az `mgwr` (Multiscale Geographically Weighted Regression) csomag használata. A paraméterfelületeket interaktív hőtérképen ábrázoljuk."""))
+**Módszertan**: Az `mgwr` (Multiscale Geographically Weighted Regression) csomag használata. A paraméterfelületeket interaktív hőtérképen ábrázoljuk.
+
+**Adatalap**: Az algoritmus stabilitása és az egyedi címek okozta szingularitás (lokális multikollinearitás) elkerülése érdekében **épület-szintű térbeli aggregációt** alkalmazunk azokon a lakásokon, amelyek azonos koordinátával rendelkeznek."""))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os

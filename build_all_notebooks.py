@@ -1858,11 +1858,20 @@ from libpysal.weights import KNN
 from esda.moran import Moran, Moran_Local
 
 df = load_szamitott_master()
-df_geo = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].dropna(subset=['geokodolt_lat', 'geokodolt_lon', 'nm_ar_huf']).copy()
-df_geo.reset_index(drop=True, inplace=True)
+df_raw = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].dropna(subset=['geokodolt_lat', 'geokodolt_lon', 'nm_ar_huf']).copy()
+
+# Térbeli aggregáció: Azonos koordinátájú ingatlanok (pl. lakótelepek) átlagolása
+# Így a KNN mátrix a valódi környékbeli (nem épületen belüli) térbeli autokorrelációt méri!
+df_geo = df_raw.groupby(['geokodolt_lon', 'geokodolt_lat']).agg(
+    nm_ar_huf=('nm_ar_huf', 'mean'),
+    cim_teljes=('cim_teljes', 'first'),
+    varosresz=('varosresz', 'first')
+).reset_index()
+
 coords = np.column_stack((df_geo['geokodolt_lon'], df_geo['geokodolt_lat']))
 
-print(f"Elemzett garantált pontos eladó lakásminta: {len(df_geo)} db.")"""))
+print(f"Eredeti pontos minta: {len(df_raw)} db.")
+print(f"Épület szinten aggregált térbeli objektumok: {len(df_geo)} db.")"""))
 
     nb.cells.append(new_markdown_cell("""### 1. Globális Moran's I Térökonometriai Eredmények
 A k=8 legközelebbi szomszéd (KNN) térbeli súlyozási mátrix és a 999 permutációs szimuláció alapján becsült autokorreláció."""))
@@ -2450,10 +2459,16 @@ from libpysal.weights import KNN
 from esda.moran import Moran
 
 df = load_szamitott_master()
-df_geo = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
-df_geo = df_geo.dropna(subset=['geokodolt_lat', 'geokodolt_lon', 'log_nm_ar']).reset_index(drop=True)
+df_raw = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
+df_raw = df_raw.dropna(subset=['geokodolt_lat', 'geokodolt_lon', 'log_nm_ar']).reset_index(drop=True)
+
+# Térbeli aggregáció: Azonos koordinátájú ingatlanok (pl. lakótelepek) átlagolása
+# Így a KNN mátrix a valódi környékbeli (nem épületen belüli) spillover hatásokat méri!
+df_geo = df_raw.groupby(['geokodolt_lon', 'geokodolt_lat']).mean(numeric_only=True).reset_index()
+
 coords = np.column_stack((df_geo['geokodolt_lon'], df_geo['geokodolt_lat']))
-print(f"Térökonometriai elemzésbe bevont minta: {len(df_geo)} db ingatlan.")"""))
+print(f"Eredeti hirdetések száma: {len(df_raw)} db.")
+print(f"Térbeli (épület szintű) aggregáció utáni minta: {len(df_geo)} db ingatlan/térbeli egység.")"""))
 
     nb.cells.append(new_markdown_cell("""### 1. Térbeli Súlyozási Mátrix és Térbeli Késleltetés (Spatial Lag) Képzése
 A k=8 legközelebbi szomszéd (KNN) standardizált súlymátrix segítségével előállítjuk az endogén térbeli árlagot ($W y$) és a magyarázó változók térbeli instrumentumait ($W X$)."""))

@@ -2660,56 +2660,61 @@ df = load_szamitott_master()
 df_pontos = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
 print(f"Elemzett minta (garantált pontos): {len(df_pontos)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. POI Adatok Lekérése (OSM) és Kőbánya Hálózata
-OSM adatok betöltése Kőbánya közigazgatási határán belül (vagy betöltése cache-ből)."""))
+    nb.cells.append(new_markdown_cell("""### 1. POI Adatok Lekérése és a Határhatás (Edge Effect) Kiküszöbölése
+**Módszertani probléma (Peremhatás)**: Ha az OSM szolgáltatásokat kizárólag Kőbánya szigorú közigazgatási határán belül kérdezzük le, a kerület szélein fekvő ingatlanok (pl. a VIII. kerület Józsefvárossal, a IX. Ferencvárossal, vagy a XIV. Zuglóval határos részek) mesterségesen hátrányba kerülnek, mert az elemzés nem látja a közvetlenül a túloldalon lévő éttermeket, parkokat, iskolákat.
+**Tudományos megoldás**: A közigazgatási határra egy **1200 méteres térbeli puffert** alkalmazunk, így a 15 perces gyalogos izokrónon belüli valós elérhetőséget mérjük a szomszédos kerületek intézményi kínálatával együtt."""))
 
-    nb.cells.append(new_code_cell("""if OSMNX_AVAILABLE:
-    # Egyszerűsített bounding box Kőbányára
-    place_name = 'Kőbánya, Budapest, Hungary'
-    
+    nb.cells.append(new_code_cell("""# Pufferelt POI adatbázis betöltése (vagy lekérése)
+cand_paths = [
+    os.path.join('data', 'poi_kobanya_buffered.geojson'),
+    os.path.join('..', 'data', 'poi_kobanya_buffered.geojson'),
+    os.path.abspath('data/poi_kobanya_buffered.geojson')
+]
+poi_cache_file = next((p for p in cand_paths if os.path.exists(p)), cand_paths[0])
+
+if os.path.exists(poi_cache_file):
+    poi_data = gpd.read_file(poi_cache_file)
+    print(f"Betöltve a pufferelt POI adatbázis: {len(poi_data)} db szolgáltatás (határhatás korrigálva).")
+elif OSMNX_AVAILABLE:
     try:
-        # Próbáljuk meg lekérni a parkokat és éttermeket
+        print("Pufferelt határ lekérése OpenStreetMap-ről...")
+        poly_gdf = ox.geocode_to_gdf('Kőbánya, Budapest, Hungary')
+        buffered = poly_gdf.to_crs(epsg=3857).buffer(1200).to_crs(epsg=4326).geometry.iloc[0]
         tags = {'leisure': 'park', 'amenity': ['restaurant', 'cafe', 'school']}
-        poi_data = ox.features_from_place(place_name, tags)
-        print(f"Sikeresen lekérve {len(poi_data)} db POI adat az OpenStreetMap-ről.")
-        
-        # Geometriai középpontok (centroidok) számítása
-        poi_data = poi_data.to_crs(epsg=3857) # Vetület a távolsághoz
-        poi_data['centroid'] = poi_data.geometry.centroid
-        poi_data = poi_data.to_crs(epsg=4326) # Vissza WGS84-be
-        
+        poi_data = ox.features_from_polygon(polygon=buffered, tags=tags)
+        poi_data.to_file(poi_cache_file, driver='GeoJSON')
+        print(f"Sikeresen lekérve és mentve {len(poi_data)} db pufferelt POI.")
     except Exception as e:
-        print(f"Nem sikerült élőben lekérni az OSM adatokat. Hiba: {e}")
+        print(f"Hiba a lekérés során: {e}")
         poi_data = None
 else:
-    print("OSMNX hiányzik, az elemzés csak demó módban fut.")
-    poi_data = None"""))
+    poi_data = None
+
+if poi_data is not None:
+    poi_data = poi_data.to_crs(epsg=3857)
+    poi_data['centroid'] = poi_data.geometry.centroid
+    poi_data = poi_data.to_crs(epsg=4326)"""))
 
     nb.cells.append(new_markdown_cell("""### 2. A "15-Perces Város" Index Kiszámítása
-A hirdetések koordinátái alapján megnézzük, hány szolgáltatás (POI) érhető el az 5-10-15 perces gyalogos sávokban.
-Módszertanilag szinkronizáljuk a távolságokat az NB05-ös izokrón sávokkal (5 perc = 375m, 10 perc = 750m, 15 perc = 1125m)."""))
+A hirdetések koordinátái alapján megnézzük, hány szolgáltatás (POI) érhető el az 5-10-15 perces gyalogos sávokban (375m, 750m, 1125m), most már a szomszédos kerületek átnyúló kínálatát is figyelembe véve."""))
 
-    nb.cells.append(new_code_cell("""# POI indexek számítása a standard gyalogos sávokra (légvonalbeli közelítés)
-if OSMNX_AVAILABLE and poi_data is not None:
-    # Ingatlanok geometriája
+    nb.cells.append(new_code_cell("""if poi_data is not None:
     gdf_ing = gpd.GeoDataFrame(
         df_pontos, 
         geometry=gpd.points_from_xy(df_pontos.geokodolt_lon, df_pontos.geokodolt_lat),
         crs="EPSG:4326"
-    )
+    ).to_crs(epsg=3857)
     
-    # 3857 vetületre a méter alapú távolságokhoz
-    gdf_ing_3857 = gdf_ing.to_crs(epsg=3857)
-    poi_3857 = poi_data.to_crs(epsg=3857)
+    poi_centroids_3857 = poi_data.to_crs(epsg=3857).set_geometry('centroid')
     
     # Szolgáltatások száma a standard sávokban
     poi_375 = []
     poi_750 = []
     poi_1125 = []
     
-    for idx, row in gdf_ing_3857.iterrows():
+    for idx, row in gdf_ing.iterrows():
         point = row.geometry
-        distances = poi_3857.geometry.distance(point)
+        distances = poi_centroids_3857.geometry.distance(point)
         poi_375.append((distances <= 375).sum())
         poi_750.append((distances <= 750).sum())
         poi_1125.append((distances <= 1125).sum())
@@ -2718,23 +2723,23 @@ if OSMNX_AVAILABLE and poi_data is not None:
     df_pontos['poi_750m_count'] = poi_750
     df_pontos['poi_1125m_count'] = poi_1125
     
+    kpi_cards = [
+        ("Átlagos POI 5p (375m)", f"{df_pontos['poi_375m_count'].mean():.1f} db", "Közvetlen környezet", "#1e3a8a"),
+        ("Átlagos POI 10p (750m)", f"{df_pontos['poi_750m_count'].mean():.1f} db", "Napi szükségletek", "#059669"),
+        ("Átlagos POI 15p (1125m)", f"{df_pontos['poi_1125m_count'].mean():.1f} db", "15 perces város zóna", "#2563eb"),
+        ("Maximum POI (1125m)", f"{df_pontos['poi_1125m_count'].max()} db", "Legjobban ellátott pont", "#7c3aed"),
+        ("Minimum POI (1125m)", f"{df_pontos['poi_1125m_count'].min()} db", "Periféria / ipari zóna", "#dc2626")
+    ]
+    display(HTML(kpi_grid_html(kpi_cards)))
+    
     fig = px.scatter_map(
         df_pontos, lat='geokodolt_lat', lon='geokodolt_lon', color='poi_1125m_count',
         size='nm_ar_huf', hover_name='cim_teljes', map_style='carto-positron',
-        title='"15 perces város" - Szolgáltatások száma 1125 méteren belül'
+        color_continuous_scale='Viridis',
+        title='"15 perces város" - Szolgáltatások száma 1125 méteren belül (Pufferelt, határhatás mentes)'
     )
     fig.update_layout(height=500, margin={"r":0,"t":40,"l":0,"b":0})
-    fig.show()
-else:
-    print("POI adatok hiányában a számítás szimulált adatokat mutat (placeholder).")
-    df_pontos['poi_375m_count'] = np.random.randint(1, 10, len(df_pontos))
-    df_pontos['poi_750m_count'] = np.random.randint(5, 20, len(df_pontos))
-    df_pontos['poi_1125m_count'] = np.random.randint(10, 50, len(df_pontos))
-    
-    kpi_cards = [
-        ("Átlagos POI 1125m-en belül", f"{df_pontos['poi_1125m_count'].mean():.1f} db", "Szimulált adat", "#1e3a8a")
-    ]
-    display(HTML(kpi_grid_html(kpi_cards)))"""))
+    fig.show()"""))
 
     nb.cells.append(new_markdown_cell("""### 3. Hedonikus Árprémium a POI Sűrűség alapján
 Az OSM szolgáltatási sűrűség (3 gyalogos sávban mérve) beépítése a lakásárak lineáris regressziójába."""))

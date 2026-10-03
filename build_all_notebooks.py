@@ -598,7 +598,7 @@ frissit_terkep()"""))
 # ==============================================================================
 # NOTEBOOK 04: Hedonikus Ármodell (OLS / WLS / Robusztus)
 # ==============================================================================
-def build_nb04():
+def build_nb07():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb04"]["intro"]))
@@ -790,7 +790,7 @@ fig2.show()"""))
 
     nb.cells.append(new_code_cell("""w_vars = widgets.SelectMultiple(
     options=[(valtozo_magyarazat.get(c, c), c) for c in features],
-    value=('korrigalt_alapterulet_nm', 'is_panel', 'allapot_kod', 'log_tavolsag_vasut_m', 'tavolsag_vasut_halozati_m'),
+    value=tuple(features),
     description='Változók:',
     layout={'height': '160px', 'width': '450px'}
 )
@@ -841,7 +841,7 @@ futtat_modell()"""))
 # ==============================================================================
 # NOTEBOOK 05: Vasúti Diszkont és Izokrón Elemzés
 # ==============================================================================
-def build_nb05():
+def build_nb04():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb05"]["intro"]))
@@ -885,6 +885,16 @@ kpi_cards = [
     ("Állomás 10p Séta (750m)", f"{(elado['vasut_10p_seta'] == 1).sum()} db", "Kőbánya alsó vonzáskörzet", "#8b5cf6")
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
+
+    nb.cells.append(new_code_cell("""from plotly.subplots import make_subplots
+fig_dual = make_subplots(specs=[[{"secondary_y": True}]])
+df_zona = elado.dropna(subset=["vasut_zona"]).groupby("vasut_zona", observed=True).agg({"nm_ar_huf":"median", "tavolsag_vasut_halozati_m":"median"}).reset_index()
+df_zona["log_nm_ar"] = np.log(df_zona["nm_ar_huf"] / 1000)
+fig_dual.add_trace(go.Scatter(x=df_zona["vasut_zona"].astype(str), y=df_zona["log_nm_ar"]*1000, mode="lines+markers", name="Fajlagos Ár", line=dict(color="blue", width=3)), secondary_y=False)
+if "tavolsag_vasut_halozati_m" in df_zona.columns:
+    fig_dual.add_trace(go.Scatter(x=df_zona["vasut_zona"].astype(str), y=df_zona["tavolsag_vasut_halozati_m"], mode="lines+markers", name="Állomás Hálózati Távolság", line=dict(color="orange", width=2, dash="dot")), secondary_y=True)
+fig_dual.update_layout(title="Vasúti Zónák: Zajdiszkont vs. Elérhetőség", template=PLOTLY_TEMPLATE)
+fig_dual.show()"""))
 
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb05"]["sec2"]))
 
@@ -1006,7 +1016,7 @@ frissit_dist()"""))
 # ==============================================================================
 # NOTEBOOK 06: Bérleti Piac, Hozamszámítás és Rent Gap Elemzés
 # ==============================================================================
-def build_nb06():
+def build_nb12():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb06"]["intro"]))
@@ -1183,7 +1193,7 @@ szamol_hozam()"""))
 # ==============================================================================
 # NOTEBOOK 07: Land Value Capture (LVC) Szimuláció
 # ==============================================================================
-def build_nb07():
+def build_nb14():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb07"]["intro"]))
@@ -1331,7 +1341,7 @@ frissit_lvc()"""))
 # ==============================================================================
 # NOTEBOOK 08: Monte Carlo Kockázatelemzés
 # ==============================================================================
-def build_nb08():
+def build_nb13():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb08"]["intro"]))
@@ -1531,7 +1541,7 @@ futtat_mc()"""))
 # ==============================================================================
 # NOTEBOOK 09: Klaszter és Tipológia Elemzés
 # ==============================================================================
-def build_nb09():
+def build_nb06():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb09"]["intro"]))
@@ -1717,7 +1727,7 @@ frissit_km()"""))
 # ==============================================================================
 # NOTEBOOK 10: Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés
 # ==============================================================================
-def build_nb10():
+def build_nb08():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb10"]["intro"]))
@@ -1922,7 +1932,7 @@ frissit_moran()"""))
 # ==============================================================================
 # NOTEBOOK 11: Interaktív Ingatlan Kereső Dashboard
 # ==============================================================================
-def build_nb11():
+def build_nb15():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb11"]["intro"]))
@@ -2071,7 +2081,7 @@ frissit_kereses()"""))
 # ==============================================================================
 # NOTEBOOK 12: Prediktív Gépi Tanulás és Árarbitrázs
 # ==============================================================================
-def build_nb12():
+def build_nb11():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb12"]["intro"]))
@@ -2097,12 +2107,16 @@ print(f"Modellezésre elérhető eladó lakások: {len(elado)} db.")"""))
 
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb12"]["sec1"]))
 
-    nb.cells.append(new_code_cell("""features = [
+    nb.cells.append(new_code_cell("""df_pontos['emelet_szam'] = df_pontos['emelet_szam'].fillna(df_pontos['emelet_szam'].median())
+df_pontos['epulet_kora_ev'] = df_pontos['epulet_kora_ev'].fillna(df_pontos['epulet_kora_ev'].median())
+
+features = [
     'korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel', 
-    'has_lift', 'allapot_kod', 'tavolsag_metro_halozati_m',
-    'tavolsag_vasut_m', 'tavolsag_vasut_halozati_m', 'tavolsag_mazsa_halozati_m'
+    'has_lift', 'allapot_kod', 'van_erkely', 'emelet_szam', 'epulet_kora_ev',
+    'tavolsag_metro_halozati_m', 'tavolsag_vasut_m', 'tavolsag_vasut_halozati_m', 
+    'tavolsag_mazsa_halozati_m'
 ]
-df_ml = elado.dropna(subset=['nm_ar_huf', 'price_huf'] + features).copy()
+df_ml = df_pontos.dropna(subset=['nm_ar_huf', 'price_huf'] + features).copy()
 
 X = df_ml[features]
 y = df_ml['nm_ar_huf']
@@ -2275,7 +2289,7 @@ szamol_ertek()"""))
 # ==============================================================================
 # NOTEBOOK 13: Térökonometria (Spatial Lag és Spatial Error Modellek)
 # ==============================================================================
-def build_nb13():
+def build_nb09():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb13"]["intro"]))
@@ -2314,9 +2328,10 @@ w_knn = KNN.from_array(coords, k=8)
 w_knn.transform = 'R'
 
 # 2. Változók definiálása
-x_vars = ['korrigalt_alapterulet_nm', 'is_panel', 'allapot_kod', 'tavolsag_metro_halozati_m', 'tavolsag_vasut_m', 'tavolsag_vasut_halozati_m']
+x_vars = ['korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel', 'has_lift', 'allapot_kod', 'van_erkely', 'emelet_szam', 'tavolsag_metro_halozati_m', 'tavolsag_vasut_m', 'tavolsag_vasut_halozati_m']
 df_geo['log_vasut_m'] = np.log(df_geo['tavolsag_vasut_m'].replace(0, 1))
-x_vars_reg = ['korrigalt_alapterulet_nm', 'is_panel', 'allapot_kod', 'tavolsag_metro_halozati_m', 'log_vasut_m', 'tavolsag_vasut_halozati_m']
+df_geo['emelet_szam'] = df_geo['emelet_szam'].fillna(df_geo['emelet_szam'].median())
+x_vars_reg = ['korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel', 'has_lift', 'allapot_kod', 'van_erkely', 'emelet_szam', 'tavolsag_metro_halozati_m', 'log_vasut_m', 'tavolsag_vasut_halozati_m']
 
 df_reg = df_geo.dropna(subset=['log_nm_ar'] + x_vars_reg).reset_index(drop=True)
 coords_clean = np.column_stack((df_reg['geokodolt_lon'], df_reg['geokodolt_lat']))
@@ -2341,18 +2356,21 @@ X_const = sm.add_constant(df_reg[x_vars_reg])
 ols_res = sm.OLS(y_vec, X_const).fit()
 
 # 2. Spatial Two-Stage Least Squares (2SLS / IV)
-# 1. lépés: Wy regressziója az instrumentumokra [X, WX]
 Z_instruments = sm.add_constant(np.column_stack((X_mat, WX)))
 first_stage = sm.OLS(Wy, Z_instruments).fit()
 Wy_hat = first_stage.fittedvalues
-
-# 2. lépés: y regressziója az [X, Wy_hat]-re
 X_sar = sm.add_constant(np.column_stack((X_mat, Wy_hat)))
 sar_res = sm.OLS(y_vec, X_sar).fit()
 
 rho_hat = float(np.asarray(sar_res.params)[-1])
 rho_p = float(np.asarray(sar_res.pvalues)[-1])
 spatial_multiplier = 1.0 / (1.0 - rho_hat) if rho_hat < 1 else 1.0
+
+# 3. Maximum Likelihood Spatial Lag (ML_Lag) - spreg
+from spreg import ML_Lag
+ml_sar = ML_Lag(y_vec.reshape(-1,1), X_mat, w=w_clean, name_y='log_nm_ar', name_x=x_vars_reg)
+ml_rho = ml_sar.rho
+ml_rho_p = ml_sar.z_stat[-1][1]
 
 # Moran I a maradványokon
 moran_ols_resid = Moran(ols_res.resid, w_clean).I
@@ -2372,8 +2390,12 @@ display(HTML(kpi_grid_html(kpi_cards)))"""))
 
     nb.cells.append(new_code_cell("""var_names_hu = ['Tengelymetszet (Konstans)'] + [
     'Korrigált alapterület (m²)',
+    'Szobaszám',
     'Panelszerkezet (dummy)',
+    'Lift (dummy)',
     'Műszaki állapot index',
+    'Erkély (dummy)',
+    'Emelet',
     'Metró távolság (hálózat, m)',
     'Vasúti pálya légvonal (ln m)',
     'Vasútállomás hálózat (m)'
@@ -2383,19 +2405,24 @@ ols_p = np.asarray(ols_res.params)
 ols_pv = np.asarray(ols_res.pvalues)
 sar_p = np.asarray(sar_res.params)
 sar_pv = np.asarray(sar_res.pvalues)
+ml_p = np.asarray(ml_sar.betas).flatten()
+ml_z = np.asarray([z[1] for z in ml_sar.z_stat])
 
 cmp_rows = []
+# Itt feltételezzük, hogy len(var_names_hu) megegyezik a paraméterek számával (1 + 10)
 for i, name in enumerate(var_names_hu):
     cmp_rows.append({
         'Változó': name,
         'OLS Együttható (β)': f"{ols_p[i]:.5f} (p={ols_pv[i]:.3f})",
-        'Spatial Lag Együttható (β)': f"{sar_p[i]:.5f} (p={sar_pv[i]:.3f})"
+        'SAR 2SLS/IV (β)': f"{sar_p[i]:.5f} (p={sar_pv[i]:.3f})",
+        'SAR ML_Lag (spreg)': f"{ml_p[i]:.5f} (p={ml_z[i]:.3f})"
     })
 
 cmp_rows.append({
     'Változó': 'Térbeli Lag (ρ - Spatial Wy)',
     'OLS Együttható (β)': '-',
-    'Spatial Lag Együttható (β)': f"{rho_hat:.5f} (p={rho_p:.4e})***"
+    'SAR 2SLS/IV (β)': f"{rho_hat:.5f} (p={rho_p:.4e})***",
+    'SAR ML_Lag (spreg)': f"{ml_rho:.5f} (p={ml_rho_p:.4e})***"
 })
 cmp_rows.append({
     'Változó': 'Moran I a Reziduálisokon',
@@ -2458,7 +2485,7 @@ frissit_sar()"""))
 # ==============================================================================
 # NOTEBOOK 14: Külső POI Adatintegráció és "15 perces város" Index
 # ==============================================================================
-def build_nb14():
+def build_nb05():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb14"]["intro"]))
@@ -2589,7 +2616,7 @@ print(f"Az új modell R² értéke: {model.rsquared:.4f}")"""))
 # ==============================================================================
 # NOTEBOOK 15: Lokális Térökonometria (Geographically Weighted Regression - GWR)
 # ==============================================================================
-def build_nb15():
+def build_nb10():
     nb = new_notebook()
     
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb15"]["intro"]))
@@ -2617,7 +2644,8 @@ print(f"GWR Mintaelemszám: {len(df_pontos)} db.")"""))
 
     nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb15"]["sec1"]))
 
-    nb.cells.append(new_code_cell("""features = ['korrigalt_alapterulet_nm', 'tavolsag_metro_halozati_m']
+    nb.cells.append(new_code_cell("""features = ['korrigalt_alapterulet_nm', 'tavolsag_metro_halozati_m', 'is_panel', 'allapot_kod', 'log_vasut_m']
+df_pontos['log_vasut_m'] = np.log(df_pontos['tavolsag_vasut_m'].replace(0, 1))
 df_reg = df_pontos.dropna(subset=['log_nm_ar', 'geokodolt_lon', 'geokodolt_lat'] + features).copy()
 
 # Tudományos megoldás a lokális multikollinearitás elkerülésére: 

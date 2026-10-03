@@ -3,34 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>11_gepi_tanulas_es_arbitrazs</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script><script>
-(function() {
-  function addWidgetsRenderer() {
-    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
-    var scriptElement = document.createElement('script');
-    
-    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
-    
-    var widgetState;
-
-    // Fallback for older version:
-    try {
-      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
-
-      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
-        
-        var widgetRendererSrc = 'https://unpkg.com/@jupyter-js-widgets@*/dist/embed.js';
-        
-      }
-    } catch(e) {}
-
-    scriptElement.src = widgetRendererSrc;
-    document.body.appendChild(scriptElement);
-  }
-
-  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
-}());
-</script>
+<title>11_gepi_tanulas_es_arbitrazs</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7823,24 +7796,25 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=31d61ed4">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8c6437fd">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="12.-G%C3%A9pi-Tanul%C3%A1sos-%C3%81rmeghat%C3%A1roz%C3%A1s-%C3%A9s-Piaci-Arbitr%C3%A1zs">12. Gépi Tanulásos Ármeghatározás és Piaci Arbitrázs<a class="anchor-link" href="#12.-G%C3%A9pi-Tanul%C3%A1sos-%C3%81rmeghat%C3%A1roz%C3%A1s-%C3%A9s-Piaci-Arbitr%C3%A1zs">¶</a></h1><p><strong>Cél</strong>: Random Forest árbecslő modell tanítása, a változók fontossági rangsorának (Feature Importance) feltárása és a piacilag alulárazott (arbitrázs) lakások automatikus azonosítása.</p>
+<h1 id="12.-G%C3%A9pi-Tanul%C3%A1sos-%C3%81rmeghat%C3%A1roz%C3%A1s-%C3%A9s-Piaci-Arbitr%C3%A1zs">12. Gépi Tanulásos Ármeghatározás és Piaci Arbitrázs<a class="anchor-link" href="#12.-G%C3%A9pi-Tanul%C3%A1sos-%C3%81rmeghat%C3%A1roz%C3%A1s-%C3%A9s-Piaci-Arbitr%C3%A1zs">¶</a></h1><p><strong>Kontextus és Kapcsolódás:</strong> Az eddigi parametrikus modellek (OLS, SAR, GWR) jól magyaráznak, de a nemlineáris interakciókat nehezen kezelik. A prediktív pontosság maximalizálása érdekében most áttérünk a gépi tanulásra (Random Forest).</p>
+<p><strong>Cél</strong>: Random Forest árbecslő modell tanítása, a változók fontossági rangsorának (Feature Importance) feltárása és a piacilag alulárazott (arbitrázs) lakások automatikus azonosítása.</p>
 <hr/>
 <h3 id="%F0%9F%93%96-Mi-az-a-piaci-arbitr%C3%A1zs?">📖 Mi az a piaci arbitrázs?<a class="anchor-link" href="#%F0%9F%93%96-Mi-az-a-piaci-arbitr%C3%A1zs?">¶</a></h3><p>Ha a gépi tanulási modell nagy pontossággal ($R^2 &gt; 0.80$) megbecsüli a lakás reális értékét, a modell jóslatánál jóval olcsóbban hirdetett ingatlanok <strong>alulárazott arbitrázs lehetőséget</strong> jelentenek.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=efd7645a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cba7c378">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span><span class="p">;</span> <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
@@ -7866,21 +7840,8 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Modellezésre elérhető eladó lakások: 1140 db.
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ae2342af">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2e87e552">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7891,20 +7852,24 @@ A Random Forest modell az adatok több mint 80%-át magyarázza a teszthalmazon,
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0d161250">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=913c0219">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_pontos</span><span class="p">[</span><span class="s1">'emelet_szam'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pontos</span><span class="p">[</span><span class="s1">'emelet_szam'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df_pontos</span><span class="p">[</span><span class="s1">'emelet_szam'</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
+<span class="n">df_pontos</span><span class="p">[</span><span class="s1">'epulet_kora_ev'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pontos</span><span class="p">[</span><span class="s1">'epulet_kora_ev'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df_pontos</span><span class="p">[</span><span class="s1">'epulet_kora_ev'</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">'korrigalt_alapterulet_nm'</span><span class="p">,</span> <span class="s1">'szobaszam_osszes'</span><span class="p">,</span> <span class="s1">'is_panel'</span><span class="p">,</span> 
-    <span class="s1">'has_lift'</span><span class="p">,</span> <span class="s1">'allapot_kod'</span><span class="p">,</span> <span class="s1">'tavolsag_metro_halozati_m'</span><span class="p">,</span>
-    <span class="s1">'tavolsag_vasut_m'</span><span class="p">,</span> <span class="s1">'tavolsag_vasut_halozati_m'</span><span class="p">,</span> <span class="s1">'tavolsag_mazsa_halozati_m'</span>
+    <span class="s1">'has_lift'</span><span class="p">,</span> <span class="s1">'allapot_kod'</span><span class="p">,</span> <span class="s1">'van_erkely'</span><span class="p">,</span> <span class="s1">'emelet_szam'</span><span class="p">,</span> <span class="s1">'epulet_kora_ev'</span><span class="p">,</span>
+    <span class="s1">'tavolsag_metro_halozati_m'</span><span class="p">,</span> <span class="s1">'tavolsag_vasut_m'</span><span class="p">,</span> <span class="s1">'tavolsag_vasut_halozati_m'</span><span class="p">,</span> 
+    <span class="s1">'tavolsag_mazsa_halozati_m'</span>
 <span class="p">]</span>
-<span class="n">df_ml</span> <span class="o">=</span> <span class="n">elado</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'price_huf'</span><span class="p">]</span> <span class="o">+</span> <span class="n">features</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_ml</span> <span class="o">=</span> <span class="n">df_pontos</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'nm_ar_huf'</span><span class="p">,</span> <span class="s1">'price_huf'</span><span class="p">]</span> <span class="o">+</span> <span class="n">features</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">df_ml</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">df_ml</span><span class="p">[</span><span class="s1">'nm_ar_huf'</span><span class="p">]</span>
@@ -7940,44 +7905,8 @@ A Random Forest modell az adatok több mint 80%-át magyarázza a teszthalmazon,
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div style="display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0 24px 0;"><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Random Forest R²</div>
-<div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">0.431</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">Teszt adathalmazon</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Gradient Boosting R²</div>
-<div style="font-size: 24px; font-weight: 800; color: #2563eb; margin-top: 4px;">0.468</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">Teszt adathalmazon</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Átlagos Hiba (MAE)</div>
-<div style="font-size: 24px; font-weight: 800; color: #059669; margin-top: 4px;">109 757 Ft</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">Random Forest hiba</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Relatív Hiba (MAPE)</div>
-<div style="font-size: 24px; font-weight: 800; color: #10b981; margin-top: 4px;">9.0%</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">Százalékos pontosság</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Tanító Minta (N)</div>
-<div style="font-size: 24px; font-weight: 800; color: #d97706; margin-top: 4px;">177 db</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">80% arány</div>
-</div><div style="flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-<div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Tesztelő Minta (N)</div>
-<div style="font-size: 24px; font-weight: 800; color: #7c3aed; margin-top: 4px;">45 db</div>
-<div style="font-size: 11px; color: #64748b; margin-top: 4px;">20% arány</div>
-</div></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=91814f4a">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8109e32b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7993,12 +7922,12 @@ A Random Forest modell az adatok több mint 80%-át magyarázza a teszthalmazon,
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a352fe56">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5e5911a1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1. Tényleges vs Becsült ábra</span>
@@ -8054,86 +7983,8 @@ A Random Forest modell az adatok több mint 80%-át magyarázza a teszthalmazon,
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<script>
-        window.PlotlyConfig = {MathJaxConfig: 'local'};
-        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
-        </script>
-<script type="module">import "https://cdn.plot.ly/plotly-4.1.1.min"</script>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div style="height:450px; width:100%;"> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script><script>if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script> <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-<script charset="utf-8" crossorigin="anonymous" integrity="sha256-O24V1F27f8pb0glCkelh3cVHLNiHAJ5gCaVtq2aNch8=" src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script> <div class="plotly-graph-div" id="5a54b58a-8b53-4def-a756-a172a32a4f4a" style="height:100%; width:100%;"></div> <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("5a54b58a-8b53-4def-a756-a172a32a4f4a")) {                    Plotly.newPlot(                        "5a54b58a-8b53-4def-a756-a172a32a4f4a",                        [{"marker":{"color":"#2563eb","opacity":0.7,"size":8},"mode":"markers","name":"Teszt adatok","x":{"dtype":"f8","bdata":"xSCwcug+l0Dn+6nxUuSQQI\u002fC9Shc4ZNAg8DKoUWtikCuR+F6FMWcQHE9CtejppVASOF6FC6mlkDVeOkmMUKSQBkEVg6tn5JASOF6FK7ckkBg5dAi216XQKAaL90kkYxA7nw\u002fNV4rmEC28\u002f3UeMyWQBBYObRIapdAAAAAAADojECPwvUo3GiVQKAaL90kcYhASOF6FK6QjECBlUOL7NSTQJ7vp8ZLo5ZA\u002fKnx0k0JmUDZzvdT43yTQAAAAAAAmpBAtvP91HjElUBxPQrXo32FQAAAAACAT6JAHVpkO18ylEBCYOXQIgOWQNnO91NjIJBAxSCwcmhblUAAAAAAAMaRQAAAAAAA9JVAMQisHNpjlkBxPQrXo6aVQNv5fmq8vJdARrbz\u002fVRSlUAnMQisHEGQQOf7qfHS6ZpAAAAAAACEl0A5tMh2PmyYQEjhehQuiJZAAAAAAAAokUDJdr6fGqOWQAwCK4cWIJZA"},"y":{"dtype":"f8","bdata":"3lrUg7HqlkCvCP63Eo+RQCGhojn0x5NAIdrTsBlYlUC0f2HPRx6YQJjP\u002fq2BrJVAzlETFw37lkCPlj8usx6UQC3AelCfBJVAKmiUTJBymEA9n7fx0maXQNWVz\u002fJc2o5AWY8HSzbHl0AmSOmCe16XQPdAyahTmphAVC9wF6XSjUCf4RkTt9KVQAIzzPZOoJRAQYLix0jJkEBUy\u002fszKE6RQCZI6YJ7XpdAPOcy5uRXmkCWAXr02QuSQMs6CZKk8I9An+EZE7fSlUC9fwauxeqJQDYyoscK45NAKi02wN8ZlUCh2p7o\u002fVqWQAcAI38E+I9AXPQgBB9DlkCUJgcoTIqSQEfMFnfboZVAXPQgBB9DlkCYz\u002f6tgayVQD2ft\u002fHSZpdA5US7CilykUDvBck8F7aSQAioNUOu6JpAdxVNTSJOl0D\u002fsBrUOImYQN5a1IOx6pZAYqEzcjqokEA9n7fx0maXQJ\u002fhGRO30pVA"},"type":"scatter"},{"line":{"color":"red","dash":"dash"},"mode":"lines","name":"T\u00f6k\u00e9letes illeszked\u00e9s (y=x)","x":[687.705,2343.75],"y":[687.705,2343.75],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"bgcolor":"white","angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"ternary":{"bgcolor":"white","aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"white","subunitcolor":"#C8D4E3","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05}}},"title":{"text":"Random Forest: T\u00e9nyleges vs. Becs\u00fclt N\u00e9gyzetm\u00e9ter\u00e1r (Ezer Ft\u002fm\u00b2)"},"xaxis":{"title":{"text":"T\u00e9nyleges \u00c1r\u002fm\u00b2 (ezer Ft)"}},"yaxis":{"title":{"text":"Becs\u00fclt \u00c1r\u002fm\u00b2 (ezer Ft)"}},"height":450},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('5a54b58a-8b53-4def-a756-a172a32a4f4a');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };            </script> </div>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div style="height:420px; width:100%;"> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script><script>if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script> <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-<script charset="utf-8" crossorigin="anonymous" integrity="sha256-O24V1F27f8pb0glCkelh3cVHLNiHAJ5gCaVtq2aNch8=" src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script> <div class="plotly-graph-div" id="b4ccd996-7917-4969-972f-9e2b1249c2e8" style="height:100%; width:100%;"></div> <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("b4ccd996-7917-4969-972f-9e2b1249c2e8")) {                    Plotly.newPlot(                        "b4ccd996-7917-4969-972f-9e2b1249c2e8",                        [{"hovertemplate":"Relat\u00edv Fontoss\u00e1g (0 - 1)=%{marker.color}\u003cbr\u003eJellemz\u0151=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":{"dtype":"f8","bdata":"cU3pizredD+4lGWn+iWAP9UanyJpRJY\u002fehG1rltRpj+WoY1gQ7uoP9\u002fiM+Smbqw\u002foZPtXifrsT+sQz\u002foXxPMP36xEBKX6eA\u002f"},"coloraxis":"coloraxis","pattern":{"shape":""}},"name":"","orientation":"h","showlegend":false,"textposition":"auto","x":{"dtype":"f8","bdata":"cU3pizredD+4lGWn+iWAP9UanyJpRJY\u002fehG1rltRpj+WoY1gQ7uoP9\u002fiM+Smbqw\u002foZPtXifrsT+sQz\u002foXxPMP36xEBKX6eA\u002f"},"xaxis":"x","y":["Lift (dummy)","Panel \u00c9p\u00fclet (dummy)","Szobasz\u00e1m","Vas\u00fati P\u00e1lya L\u00e9gvonal (zaj)","Vas\u00fat\u00e1llom\u00e1s H\u00e1l\u00f3zat (TOD)","M\u00e1zsa T\u00e9r H\u00e1l\u00f3zat (LVC)","Metr\u00f3 T\u00e1vols\u00e1g (m)","Alapter\u00fclet (m\u00b2)","M\u0171szaki \u00c1llapot"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"bgcolor":"white","angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"ternary":{"bgcolor":"white","aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"white","subunitcolor":"#C8D4E3","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Relat\u00edv Fontoss\u00e1g (0 - 1)"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Jellemz\u0151"}},"coloraxis":{"colorbar":{"title":{"text":"Relat\u00edv Fontoss\u00e1g (0 - 1)"}},"colorscale":[[0.0,"rgb(247,251,255)"],[0.125,"rgb(222,235,247)"],[0.25,"rgb(198,219,239)"],[0.375,"rgb(158,202,225)"],[0.5,"rgb(107,174,214)"],[0.625,"rgb(66,146,198)"],[0.75,"rgb(33,113,181)"],[0.875,"rgb(8,81,156)"],[1.0,"rgb(8,48,107)"]],"autocolorscale":false},"legend":{"tracegroupgap":0},"title":{"text":"\u00c1rmeghat\u00e1roz\u00f3 T\u00e9nyez\u0151k Relat\u00edv Fontoss\u00e1ga (Random Forest Gini Importance)"},"barmode":"relative","height":420},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('b4ccd996-7917-4969-972f-9e2b1249c2e8');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };            </script> </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=234b6093">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4d6d295f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8144,12 +7995,12 @@ A modell által azonosított legnagyobb mértékben alulárazott kőbányai lak�
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=de82a855">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1696f89c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Teljes minta előrejelzése a legjobb modellel (Random Forest)</span>
@@ -8191,216 +8042,8 @@ A modell által azonosított legnagyobb mértékben alulárazott kőbányai lak�
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<b>Top 15 Alulárazott Ingatlanbefektetési Célpont Kőbányán:</b><div style="overflow-x:auto; margin: 15px 0;"><table border="1" class="dataframe table table-bordered table-striped table-hover">
-<thead>
-<tr style="text-align: right;">
-<th>ID</th>
-<th>Cím</th>
-<th>Városrész</th>
-<th>Méret (m²)</th>
-<th>Kínálati Ár (M Ft)</th>
-<th>Becsült Érték (M Ft)</th>
-<th>Potenciális Árrés (M Ft)</th>
-<th>Alulárazottság (%)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>35461173</td>
-<td>Budapest X. kerület, Füzér utca 38/A.</td>
-<td>Ligettelek</td>
-<td>28.0</td>
-<td>21.9</td>
-<td>37.0</td>
-<td>15.1</td>
-<td>40.8</td>
-</tr>
-<tr>
-<td>35515946</td>
-<td>Budapest X. kerület, Bihari utca 16.</td>
-<td>Gyárdűlő</td>
-<td>41.0</td>
-<td>35.0</td>
-<td>56.0</td>
-<td>21.0</td>
-<td>37.5</td>
-</tr>
-<tr>
-<td>35431815</td>
-<td>Budapest X. kerület, Budapest XIX. kerület, Iparos utca 2.</td>
-<td>Kőbánya egyéb</td>
-<td>53.0</td>
-<td>64.0</td>
-<td>82.9</td>
-<td>18.9</td>
-<td>22.8</td>
-</tr>
-<tr>
-<td>35372930</td>
-<td>Budapest X. kerület, Martinovics tér 4.</td>
-<td>Óhegy</td>
-<td>122.0</td>
-<td>83.9</td>
-<td>101.2</td>
-<td>17.3</td>
-<td>17.1</td>
-</tr>
-<tr>
-<td>35183731</td>
-<td>Budapest X. kerület, Kada utca 19.</td>
-<td>Óhegy</td>
-<td>20.0</td>
-<td>20.0</td>
-<td>23.9</td>
-<td>3.9</td>
-<td>16.3</td>
-</tr>
-<tr>
-<td>35124751</td>
-<td>Budapest X. kerület, Kőrösi Csoma sétány 14.</td>
-<td>Kőbánya-Városközpont</td>
-<td>71.0</td>
-<td>64.9</td>
-<td>76.3</td>
-<td>11.4</td>
-<td>14.9</td>
-</tr>
-<tr>
-<td>35589328</td>
-<td>Budapest X. kerület, Hungária körút 5.</td>
-<td>Laposdűlő</td>
-<td>72.0</td>
-<td>74.9</td>
-<td>86.2</td>
-<td>11.3</td>
-<td>13.1</td>
-</tr>
-<tr>
-<td>35589153</td>
-<td>Budapest X. kerület, Tárna utca 4.</td>
-<td>Gyárdűlő</td>
-<td>49.0</td>
-<td>39.9</td>
-<td>45.6</td>
-<td>5.7</td>
-<td>12.5</td>
-</tr>
-<tr>
-<td>35316224</td>
-<td>Budapest X. kerület, Martinovics tér 4a.</td>
-<td>Óhegy</td>
-<td>122.0</td>
-<td>88.7</td>
-<td>101.2</td>
-<td>12.5</td>
-<td>12.3</td>
-</tr>
-<tr>
-<td>35571729</td>
-<td>Budapest X. kerület, Gyömrői út 45.</td>
-<td>Óhegy</td>
-<td>39.0</td>
-<td>34.9</td>
-<td>39.7</td>
-<td>4.8</td>
-<td>12.1</td>
-</tr>
-<tr>
-<td>34500511</td>
-<td>Budapest X. kerület, Cserkesz utca 25b.</td>
-<td>Kőbánya-Városközpont</td>
-<td>67.0</td>
-<td>50.0</td>
-<td>56.8</td>
-<td>6.8</td>
-<td>11.9</td>
-</tr>
-<tr>
-<td>35393664</td>
-<td>Budapest X. kerület, Cserkesz utca 19.</td>
-<td>Kőbánya-Városközpont</td>
-<td>99.0</td>
-<td>118.0</td>
-<td>133.2</td>
-<td>15.2</td>
-<td>11.4</td>
-</tr>
-<tr>
-<td>35513329</td>
-<td>Budapest X. kerület, Kada utca 24.</td>
-<td>Óhegy</td>
-<td>39.0</td>
-<td>33.5</td>
-<td>37.7</td>
-<td>4.2</td>
-<td>11.1</td>
-</tr>
-<tr>
-<td>35035943</td>
-<td>Budapest X. kerület, Martinovics tér 9.</td>
-<td>Óhegy</td>
-<td>107.0</td>
-<td>120.0</td>
-<td>134.5</td>
-<td>14.5</td>
-<td>10.8</td>
-</tr>
-<tr>
-<td>35589342</td>
-<td>Budapest X. kerület, Liget utca 35/B.</td>
-<td>Kőbánya-Városközpont</td>
-<td>56.0</td>
-<td>49.9</td>
-<td>55.0</td>
-<td>5.1</td>
-<td>9.3</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div style="height:480px; width:100%;"> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script><script>if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script> <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-<script charset="utf-8" crossorigin="anonymous" integrity="sha256-O24V1F27f8pb0glCkelh3cVHLNiHAJ5gCaVtq2aNch8=" src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script> <div class="plotly-graph-div" id="90f1db3f-d205-40da-bb8c-1e05462194bc" style="height:100%; width:100%;"></div> <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("90f1db3f-d205-40da-bb8c-1e05462194bc")) {                    Plotly.newPlot(                        "90f1db3f-d205-40da-bb8c-1e05462194bc",                        [{"customdata":{"dtype":"f8","bdata":"mpmZmZn5UEDCDP4sqG9RQGkDYgOmKAVAmpmZmZn5XUAJXZwL9gdeQEoWwFUQ6cc\u002fAAAAAACAUUC\u002fk6XARxZSQJtLxRL89glAAAAAAAAASUBWqthV02JMQLa19GZo2ydAMzMzMzPzTkA5h02QTrFQQEqxQj5XLR1AMzMzMzNzT0Ah\u002f5AvPzlQQK17e4BelghAAAAAAAAAXkDOgMzAt9BgQIEwwMtRlyVAmpmZmZm5V0A5FyKDOFFYQNhLvL0VfANAAAAAAADAVUCKlSQRMo1XQFM9iN70mB5AmpmZmZl5VED5QokVvFtVQPiybckPixBAmpmZmZn5UkARsdaOtU5TQDmvMuL1jPs\u002fmpmZmZk5UEDL4e4HtxFTQMWE7yaO1C1AAAAAAAAANEDJ6nrG4uM3QMIhv2yZSDBAmpmZmZk5UkC8gFTnAoJSQDJa56vxc\u002fg\u002fSOF6FK7fYEBQhZLa5BlhQOaLIfSNRvU\u002fzczMzMwcUkCTHhaMfvVTQLBvWpCpgCJAAAAAAAAASEB2Z9QZa\u002fFJQB+DKFVk9R1AmpmZmZl5W0AhXdGzqlJdQJVbutYzNRlAmpmZmZn5U0CzsbSGchxUQABDx3vFqOU\u002fmpmZmZnZUEB6e\u002fAMb31RQJWDgVrWRQ1AmpmZmZk5UUA3Ty+WzB9SQE083jR62BNAAAAAAAAAT0DYOJVqxLBPQPxc2URXbgFAAAAAAABAUkBK7nUn33NSQGQ1lAS4kfE\u002fAAAAAACAQ0DSdah1AyBEQO79ENvE2AhAMzMzMzPzSkDjPVZS4xxLQNwZmcM7OOM\u002fzczMzMycYEDOjImO1KZhQCe94fFwjBdAMzMzMzNzTED0Dp6mIgBNQGEvihmaX\u002f4\u002fzczMzMwsVkBKbLSjiUtZQFW8Fc9cqyhAmpmZmZk5WkCOFSlCII5bQClwjtkvTxNAmpmZmZk5WECIFZ1KWnFYQNP3hP0Hg+w\u002fAAAAAACATUCfPBYgqtxOQIDxkcMEpxFAAAAAAABAVUA\u002fqYhl5ZFVQG48IAPXuvc\u002fMzMzMzPzTUBW0HPqzMFOQImSpfe9\u002fQRAmpmZmZn5VEBKbLSjiUtZQA1JJ7AlFDFAMzMzMzPzTUC\u002feOMZRX1PQO8qu9vBjRNAAAAAAACAXUCEJd7vc6VgQN5qBNSPyCZAAAAAAACATUAe2qFDuyZQQPoh7aEjWiFAPQrXo3D9T0C+6dURQ7tUQJ5LpOvK2DZAAAAAAACASUAIXf00hgRKQJJ4JXHM1f8\u002fj8L1KFy\u002fUEDP1eV+zEdRQFVMFiZxrAhApHA9CtejSUDky3JMNe9JQO1lzf7FKfI\u002f9ihcj8IlW0DPYxB0aphbQPoaMkLU9\u002fk\u002f4XoUrkehTkCrPwPte1JPQC35JaD3rQFAKVyPwvUIUkBDORtXzlhSQJKg0jc6M\u002fs\u002f4XoUrkehSEB7+Fng8GxJQEepbTwSCAlA16NwPQo3UkAcAh7IZEtSQJ5HryNd0Ns\u002fj8L1KFy\u002fUUBDORtXzlhSQHPLZx\u002fgIgpAPQrXo3AtYUDGsCPRXo9hQCswmKeCbQFAhetRuB4VUkDKej4xImFSQA6J5AVG2fk\u002f7FG4HoXbX0BzFowchDxgQEYE\u002fkvxUP4\u002fhetRuB4lVUC9+VJKx35VQKei6Wy9Efo\u002f9ihcj8LFVUBOgXMPxCZWQDuKZUe+Xvs\u002fw\u002fUoXI9SX0BzFowchDxgQHNL1MKeVgxASOF6FK7nT0CrvOgBqy1QQPqCNTAJV\u002fY\u002fuB6F61HYVEA7tmFFDnBVQABa9GJiHgZApHA9CtdzUkDUm\u002fdpCjxTQDMcAu5bQxBAPQrXo3DNUUDKej4xImFSQKz7f5WlHAlAhetRuB6lWUBxB8LC+XpaQJFSrNDNPAlAZmZmZmbmNUCsgSMIKHtCQFFx9AcHYERApHA9CtfjT0CrvOgBqy1QQJz2CzfrFPc\u002fhetRuB6lUkDNYahgejxTQBf1ju+zlghAhetRuB4VUkDKej4xImFSQA6J5AVG2fk\u002f7FG4HoXbX0BzFowchDxgQEYE\u002fkvxUP4\u002fAAAAAADAUkDUm\u002fdpCjxTQHYmEBIVJwRArkfhehQuVUA7tmFFDnBVQLQms1kWPPM\u002frkfhehTOUUAcAh7IZEtSQChlMq3WZwVAKVyPwvWAYECEIXhIJs1gQMR+sKqOV\u002fw\u002fzczMzMx0YUDGsCPRXo9hQAjNdKX46eI\u002fUrgehesBXECHTmZj3n5cQKoj\u002f37AZ\u002fs\u002fhetRuB6VW0DPYxB0aphbQHsx9ukI46c\u002fKVyPwvUIUkBDORtXzlhSQJKg0jc6M\u002fs\u002fUrgehesxYEBzFowchDxgQMZW2TS3UNA\u002fXI\u002fC9ShcUkDKej4xImFSQFKZlX98D7s\u002fw\u002fUoXI9SUkBDORtXzlhSQNRRrYahBcE\u002frkfhehTOSEB7+Fng8GxJQMq5jS93hgNAMzMzMzPTSUDky3JMNe9JQGIlrDzD\u002f9o\u002fH4XrUbgeVkBOgXMPxCZWQNeB6A46KcI\u002fAAAAAAAQWkBNQEO3BXhaQD1JNN38j\u002fg\u002fmpmZmZm5T0BlJ1z0JiJQQLTCxpHe3fo\u002fH4XrUbgeT0CrPwPte1JPQMXeOGJsqOQ\u002fXI\u002fC9SgMU0DUm\u002fdpCjxTQB5ScCDJHe8\u002fXI\u002fC9ShcUkDKej4xImFSQFKZlX98D7s\u002fw\u002fUoXI9SUkBDORtXzlhSQNRRrYahBcE\u002fPQrXo3AdUEBlJ1z0JiJQQEThTkEfNb0\u002fUrgehesxYEBzFowchDxgQMZW2TS3UNA\u002fCtejcD0qSUB7+Fng8GxJQBGT0iJpZfA\u002f9ihcj8IlU0DNYahgejxTQGoYkGVpht0\u002fexSuR+FKUkAcAh7IZEtSQLukCUxvdoY\u002fmpmZmZn5UECKbiDR4upRQHrwlryXChVAH4XrUbj+T0DyKsZUFUdRQAu\u002fyCE2ox1AmpmZmZk5UUC16NL8h\u002fdSQOLxsCEzXiJAAAAAAABASUCVSz0ulmNJQIHHiBdMheE\u002fMzMzMzNzTkDi7FAqa+NOQOEpogndtPY\u002fAAAAAABAWkCaZcn5bHpaQGLTh6j6lOs\u002fMzMzMzPzQ0AhXDZihf9FQBtS\u002fdD1niJAMzMzMzNzQUBsjc4aODtCQAhNFed4JBFAAAAAAADAQECMRHB1Y9dCQOxLdYIeMyZAAAAAAACAQUAiHHJQ5gBMQPaPzwMBwUJAMzMzMzPzSUDyIYQjJMFKQBywJUX2DQhAMzMzMzNzTkD44zQ6+GRPQP\u002fdnA\u002fVEAhAMzMzMzPzRkCtD7RV1SNHQC1vU5xyReo\u002fZmZmZmZmT0Cz0BCGaDVQQLp4fQSeGglAAAAAAACgUEBt0fj8709RQAwtbZUTwg9AMzMzMzNzQUC3j\u002fjvo9tDQEca80t+QChAmpmZmZl5UUAMn2U8XnNSQHCp8oLVJhVAMzMzMzNzR0DeWbvtQktIQI8fqL3kygtAMzMzMzPzSEDes0BNv79JQHKn4EAc0whAAAAAAACASEBxaLeD\u002fmBJQHiOIuFTtAtAmpmZmZk5UEB4KMpi9+1QQKgDyLWSpRBAAAAAAACARkBG4LGc3GtHQM6vmAROeA9AMzMzMzPzQ0DpM+5t\u002fc9GQPudsJB4GClAmpmZmZm5UkBIb+E\u002fL45VQAmkt9f+QipAMzMzMzPzSEATFXR87IVLQKlqY8ywsiJAAAAAAAAARED2UZmkKspEQCh22CB8Yw5AMzMzMzPzTUAn7kvUpPVOQJgJ+987FgpAMzMzMzNzS0DWjAcosnxLQMHQK\u002fz+RcE\u002f","shape":"116, 3"},"hovertemplate":"\u003cb\u003e%{hovertext}\u003c\u002fb\u003e\u003cbr\u003e\u003cbr\u003esize=%{marker.size}\u003cbr\u003egeokodolt_lat=%{lat}\u003cbr\u003egeokodolt_lon=%{lon}\u003cbr\u003ear_millio_ft=%{customdata[0]:.1f}\u003cbr\u003ebecsult_ar_mft=%{customdata[1]:.1f}\u003cbr\u003ealularazottsag_pct=%{marker.color:.1f}\u003cextra\u003e\u003c\u002fextra\u003e","hovertext":["Budapest X. ker\u00fclet, Nyer\u0151 utca 7.","Budapest X. ker\u00fclet, Tavas utca 7.","Budapest X. ker\u00fclet, Sz\u00e1ll\u00e1s utca 16.","Budapest X. ker\u00fclet, Cserkesz utca 25b.","Budapest X. ker\u00fclet, Hang utca 6.","Budapest X. ker\u00fclet, Tavas utca 4.","Budapest X. ker\u00fclet, Martinovics t\u00e9r 9.","Budapest X. ker\u00fclet, Martinovics t\u00e9r 9.","Budapest X. ker\u00fclet, \u00dajhegyi \u00fat 18\u002fb.","Budapest X. ker\u00fclet, Martinovics t\u00e9r 9.","Budapest X. ker\u00fclet, Martinovics t\u00e9r 9.","Budapest X. ker\u00fclet, K\u0151r\u00f6si Csoma s\u00e9t\u00e1ny 14.","Budapest X. ker\u00fclet, Kada utca 19.","Budapest X. ker\u00fclet, Hath\u00e1z utca 5.","Budapest X. ker\u00fclet, Makk utca 7.\u002f35.","Budapest X. ker\u00fclet, Bihari utca 3.","Budapest X. ker\u00fclet, Szent L\u00e1szl\u00f3 t\u00e9r 22.","Budapest X. ker\u00fclet, Tavas utca 11.","Budapest X. ker\u00fclet, Tavas utca 11.","Budapest X. ker\u00fclet, Budapest XIX. ker\u00fclet, Teleki utca 53.","Budapest X. ker\u00fclet, \u00dajhegyi \u00fat 4\u002fB\u002fA.","Budapest X. ker\u00fclet, K\u00e1polna utca 21.","Budapest X. ker\u00fclet, Hung\u00e1ria k\u00f6r\u00fat 5-7.","Budapest X. ker\u00fclet, \u00dcll\u0151i \u00fat 130.","Budapest X. ker\u00fclet, B\u00e1nyat\u00f3 utca 26.","Budapest X. ker\u00fclet, \u00c1llom\u00e1s utca 6.","Budapest X. ker\u00fclet, K\u0151r\u00f6si Csoma s\u00e9t\u00e1ny 14.","Budapest X. ker\u00fclet, Martinovics t\u00e9r 4a.","Budapest X. ker\u00fclet, Tavas utca 11.","Budapest X. ker\u00fclet, Tavas utca 11.","Budapest X. ker\u00fclet, P\u00e1ra utca 4.","Budapest X. ker\u00fclet, Ih\u00e1sz utca 3.","Budapest X. ker\u00fclet, K\u0151r\u00f6si Csoma S\u00e1ndor \u00fat 41.","Budapest X. ker\u00fclet, Martinovics t\u00e9r 4.","Budapest X. ker\u00fclet, Balk\u00e1n utca 14.","Budapest X. ker\u00fclet, Cserkesz utca 19.","Budapest X. ker\u00fclet, K\u00e1polna utca 3.","Budapest X. ker\u00fclet, Budapest XIX. ker\u00fclet, Iparos utca 2.","Budapest X. ker\u00fclet, Agyagfejt\u0151 utca 2.","Budapest X. ker\u00fclet, K\u0151r\u00f6si Csoma S\u00e1ndor \u00fat 27.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, F\u00fcz\u00e9r utca 38\u002fA.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, Harmat utca 22.","Budapest X. ker\u00fclet, M\u00e1di utca 200.","Budapest X. ker\u00fclet, Sz\u0151l\u0151vir\u00e1g utca 8.","Budapest X. ker\u00fclet, Hung\u00e1ria k\u00f6r\u00fat 5-7.","Budapest X. ker\u00fclet, Hath\u00e1z utca 1.","Budapest X. ker\u00fclet, K\u0151v\u00e1g\u00f3 utca 12.","Budapest X. ker\u00fclet, Gy\u00f3gyszergy\u00e1ri utca 6.","Budapest X. ker\u00fclet, Kolozsv\u00e1ri utca 39-43.","Budapest X. ker\u00fclet, Sz\u0151l\u0151hegy utca 12.","Budapest X. ker\u00fclet, Kada utca 24.","Budapest X. ker\u00fclet, Bihari utca 16.","Budapest X. ker\u00fclet, Bihari utca 5.","Budapest X. ker\u00fclet, Kisbacon utca 3.","Budapest X. ker\u00fclet, Kelemen utca 26.","Budapest X. ker\u00fclet, K\u0151r\u00f6si Csoma S\u00e1ndor \u00fat 35.","Budapest X. ker\u00fclet, \u00c1llom\u00e1s utca 11.","Budapest X. ker\u00fclet, Gy\u00f6mr\u0151i \u00fat 45.","Budapest X. ker\u00fclet, G\u00e9pmad\u00e1r utca 5.","Budapest X. ker\u00fclet, \u00dcll\u0151i \u00fat 120-122.","Budapest X. ker\u00fclet, Gy\u00f6mr\u0151i \u00fat 130.","Budapest X. ker\u00fclet, \u00c1llom\u00e1s utca 11.","Budapest X. ker\u00fclet, Olt\u00f3 utca 10.","Budapest X. ker\u00fclet, Liget utca 40.","Budapest X. ker\u00fclet, T\u00e1rna utca 4.","Budapest X. ker\u00fclet, Hung\u00e1ria k\u00f6r\u00fat 5.","Budapest X. ker\u00fclet, Liget utca 35\u002fB.","Budapest X. ker\u00fclet, Magl\u00f3di \u00fat 10.","Budapest X. ker\u00fclet, G\u00e9pmad\u00e1r utca 11.","Budapest X. ker\u00fclet, Sz\u00f6v\u0151sz\u00e9k utca 10."],"lat":{"dtype":"f8","bdata":"s0RnmUW+R0CyLm6jAbxHQK4upwTEvEdAFwyuuaO9R0CGyr+WV7xHQJ\u002fnTxvVu0dAT8x6MZS9R0BPzHoxlL1HQOcBLPLru0dAT8x6MZS9R0BPzHoxlL1HQJiHTPkQvkdAa54j8l28R0AZrDjVWsBHQHkEN1K2vEdASkBMwoW8R0BgksoUc75HQEhrDDohvEdASGsMOiG8R0DBUl3Ay7pHQEiKyLCKu0dAf2399J+9R0DdJtwr875HQPMAFvn1u0dArp\u002f+s+a7R0DmJJS+EL5HQJiHTPkQvkdAbJT1m4m9R0BIaww6IbxHQEhrDDohvEdAHGDmO\u002fi7R0DhDP5+Mb1HQKweMA+ZvkdAbJT1m4m9R0DBcK5hhrxHQBcMrrmjvUdA8uocA7K9R0A4+MJkqrhHQH7IW65+vEdAQQx07Qu+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0DpJ5zdWr5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0A8TtGRXL5HQDxO0ZFcvkdAPE7RkVy+R0Dk2HqGcLxHQFEVU+knvEdA3SbcK\u002fO+R0DAlIEDWsBHQFQ1QdR9vEdATu\u002fi\u002fbi\u002fR0CxbOaQ1L5HQMFz7+GSvUdAlE4kmGq8R0Do2az6XL1HQDeKrDWUvEdApkV9kju+R0DlCYSdYr1HQNRDNLqDvkdAn6wYrg6+R0Ae+1ksRbxHQDUpBd1ewEdACAH5Eiq8R0AtB3qobbtHQJ+sGK4OvkdA7s7abRe8R0CYaJCCp75HQHNlUG1wvkdArUuN0M++R0DP9BJjmb5HQIo9tI8VvkdABD3UtmHAR0BbzxCOWbxHQA=="},"legendgroup":"","lon":{"dtype":"f8","bdata":"ZDvfT40fM0AnwoanVyozQCU\u002f4lesITNA2SeAYmQhM0CDUUmdgCozQIVCBBxCKTNAO8JpwYsiM0A7wmnBiyIzQDMzMzMzKzNAO8JpwYsiM0A7wmnBiyIzQINOCB10ITNA2UElrmMkM0Bvfy4aMiYzQPZDbLBwHjNAuaZAZmcdM0Dl8bT8wCEzQCJVFK+yKjNAIlUUr7IqM0B1yM1wAyYzQITTghd9KTNAtoR80LMhM0AiUWhZ9xszQNJtiVxwHjNAdsO2RZkpM0CKHvgYrCAzQINOCB10ITNA9MXeiy8iM0AiVRSvsiozQCJVFK+yKjNAV3xD4bMpM0Aqx2Rx\u002fyEzQKvpeqLrIjNA9MXeiy8iM0AO3IE65R0zQNkngGJkITNAghspWyQhM0BmiGNd3CYzQFySA3Y1KTNAn8ppT8khM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0B8DixHyCAzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BrK\u002faX3SMzQGsr9pfdIzNAayv2l90jM0BuoSsRqCozQNrHCn4bKjNAIlFoWfcbM0APm8jMBSYzQEuwOJz5KTNAKGVSQxskM0C2EyUhkSIzQM5vmGiQJjNArfvHQnQkM0AP1v85zB8zQIQNT6+UHTNATBk4oKUfM0BRL\u002fg0JyMzQCDQmbSpIjNAJQfsavIgM0CWe4FZoSQzQN0nRwGiJDNAb9Of\u002fUgdM0DWUkDa\u002fygzQCUH7GryIDNAfPFFe7woM0BvufqxSSIzQAyuuaP\u002fKTNAuM6\u002fXfYbM0Av205bIyIzQEfmkT8YKDNAHEC\u002f798kM0Cd2EP7WCkzQA=="},"marker":{"color":{"dtype":"f8","bdata":"aQNiA6YoBUBKFsBVEOnHP5tLxRL89glAtrX0ZmjbJ0BKsUI+Vy0dQK17e4BelghAgTDAy1GXJUDYS7y9FXwDQFM9iN70mB5A+LJtyQ+LEEA5rzLi9Yz7P8WE7yaO1C1AwiG\u002fbJlIMEAyWuer8XP4P+aLIfSNRvU\u002fsG9akKmAIkAfgyhVZPUdQJVbutYzNRlAAEPHe8Wo5T+Vg4Fa1kUNQE083jR62BNA\u002fFzZRFduAUBkNZQEuJHxP+79ENvE2AhA3BmZwzs44z8nveHxcIwXQGEvihmaX\u002f4\u002fVbwVz1yrKEApcI7ZL08TQNP3hP0Hg+w\u002fgPGRwwSnEUBuPCAD17r3P4mSpfe9\u002fQRADUknsCUUMUDvKrvbwY0TQN5qBNSPyCZA+iHtoSNaIUCeS6Trytg2QJJ4JXHM1f8\u002fVUwWJnGsCEDtZc3+xSnyP\u002foaMkLU9\u002fk\u002fLfkloPetAUCSoNI3OjP7P0epbTwSCAlAnkevI13Q2z9zy2cf4CIKQCswmKeCbQFADonkBUbZ+T9GBP5L8VD+P6ei6Wy9Efo\u002fO4plR75e+z9zS9TCnlYMQPqCNTAJV\u002fY\u002fAFr0YmIeBkAzHALuW0MQQKz7f5WlHAlAkVKs0M08CUBRcfQHB2BEQJz2CzfrFPc\u002fF\u002fWO77OWCEAOieQFRtn5P0YE\u002fkvxUP4\u002fdiYQEhUnBEC0JrNZFjzzPyhlMq3WZwVAxH6wqo5X\u002fD8IzXSl+OniP6oj\u002f37AZ\u002fs\u002fezH26Qjjpz+SoNI3OjP7P8ZW2TS3UNA\u002fUpmVf3wPuz\u002fUUa2GoQXBP8q5jS93hgNAYiWsPMP\u002f2j\u002fXgegOOinCPz1JNN38j\u002fg\u002ftMLGkd7d+j\u002fF3jhibKjkPx5ScCDJHe8\u002fUpmVf3wPuz\u002fUUa2GoQXBP0ThTkEfNb0\u002fxlbZNLdQ0D8Rk9IiaWXwP2oYkGVpht0\u002fu6QJTG92hj968Ja8lwoVQAu\u002fyCE2ox1A4vGwITNeIkCBx4gXTIXhP+EpogndtPY\u002fYtOHqPqU6z8bUv3Q9Z4iQAhNFed4JBFA7Et1gh4zJkD2j88DAcFCQBywJUX2DQhA\u002f92cD9UQCEAtb1OcckXqP7p4fQSeGglADC1tlRPCD0BHGvNLfkAoQHCp8oLVJhVAjx+oveTKC0Byp+BAHNMIQHiOIuFTtAtAqAPItZKlEEDOr5gETngPQPudsJB4GClACaS31\u002f5CKkCpamPMsLIiQCh22CB8Yw5AmAn73zsWCkDB0Cv8\u002fkXBPw=="},"coloraxis":"coloraxis","size":{"dtype":"f8","bdata":"AAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAtrX0ZmjbJ0BKsUI+Vy0dQAAAAAAAABRAgTDAy1GXJUAAAAAAAAAUQFM9iN70mB5AAAAAAAAAFEAAAAAAAAAUQMWE7yaO1C1AwiG\u002fbJlIMEAAAAAAAAAUQAAAAAAAABRAsG9akKmAIkAfgyhVZPUdQJVbutYzNRlAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAnveHxcIwXQAAAAAAAABRAVbwVz1yrKEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRADUknsCUUMUAAAAAAAAAUQN5qBNSPyCZA+iHtoSNaIUCeS6Trytg2QAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAA+QAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEB68Ja8lwoVQAu\u002fyCE2ox1A4vGwITNeIkAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAbUv3Q9Z4iQAAAAAAAABRA7Et1gh4zJkAAAAAAAAA+QAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEBHGvNLfkAoQHCp8oLVJhVAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQPudsJB4GClACaS31\u002f5CKkCpamPMsLIiQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQA=="},"sizemode":"area","sizeref":0.075},"mode":"markers","name":"","showlegend":false,"subplot":"map","type":"scattermap"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"bgcolor":"white","angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"ternary":{"bgcolor":"white","aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"white","subunitcolor":"#C8D4E3","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05}}},"map":{"domain":{"x":[0.0,1.0],"y":[0.0,1.0]},"center":{"lat":47.475,"lon":19.12},"zoom":12.2,"style":"carto-positron"},"coloraxis":{"colorbar":{"title":{"text":"alularazottsag_pct"}},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"autocolorscale":false},"legend":{"tracegroupgap":0,"itemsizing":"constant"},"title":{"text":"Alul\u00e1razott Ingatlanok T\u00e9rk\u00e9pi Elhelyezked\u00e9se (Alul\u00e1razotts\u00e1g m\u00e9rt\u00e9ke szerint)"},"margin":{"r":0,"t":40,"l":0,"b":0},"height":480},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('90f1db3f-d205-40da-bb8c-1e05462194bc');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };            </script> </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1e1fa3da">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=65a597c8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8411,12 +8054,12 @@ Adja meg a lakás méretét, állapotát, szobaszámát és elhelyezkedését, �
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0fb55216">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5dee7724">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">w_terulet</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Méret (m²):'</span><span class="p">)</span>
@@ -8468,38 +8111,7 @@ Adja meg a lakás méretét, állapotát, szobaszámát és elhelyezkedését, �
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jupyter-widgets jp-OutputArea-output" id="ad60b776-78b1-436c-bd81-8e4c6fb9da05" tabindex="0">
-<script type="text/javascript">
-var element = document.getElementById('ad60b776-78b1-436c-bd81-8e4c6fb9da05');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "143de8397c4f40bab9cff252f64a8174", "version_major": 2, "version_minor": 0}
-</script>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jupyter-widgets jp-OutputArea-output" id="5700876d-484e-49ed-9401-1d15366f90b3" tabindex="0">
-<script type="text/javascript">
-var element = document.getElementById('5700876d-484e-49ed-9401-1d15366f90b3');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e41f5cc8ee2345229f8a86fae230c0e9", "version_major": 2, "version_minor": 0}
-</script>
-</div>
-</div>
-</div>
-</div>
 </div>
 </main>
 </body>
-<script type="application/vnd.jupyter.widget-state+json">
-{"state": {"143de8397c4f40bab9cff252f64a8174": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "VBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_264678ec50314d9daac8ecb718bc6d19", "IPY_MODEL_a827c08ea2ca43e698823bf0d988a98f"], "layout": "IPY_MODEL_2e1cfc4d6c7f4cb1b6935e03c2fac35d", "tabbable": null, "tooltip": null}}, "1bdfda40b4584cb791fad913a6170cad": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "264678ec50314d9daac8ecb718bc6d19": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "HBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_f458dc2255204e889db3705f3d1cd751", "IPY_MODEL_3c1a8043e41e478e8189b123baece254"], "layout": "IPY_MODEL_ba5ed4dc24924bb484ff0367f5927794", "tabbable": null, "tooltip": null}}, "2e1cfc4d6c7f4cb1b6935e03c2fac35d": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "3c1a8043e41e478e8189b123baece254": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "DropdownModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "DropdownModel", "_options_labels": ["Fel\u00faj\u00edtott (5)", "J\u00f3 \u00e1llapot\u00fa (4)", "K\u00f6zepes (3)", "Fel\u00faj\u00edtand\u00f3 (2)", "\u00daj \u00e9p\u00edt\u00e9s\u0171 (6)"], "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "DropdownView", "description": "\u00c1llapot:", "description_allow_html": false, "disabled": false, "index": 1, "layout": "IPY_MODEL_81b9e11ae68c410b8eea6271750708e2", "style": "IPY_MODEL_9d8266c62a2848debcdc2f43dcf8f6bd", "tabbable": null, "tooltip": null}}, "3f680abc8f4b41c38dbcf5515a6a1eb9": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "464c0881c20646d58f6fb7244824dcb9": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "4f30b25669174f9a94f5c92fd9085e59": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "52985510920f4825a984c8519e008eb7": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "638fb1f570bc4f918d567f431d5e169c": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "RadioButtonsModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "RadioButtonsModel", "_options_labels": ["T\u00e9gla", "Panel"], "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "RadioButtonsView", "description": "T\u00edpus:", "description_allow_html": false, "disabled": false, "index": 0, "layout": "IPY_MODEL_e0bade49cac149baa60ec13fc0849a52", "orientation": "vertical", "style": "IPY_MODEL_9ef3e34cd5f840babf907a3c0a3ee04f", "tabbable": null, "tooltip": null}}, "6fb96b4c1c45418f84a8f61d856d7459": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "Vas\u00fat (m):", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_df8ebf82c8214cde912f4a7b5df52c72", "max": 1500, "min": 50, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 50, "style": "IPY_MODEL_be692d19625543988e711244cd8d7b30", "tabbable": null, "tooltip": null, "value": 400}}, "8016f0948d834ac29c3ff2ce320156a6": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "81b9e11ae68c410b8eea6271750708e2": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "9d8266c62a2848debcdc2f43dcf8f6bd": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": ""}}, "9ef3e34cd5f840babf907a3c0a3ee04f": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": ""}}, "a827c08ea2ca43e698823bf0d988a98f": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "HBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_638fb1f570bc4f918d567f431d5e169c", "IPY_MODEL_e8ebd0975f7c40ee9b8a2b5b8b56a835", "IPY_MODEL_6fb96b4c1c45418f84a8f61d856d7459"], "layout": "IPY_MODEL_4f30b25669174f9a94f5c92fd9085e59", "tabbable": null, "tooltip": null}}, "ba5ed4dc24924bb484ff0367f5927794": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "be692d19625543988e711244cd8d7b30": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "SliderStyleModel", "state": {"_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "SliderStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "description_width": "", "handle_color": null}}, "df8ebf82c8214cde912f4a7b5df52c72": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "e0bade49cac149baa60ec13fc0849a52": {"model_module": "@jupyter-widgets\/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets\/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets\/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "e41f5cc8ee2345229f8a86fae230c0e9": {"model_module": "@jupyter-widgets\/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets\/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_464c0881c20646d58f6fb7244824dcb9", "msg_id": "", "outputs": [{"data": {"text\/html": "<div style=\"display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0 24px 0;\"><div style=\"flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n      <div style=\"font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;\">Becs\u00fclt Lak\u00e1s\u00e1r<\/div>\n      <div style=\"font-size: 24px; font-weight: 800; color: #10b981; margin-top: 4px;\">72.1 M Ft<\/div>\n      <div style=\"font-size: 11px; color: #64748b; margin-top: 4px;\">ML modell el\u0151rejelz\u00e9s<\/div>\n    <\/div><div style=\"flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n      <div style=\"font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;\">Becs\u00fclt Fajlagos \u00c1r<\/div>\n      <div style=\"font-size: 24px; font-weight: 800; color: #2563eb; margin-top: 4px;\">1 311 431 Ft<\/div>\n      <div style=\"font-size: 11px; color: #64748b; margin-top: 4px;\">K\u00edn\u00e1lati becsl\u00e9s<\/div>\n    <\/div><div style=\"flex: 1; min-width: 170px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n      <div style=\"font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;\">Modell T\u00edpus<\/div>\n      <div style=\"font-size: 24px; font-weight: 800; color: #7c3aed; margin-top: 4px;\">Random Forest Regressor<\/div>\n      <div style=\"font-size: 11px; color: #64748b; margin-top: 4px;\">150 d\u00f6nt\u00e9si fa<\/div>\n    <\/div><\/div>", "text\/plain": "<IPython.core.display.HTML object>"}, "metadata": {}, "output_type": "display_data"}], "tabbable": null, "tooltip": null}}, "e8ebd0975f7c40ee9b8a2b5b8b56a835": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "Metr\u00f3 (m):", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_3f680abc8f4b41c38dbcf5515a6a1eb9", "max": 2500, "min": 100, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 100, "style": "IPY_MODEL_8016f0948d834ac29c3ff2ce320156a6", "tabbable": null, "tooltip": null, "value": 600}}, "f458dc2255204e889db3705f3d1cd751": {"model_module": "@jupyter-widgets\/controls", "model_module_version": "2.0.0", "model_name": "IntSliderModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets\/controls", "_model_module_version": "2.0.0", "_model_name": "IntSliderModel", "_view_count": null, "_view_module": "@jupyter-widgets\/controls", "_view_module_version": "2.0.0", "_view_name": "IntSliderView", "behavior": "drag-tap", "continuous_update": true, "description": "M\u00e9ret (m\u00b2):", "description_allow_html": false, "disabled": false, "layout": "IPY_MODEL_1bdfda40b4584cb791fad913a6170cad", "max": 120, "min": 25, "orientation": "horizontal", "readout": true, "readout_format": "d", "step": 1, "style": "IPY_MODEL_52985510920f4825a984c8519e008eb7", "tabbable": null, "tooltip": null, "value": 55}}}, "version_major": 2, "version_minor": 0}
-</script>
 </html>

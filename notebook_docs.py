@@ -632,6 +632,8 @@ Közvetlenül alkalmas piaci összehasonlító elemzések és vásárlási dönt
     'nb12': {
         'intro': r"""# 12. Gépi Tanulásos Ármeghatározás és Piaci Arbitrázs
 
+**Kontextus és Kapcsolódás:** Az eddigi parametrikus modellek (OLS, SAR, GWR) jól magyaráznak, de a nemlineáris interakciókat nehezen kezelik. A prediktív pontosság maximalizálása érdekében most áttérünk a gépi tanulásra (Random Forest).
+
 **Cél**: Random Forest árbecslő modell tanítása, a változók fontossági rangsorának (Feature Importance) feltárása és a piacilag alulárazott (arbitrázs) lakások automatikus azonosítása.
 
 ---
@@ -744,6 +746,8 @@ A közvetlen közelben (5 perces sétatávolságban) lévő szolgáltatások bí
     # =========================================================================
     'nb15': {
         'intro': r"""# 15. Lokális Térökonometria: Földrajzilag Súlyozott Regresszió (GWR)
+
+**Kontextus és Kapcsolódás:** A SAR/SEM modellek (13-as notebook) globálisan korrigálták a térbeli hibát, de továbbra is azt feltételezik, hogy a paraméterek (pl. a metró hatása) egész Kőbányán állandóak. Ebben a notebookban ezt a korlátot oldjuk fel.
 
 **Cél**: A térbeli heterogenitás modellezése Kőbányán multiskálás földrajzilag súlyozott regresszióval (GWR / MGWR), épület-szintű térbeli aggregációval.
 

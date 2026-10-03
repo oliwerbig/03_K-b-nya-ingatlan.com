@@ -2684,9 +2684,10 @@ else:
     poi_data = None"""))
 
     nb.cells.append(new_markdown_cell("""### 2. A "15-Perces Város" Index Kiszámítása
-A hirdetések koordinátái alapján megnézzük, hány szolgáltatás érhető el 15 perc sétán (kb. 1000m) belül."""))
+A hirdetések koordinátái alapján megnézzük, hány szolgáltatás (POI) érhető el az 5-10-15 perces gyalogos sávokban.
+Módszertanilag szinkronizáljuk a távolságokat az NB05-ös izokrón sávokkal (5 perc = 375m, 10 perc = 750m, 15 perc = 1125m)."""))
 
-    nb.cells.append(new_code_cell("""# 15 perces index közelítő számítása légvonalban (demó logika, ha a letöltés sikeres)
+    nb.cells.append(new_code_cell("""# POI indexek számítása a standard gyalogos sávokra (légvonalbeli közelítés)
 if OSMNX_AVAILABLE and poi_data is not None:
     # Ingatlanok geometriája
     gdf_ing = gpd.GeoDataFrame(
@@ -2699,38 +2700,46 @@ if OSMNX_AVAILABLE and poi_data is not None:
     gdf_ing_3857 = gdf_ing.to_crs(epsg=3857)
     poi_3857 = poi_data.to_crs(epsg=3857)
     
-    # Szolgáltatások száma 1000 méteren belül (brute-force távolság)
-    poi_counts = []
+    # Szolgáltatások száma a standard sávokban
+    poi_375 = []
+    poi_750 = []
+    poi_1125 = []
+    
     for idx, row in gdf_ing_3857.iterrows():
         point = row.geometry
         distances = poi_3857.geometry.distance(point)
-        count_1000m = (distances <= 1000).sum()
-        poi_counts.append(count_1000m)
+        poi_375.append((distances <= 375).sum())
+        poi_750.append((distances <= 750).sum())
+        poi_1125.append((distances <= 1125).sum())
         
-    df_pontos['poi_1000m_count'] = poi_counts
+    df_pontos['poi_375m_count'] = poi_375
+    df_pontos['poi_750m_count'] = poi_750
+    df_pontos['poi_1125m_count'] = poi_1125
     
     fig = px.scatter_map(
-        df_pontos, lat='geokodolt_lat', lon='geokodolt_lon', color='poi_1000m_count',
+        df_pontos, lat='geokodolt_lat', lon='geokodolt_lon', color='poi_1125m_count',
         size='nm_ar_huf', hover_name='cim_teljes', map_style='carto-positron',
-        title='"15 perces város" - Szolgáltatások száma 1000 méteren belül'
+        title='"15 perces város" - Szolgáltatások száma 1125 méteren belül'
     )
     fig.update_layout(height=500, margin={"r":0,"t":40,"l":0,"b":0})
     fig.show()
 else:
     print("POI adatok hiányában a számítás szimulált adatokat mutat (placeholder).")
-    df_pontos['poi_1000m_count'] = np.random.randint(5, 50, len(df_pontos))
+    df_pontos['poi_375m_count'] = np.random.randint(1, 10, len(df_pontos))
+    df_pontos['poi_750m_count'] = np.random.randint(5, 20, len(df_pontos))
+    df_pontos['poi_1125m_count'] = np.random.randint(10, 50, len(df_pontos))
     
     kpi_cards = [
-        ("Átlagos POI 1000m-en belül", f"{df_pontos['poi_1000m_count'].mean():.1f} db", "Szimulált adat", "#1e3a8a")
+        ("Átlagos POI 1125m-en belül", f"{df_pontos['poi_1125m_count'].mean():.1f} db", "Szimulált adat", "#1e3a8a")
     ]
     display(HTML(kpi_grid_html(kpi_cards)))"""))
 
     nb.cells.append(new_markdown_cell("""### 3. Hedonikus Árprémium a POI Sűrűség alapján
-Az OSM szolgáltatási sűrűség beépítése a lakásárak lineáris regressziójába."""))
+Az OSM szolgáltatási sűrűség (3 gyalogos sávban mérve) beépítése a lakásárak lineáris regressziójába."""))
 
     nb.cells.append(new_code_cell("""import statsmodels.api as sm
 
-features = ['korrigalt_alapterulet_nm', 'is_panel', 'tavolsag_metro_halozati_m', 'poi_1000m_count']
+features = ['korrigalt_alapterulet_nm', 'is_panel', 'tavolsag_metro_halozati_m', 'poi_375m_count', 'poi_750m_count', 'poi_1125m_count']
 df_reg = df_pontos.dropna(subset=['log_nm_ar'] + features).copy()
 
 X = sm.add_constant(df_reg[features])

@@ -35,20 +35,22 @@ def main():
         else:
             print(f"Executed {nb_name} in {time.time()-t0:.1f}s")
             
-        # 2. Export executed notebook to HTML into docs/
-        html_out = os.path.join(docs_dir, nb_name.replace(".ipynb", ".html"))
-        cmd_html = [
-            python_exe, "-m", "nbconvert",
-            "--to", "html",
-            nb,
-            "--output", os.path.basename(html_out),
-            "--output-dir", docs_dir
-        ]
-        res_html = subprocess.run(cmd_html, capture_output=True, text=True)
-        if res_html.returncode == 0:
-            print(f"Exported to {html_out}")
-        else:
-            print(f"ERROR exporting {html_out}: {res_html.stderr[:300]}")
+        # 2. Export executed notebook to HTML into docs/ and html_exports/
+        for target_dir in [docs_dir, "html_exports"]:
+            os.makedirs(target_dir, exist_ok=True)
+            html_out = os.path.join(target_dir, nb_name.replace(".ipynb", ".html"))
+            cmd_html = [
+                python_exe, "-m", "nbconvert",
+                "--to", "html",
+                nb,
+                "--output", os.path.basename(html_out),
+                "--output-dir", target_dir
+            ]
+            res_html = subprocess.run(cmd_html, capture_output=True, text=True)
+            if res_html.returncode == 0:
+                print(f"Exported to {html_out}")
+            else:
+                print(f"ERROR exporting {html_out}: {res_html.stderr[:300]}")
             
     print(f"\n==========================================")
     print(f"ALL DONE in {time.time()-start_total:.1f}s!")

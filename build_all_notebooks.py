@@ -1,3 +1,4 @@
+from notebook_docs import NOTEBOOK_DOCS
 # -*- coding: utf-8 -*-
 """
 build_all_notebooks.py
@@ -26,12 +27,7 @@ def save_nb(nb, filename):
 def build_nb00():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 00. Adathalmaz Áttekintés és Minőségi Riport
-
-**TDK Kutatási Téma**: Budapest Főváros X. kerület (Kőbánya) lakóingatlan-piacának komplex térökonometriai, hedonikus és gépi tanulásos vizsgálata.
-
-**Adatbázis forrása**: Az ingatlan.com kínálati adatbázisából kinyert és térinformatikailag dúsított mestertábla (`kobanya_ingatlan_szamitott_master.parquet`).
-Az adatbázis 1 320 darab egyedi hirdetést és 169 strukturált változót tartalmaz, beleértve a hálózati elérhetőségi mutatókat, GIS távolságokat és épületfizikai paramétereket."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb00"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -49,8 +45,7 @@ import numpy as np
 df = load_szamitott_master()
 print(f"Sikeresen betöltve: {len(df)} sor, {len(df.columns)} oszlop.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Alapvető Adatbázis KPI Mutatók
-Az adathalmaz globális mérete, az eladó és kiadó szegmensek aránya, valamint a garantált térbeli pontosság."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb00"]["sec1"]))
 
     nb.cells.append(new_code_cell("""n_total = len(df)
 n_elado = len(df[df['listing_type'] == 'elado'])
@@ -69,8 +64,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Térbeli és Hirdetéstípus Megoszlás Városrészenként
-A kőbányai városrészek közötti kínálati volumen megoszlása eladó és kiadó bontásban."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb00"]["sec2"]))
 
     nb.cells.append(new_code_cell("""df_counts = df.groupby(['varosresz', 'listing_type']).size().reset_index(name='count')
 df_counts['listing_nev'] = df_counts['listing_type'].map({'elado': 'Eladó', 'kiado': 'Kiadó'})
@@ -89,8 +83,7 @@ fig1 = px.bar(
 fig1.update_layout(xaxis_tickangle=-30, height=450)
 fig1.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Változók Kitöltöttsége és Adatminőség
-A modellezés szempontjából kritikus változók hiányzó adatainak aránya."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb00"]["sec3"]))
 
     nb.cells.append(new_code_cell("""kulcs_valtozok = [
     'price_huf', 'nm_ar_huf', 'alapterulet_nm', 'szobaszam_osszes', 
@@ -134,8 +127,7 @@ fig2 = px.bar(
 fig2.update_layout(height=420)
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Adathalmaz Szűrő és Ellenőrző Pult
-A vezérlőkkel dinamikusan tesztelhetők az alminták (eladó, kiadó, pontos geokódolt, városrész szerinti szűrés)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb00"]["sec4"]))
 
     nb.cells.append(new_code_cell("""# Interaktív vezérlők definiálása
 w_tipus = widgets.RadioButtons(options=['Mindkettő', 'eladó', 'kiadó'], value='Mindkettő', description='Hirdetés:')
@@ -189,11 +181,7 @@ if __name__ == '__main__':
 def build_nb01():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 01. Leíró Statisztika és Exploratív Adatelemzés (EDA)
-
-**Cél**: A kőbányai lakáspiaci kínálat fundamentális leíró statisztikáinak feltárása, az eloszlások alakjának (ferdeség, csúcsosság), valamint a térbeli szóródási sajátosságoknak a vizsgálata.
-
-**Módszertan**: Paraméteres és nem-paraméteres mutatók (átlag, medián, interkvartilis terjedelem, szórás), hisztogramok, sűrűségfüggvények (KDE) és többdimenziós eloszlásvizsgálat."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb01"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -212,8 +200,7 @@ df = load_szamitott_master()
 elado = df[df['listing_type'] == 'elado'].copy()
 print(f"Eladó lakások száma az EDA mintában: {len(elado)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Főbb Leíró Statisztikai Mutatók
-A kőbányai eladó lakások kulcsváltozóinak központi tendenciái és szóródási mérőszámai."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb01"]["sec1"]))
 
     nb.cells.append(new_code_cell("""kpi_cards = [
     ("Átlagos Kínálati Ár", fmt_mft(elado['price_huf'].mean() / 1e6), f"Medián: {fmt_mft(elado['price_huf'].median() / 1e6)}", "#1e3a8a"),
@@ -237,8 +224,7 @@ stat_df.columns = ['Darab', 'Átlag', 'Szórás', 'Min', '25% (Q1)', 'Medián (Q
 html_table = "<div style='overflow-x:auto; margin: 15px 0;'>" + stat_df.round(2).to_html(classes='table table-bordered table-hover') + "</div>"
 display(HTML(html_table))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Négyzetméterárak Eloszlása és Log-Transzformáció
-A nyers négyzetméterárak jobbra ferde eloszlást mutatnak, míg a logaritmikus transzformáció közel normális eloszlást eredményez, ami elengedhetetlen a lineáris regressziós modellekhez."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb01"]["sec2"]))
 
     nb.cells.append(new_code_cell("""fig1 = make_subplots(
     rows=1, cols=2,
@@ -263,8 +249,7 @@ fig1.update_layout(
 )
 fig1.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Városrészi Összehasonlítás és Árszintek
-A négyzetméterárak és lakásméretek variabilitása Kőbánya egyes kerületrészeiben."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb01"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Városrészi boxplot
 fig2 = px.box(
@@ -293,8 +278,7 @@ fig3 = px.scatter(
 fig3.update_layout(height=480)
 fig3.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív EDA Vizualizációs Panel
-A JupyterLab környezetben a lenti vezérlőkkel interaktívan elemezhető bármely kiválasztott változó eloszlása a kiválasztott városrészekre szűrve."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb01"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_var = widgets.Dropdown(
     options=[('Négyzetméterár (HUF)', 'nm_ar_huf'), ('Kínálati Ár (M Ft)', 'ar_millio_ft'), ('Alapterület (m²)', 'alapterulet_nm'), ('Szobaszám', 'szobaszam_osszes')],
@@ -336,11 +320,7 @@ frissit_eda()"""))
 def build_nb02():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 02. Árstruktúra és Piaci Szegmentáció
-
-**Cél**: A kőbányai ingatlanpiac strukturális tagozódásának feltárása építési technológia (panel vs. tégla), méretkategóriák, szobaszám és emeleti elhelyezkedés szerint.
-
-**Kutatási kérdés**: Mekkora a tégla építésű lakások felára a panellakásokhoz képest, és hogyan alakul a méretkategória szerinti fajlagos árprémium Kőbánya alpiacain?"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb02"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -358,8 +338,7 @@ df = load_szamitott_master()
 elado = df[df['listing_type'] == 'elado'].copy()
 print(f"Elemzett eladó lakások száma: {len(elado)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Piaci Szegmensek és Technológiai Prémium KPI-k
-A panel és tégla technológia alapvető árazási különbségei."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb02"]["sec1"]))
 
     nb.cells.append(new_code_cell("""n_panel = int(elado['is_panel'].sum())
 n_tegla = int((elado['is_panel'] == 0).sum())
@@ -377,8 +356,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Panel vs. Tégla Áreloszlások Városrészenként
-A hegedűábra (Violin plot) részletesen szemlélteti az építési technológiák közötti árkülönbséget városszerkezeti egységenként."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb02"]["sec2"]))
 
     nb.cells.append(new_code_cell("""elado['Epites_Tipus'] = elado['is_panel'].map({1: 'Panel', 0: 'Tégla / Egyéb'})
 
@@ -397,8 +375,7 @@ fig1 = px.violin(
 fig1.update_layout(xaxis_tickangle=-30, height=480)
 fig1.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Méretkategória és Szobaszám Kereszttábla Hőtérkép
-Hogyan alakul a négyzetméterár a lakás alapterülete és szobaszáma szerint?"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb02"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Méretkategóriák képzése
 elado['meret_kategoria'] = pd.cut(
@@ -443,8 +420,7 @@ fig3 = px.bar(
 fig3.update_layout(height=400, showlegend=False)
 fig3.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Szegmentációs Laboratórium
-Dinamikus szűrő a különböző árszegmensek és minimális mintaelemszámok vizsgálatára."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb02"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_szegmens = widgets.Dropdown(
     options=[('Épülettípus (Panel/Tégla)', 'Epites_Tipus'), ('Állapot Kód', 'allapot_kod'), ('Szobaszám', 'szobaszam_kategoria')],
@@ -487,13 +463,7 @@ frissit_szeg()"""))
 def build_nb03():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 03. Térbeli Elemzés és Interaktív Térképek
-
-**Cél**: A kőbányai ingatlanok térbeli mintázatának, lokációs ársűrűségének és hálózati elérhetőségi viszonyainak térinformatikai vizsgálata.
-
-**Adatalap és mintaméretek**:
-- A teljes garantált pontos geokódolású GIS adatbázis **N = 296 db** ingatlan (254 db eladó + 42 db kiadó lakás).
-- Jelen eladási térbeli elemzés a garantált pontos **eladó lakások mintáján (N = 254 db)** fut, biztosítva a módszertani konzisztenciát a 04. hedonikus és a 10. Moran modellekkel."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb03"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -510,8 +480,7 @@ df = load_szamitott_master()
 df_pontos = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
 print(f"Garantált pontos koordinátákkal rendelkező eladó hirdetések száma: {len(df_pontos)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Térbeli Mintavétel és Elérhetőségi KPI-k
-A reprezentatív pontos eladói minta és az infrastrukturális csomópontok távolsági mutatói."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb03"]["sec1"]))
 
     nb.cells.append(new_code_cell("""n_pontos = len(df_pontos)
 in_mazsa_10p = int((df_pontos['mazsa_10p_seta'] == 1).sum()) if 'mazsa_10p_seta' in df_pontos.columns else 0
@@ -529,8 +498,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Valós Térképi Pontmegjelenítés Négyzetméterár Szerint
-Az összes garantált pontos ingatlan geokódolt pontként valós térképi alapon (`scatter_map`), színskálával jelölve a fajlagos árat."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb03"]["sec2"]))
 
     nb.cells.append(new_code_cell("""fig1 = px.scatter_map(
     df_pontos,
@@ -550,8 +518,7 @@ Az összes garantált pontos ingatlan geokódolt pontként valós térképi alap
 fig1.update_layout(height=550, margin={"r":0,"t":40,"l":0,"b":0})
 fig1.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Ársűrűségi Hőtérkép és Mázsa Téri Távolsági Gradiens
-Hol koncentrálódnak a magas fajlagos árak, és hogyan függ az ár a központi területektől való hálózati távolságtól?"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb03"]["sec3"]))
 
     nb.cells.append(new_code_cell("""fig2 = px.density_map(
     df_pontos,
@@ -582,8 +549,7 @@ if 'tavolsag_mazsa_halozati_m' in df_pontos.columns:
     fig3.update_layout(height=480)
     fig3.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Térképi Szűrő és Rétegkezelő Pult
-Dinamikusan szűrhető térkép hirdetéstípus, árkategória és színezési változó alapján."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb03"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_szin = widgets.Dropdown(
     options=[('Négyzetméterár', 'nm_ar_huf'), ('Alapterület', 'alapterulet_nm'), ('Szobaszám', 'szobaszam_osszes'), ('Állapot Kód', 'allapot_kod')],
@@ -635,16 +601,7 @@ frissit_terkep()"""))
 def build_nb04():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell(r"""# 04. Hedonikus Ármodell és a Vasút Kétarcú Hatása (TOD vs. Zaj)
-
-**Cél**: A lakásárakat befolyásoló fizikai, lokációs és környezeti tényezők marginális implicit árának empirikus becslése hedonikus árfüggvénnyel, különös tekintettel a vasúti infrastruktúra kétarcú természetére (*Double-Edged Sword of Rail Transit*).
-
-**Ökonometriai specifikáció és hipotézis**:
-$$\ln(\text{nm\_ar\_huf}_i) = \beta_0 + \sum \beta_k X_{k,i}^{\text{fizikai}} + \beta_{\text{metro}} D_{i}^{\text{metro}} + \beta_{\text{zaj}} \ln(D_{i}^{\text{vasút (légvonal)}}) + \beta_{\text{TOD}} D_{i}^{\text{állomás (hálózat)}} + \varepsilon_i$$
-
-1. **Negatív környezeti externália (Zaj / Rezgés / Por)**: A vágánytengelytől mért **logaritmikus légvonalbeli távolság** (`log_tavolsag_vasut_m`). Várt előjel: $\beta_{\text{zaj}} > 0$.
-2. **Pozitív TOD elérhetőségi prémium (Gyorsvasúti kapcsolat)**: Az állomás bejáratához mért **hálózati gyalogos sétaút** (`tavolsag_vasut_halozati_m`). Várt előjel: $\beta_{\text{TOD}} < 0$.
-3. **Moran's I teszt a reziduálisokon**: A területi autokorreláció hiányának bizonyítása a zaj és a TOD hatások együttes modellezésével."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb04"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -664,8 +621,7 @@ df = load_szamitott_master()
 elado = df[df['listing_type'] == 'elado'].copy()
 print(f"Elérhető eladó minták: {len(elado)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Kettős Vasúti Hedonikus OLS Regresszió és KPI Eredmények
-A modell egyidejűleg becsli a vasúti pálya zaj/rezgés terhelését (légvonalban) és a vasútállomás gyalogos elérhetőségét (hálózaton)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb04"]["sec1"]))
 
     nb.cells.append(new_code_cell("""# Modell változók definiálása
 elado['log_tavolsag_vasut_m'] = np.log(elado['tavolsag_vasut_m'].replace(0, 1))
@@ -726,8 +682,7 @@ res_df = pd.DataFrame({
 res_table_html = "<div style='overflow-x:auto; margin: 15px 0;'>" + res_df.round(4).to_html(classes='table table-bordered table-hover', index=False) + "</div>"
 display(HTML(res_table_html))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Ökonometriai Diagnosztika és Multikollinearitás (VIF)
-A maradványértékek normális eloszlásának és a magyarázó változók függetlenségének (VIF < 5) ellenőrzése."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb04"]["sec2"]))
 
     nb.cells.append(new_code_cell("""df_reg['y_pred'] = model_ols.fittedvalues
 df_reg['resid'] = model_ols.resid
@@ -775,11 +730,7 @@ vif_data["VIF Érték"] = [variance_inflation_factor(X[features].values, i) for 
 vif_html = "<div style='max-width: 600px; margin: 15px 0;'>" + vif_data.round(2).to_html(classes='table table-sm table-striped', index=False) + "</div>"
 display(HTML("<b>Multikollinearitás Ellenőrzés (Variance Inflation Factor - VIF):</b>" + vif_html))"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Lépcsőzetes Modell-összehasonlítás (A Vasút Kétarcúságának Bizonyítása)
-A 3 specifikáció összevetése:
-- **Modell 1 (Alapmodell)**: Csak ingatlanfizikai jellemzők és metró távolság.
-- **Modell 2 (+Zaj externália)**: Bevonva a vágányok légvonalbeli távolságát (+5.6% magyarázóerő növekedés, $p < 0.001$).
-- **Modell 3 (Kettős TOD modell)**: Bevonva az állomás hálózati elérhetőségét (negatív TOD előjel, de elnyomott szignifikancia)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb04"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# 3 modell becslése
 m1_feats = ['korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel', 'has_lift', 'allapot_kod', 'tavolsag_metro_halozati_m']
@@ -835,8 +786,7 @@ fig2.add_vline(x=0, line_dash='dash', line_color='red')
 fig2.update_layout(title='Együtthatók és 95%-os Konfidencia Intervallumok (Forest Plot)', template=PLOTLY_TEMPLATE, height=420)
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Hedonikus Modellező Laboratórium
-Válasszon tetszőleges változókat és mintákat az azonnali, élő regressziós újraszámításhoz."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb04"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_vars = widgets.SelectMultiple(
     options=[(valtozo_magyarazat.get(c, c), c) for c in features],
@@ -894,18 +844,7 @@ futtat_modell()"""))
 def build_nb05():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell(r"""# 05. Vasúti Diszkont és Izokrón Elemzés
-
-**Cél**: A vasúti nyomvonal (zaj, rezgés, légszennyezés) negatív környezeti externáliájának, valamint a gyalogos izokrón zónák (TOD csomópontok) elérhetőségi prémiumának empirikus szétválasztása és kvantitatív vizsgálata Kőbányán.
-
-**Módszertani alapelvek és nemzetközi standardok**:
-1. **Környezeti terhek (zaj, rezgés, por)**: **Légvonalbeli (euklideszi)** távolság a vágánytengelytől (`tavolsag_vasut_m`), mivel a fizikai hullámok a térben és talajban radiálisan terjednek.
-   - *Nemzetközi immissziós sávok (EU Noise Directive 2002/49/EC / WHO)*: `<150 m` (Közvetlen immisszió), `150–300 m` (Erős terhelés), `300–500 m` (Átmeneti sáv), `500–1000 m` (Városi háttérzaj), `1000–2000 m` (Közepes referencia), `>2000 m` (Tiszta referencia).
-2. **Közlekedési elérhetőség (TOD)**: **Hálózati** távolság az OpenStreetMap gyalogos úthálózatán (Dijkstra algoritmus, $v = 1.25\text{ m/s} = 4.5\text{ km/h}$).
-   - *Nemzetközi gyalogos izokrón sávok*: $\le 5$ perc ($\le 375\text{ m}$), $5–10$ perc ($375–750\text{ m}$), $10–15$ perc ($750–1125\text{ m}$), $>15$ perc ($>1125\text{ m}$).
-3. **Horgonypontok funkcionális szétválasztása**:
-   - *Kőbánya alsó vasútállomás*: Meglévő közlekedési csomópont (ingázás, TOD elérhetőségi prémium).
-   - *Mázsa tér*: Városfejlesztési akcióterület (fejlesztési externália, LVC megtérülés)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb05"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -923,8 +862,7 @@ df = load_szamitott_master()
 elado = df[df['listing_type'] == 'elado'].copy()
 print(f"Elemzett eladó lakások száma: {len(elado)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Vasúti Puffer Zónák és Árdiszkont KPI-k
-A vasúti pályatesttől mért légvonalbeli távolság alapján képzett nemzetközi standard környezeti immissziós sávok összehasonlítása."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb05"]["sec1"]))
 
     nb.cells.append(new_code_cell("""# Nemzetközi standard környezeti sávok (légvonalbeli távolság a vágányoktól)
 elado['vasut_zona'] = pd.cut(
@@ -948,8 +886,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Vasúti Környezeti Távolság-Ár Gradiens (Légvonalban)
-A négyzetméterár alakulása a vasúttól mért légvonalbeli fizikai távolság függvényében és az akusztikai lecsengési küszöb."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb05"]["sec2"]))
 
     nb.cells.append(new_code_cell("""fig1 = px.box(
     elado.dropna(subset=['vasut_zona']),
@@ -984,8 +921,7 @@ fig2 = px.scatter(
 fig2.update_layout(height=480)
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Gyalogos Izokrón Zónák és Elérhetőségi Prémiumok (Hálózaton)
-A Kőbánya alsó vasútállomás, a Mázsa tér és a metróállomások 5p (≤375m), 10p (≤750m) és 15p (≤1125m) hálózati gyalogos izokrón zónáinak összehasonlítása."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb05"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Izokrón statisztikák összegzése a 375m (5p), 750m (10p), 1125m (15p) hálózati sávokra
 izokron_adatok = []
@@ -1027,8 +963,7 @@ fig3.show()
 # Összefoglaló táblázat
 display(HTML("<div style='max-width: 800px; margin: 15px 0;'>" + df_izokron.round(1).to_html(classes='table table-bordered table-striped', index=False) + "</div>"))"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Célpont- és Távolságelemző Pult
-Válasszon a légvonalbeli környezeti terhelési távolság vagy a hálózati gyalogos elérhetőségek közül!"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb05"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_cel = widgets.Dropdown(
     options=[
@@ -1074,15 +1009,7 @@ frissit_dist()"""))
 def build_nb06():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 06. Bérleti Piac, Hozamszámítás és Rent Gap Elemzés
-
-**Cél**: Az eladó és kiadó lakáspiaci szegmensek szisztematikus összehasonlítása, a bruttó és nettó bérleti hozamok (Gross / Net Rental Yield), a Price-to-Rent (P/R) ráta, valamint a Neil Smith-féle bérleti rés (Rent Gap) empirikus kimutatása Kőbányán.
-
-**Módszertan és kettős hozamszámítás**:
-- **1. Fajlagos (m²-alapú) bruttó hozam**: $\\text{Gross Yield}_{\\text{m}^2} = \\frac{\\text{Átlagos havi bérleti díj / m}^2 \\times 12}{\\text{Medián eladási ár / m}^2} \\times 100\\%$ (Kiküszöböli az eladó és kiadó minták méretbeli aszimmetriáját).
-- **2. Egységár-alapú (lakásméretű) bruttó hozam**: $\\text{Gross Yield}_{\\text{egység}} = \\frac{\\text{Átlagos lakásbérleti díj} \\times 12}{\\text{Medián lakásár}} \\times 100\\%$ (A bérlemények átlagos mérete kisebb, ~48,7 m², szemben az eladók ~57,6 m²-es átlagával, ami ~0,6%-pontos strukturális eltérést eredményez).
-- **Price-to-Rent (P/R)**: Megtérülési idő években (Vételár / Éves bérleti bevétel).
-- **Rent Gap**: A jelenlegi állapotú hasznosítás tőkésített bérleti értéke és a felújítás után elérhető maximális potenciális bérleti érték közötti különbség."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb06"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -1101,8 +1028,7 @@ elado = df[df['listing_type'] == 'elado'].copy()
 kiado = df[df['listing_type'] == 'kiado'].copy()
 print(f"Adatbázis: {len(elado)} db eladó és {len(kiado)} db kiadó hirdetés.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Bérleti Piac és Hozam KPI Mutatók
-A kőbányai lakáskiadási piac alapvető megtérülési sarokszámai a kétféle módszertan szerint."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb06"]["sec1"]))
 
     nb.cells.append(new_code_cell("""atlag_berlet_huf = kiado['price_huf'].mean()
 median_berlet_huf = kiado['price_huf'].median()
@@ -1128,8 +1054,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Városrészi Bérleti Hozamok és Összehasonlítás
-A lakásvásárlási és bérleti árak összevetése városrészenként."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb06"]["sec2"]))
 
     nb.cells.append(new_code_cell("""agg_elado = elado.groupby('varosresz')['nm_ar_huf'].median().reset_index(name='elado_nm_ar')
 agg_kiado = kiado.groupby('varosresz')['nm_ar_huf'].median().reset_index(name='kiado_nm_ar')
@@ -1162,8 +1087,7 @@ fig1.show()
 # Hozamtáblázat
 display(HTML("<div style='max-width: 700px; margin: 15px 0;'>" + merged_yield.round(2).to_html(classes='table table-bordered table-striped', index=False) + "</div>"))"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Smith-féle Rent Gap Elemzés (Bérleti Rés)
-A felújított és felújítandó lakások közötti tőkésített bérleti különbség (Rent Gap) bemutatása."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb06"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Bérleti rés elemzése állapotonként
 allapot_stat = df.groupby(['allapot', 'listing_type'])['nm_ar_huf'].median().unstack()
@@ -1215,8 +1139,7 @@ fig3 = px.scatter(
 fig3.update_layout(height=450)
 fig3.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Hozam- és Megtérülés Kalkulátor
-Dinamikusan állítható kihasználtsági ráta, üzemeltetési költség és alapterület."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb06"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_occ = widgets.FloatSlider(min=0.7, max=1.0, step=0.05, value=0.95, description='Kihasználtság:')
 w_cost = widgets.FloatSlider(min=0.05, max=0.30, step=0.05, value=0.15, description='Költség (%):')
@@ -1263,14 +1186,7 @@ szamol_hozam()"""))
 def build_nb07():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 07. Land Value Capture (LVC) Szimuláció
-
-**Cél**: A közösségi infrastruktúra-fejlesztések (Mázsa tér intermodális csomópont, vasúti átjárók, zöldfelületi rehabilitáció) által generált magánvagyon-növekmény visszanyerési mechanizmusainak szimulációja.
-
-**Módszertan és adatbázis megalapozás**:
-- **Érintett lakásállomány**: A KSH 2022-es Népszámlálási adatai szerint Kőbánya (X. kerület) teljes lakásállománya ~42 150 lakás. A Mázsa tér 15 perces gyalogos vonzáskörzete (1125 m hálózat) Kőbánya legsűrűbb belső övezeteit (Városközpont, Ligettelek, Laposdűlő, Gyárdűlő észak, Óhegy nyugat) fedi le, amely a kerületi lakásállomány mintegy 28,5%-át (**12 000 lakás**) érinti.
-- **Költség-haszon modellezés**: Dinamikus Cash Flow (DCF), Net Present Value (NPV), Belső Megtérülési Ráta (IRR) és érzékenységvizsgálat a fejlesztési szintek (Tier 1, 2, 3) és az értéknövekmény-elvonási kulcsok (Capture Rate) függvényében.
-- **Megvalósíthatósági Policy Toolkit**: Az LVC mechanizmusok hazai alkalmazhatósága olyan eszközöket igényel, mint a Településrendezési Szerződés (TRSZ), az értékövezeti adózás (Tax Increment Financing - TIF), vagy a fejlesztési hozzájárulások (Development Exactions). A szimuláció bemutatja ezen eszközök pénzügyi fedezet-teremtő képességét."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb07"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -1295,8 +1211,7 @@ TIERS = {
 }
 print("LVC modell inicializálva.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. LVC Beruházási Szcenáriók és Pénzügyi KPI-k
-A Tier 2 fejlesztési szint (5 Mrd Ft CAPEX) hatása a közvetlen hatásterület ingatlanvagyonára (20%-os capture rate mellett)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb07"]["sec1"]))
 
     nb.cells.append(new_code_cell("""# Érintett ingatlanállomány becslése a Mázsa tér 15 perces izokrónjában (KSH 2022 bázison: ~42 150 kerületi lakás 28,5%-a)
 erintett_lakasok_becsles = 12000  # 12 000 lakás a 15p gyalogos zónában
@@ -1320,8 +1235,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Kumulált Készpénzáramlási Pálya (20 Éves Horizont)
-A projekt kumulált cash flow-ja a beruházási időszak alatt és a fejlesztési hozzájárulások befolyása után."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb07"]["sec2"]))
 
     nb.cells.append(new_code_cell("""evek = np.arange(0, 21)
 cf_alap = np.zeros(21)
@@ -1349,8 +1263,7 @@ fig1.update_layout(
 )
 fig1.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Érzékenységvizsgálat (Diszkontráta vs. Capture Rate Mátrix)
-Az NPV alakulása a diszkontráta (3% - 8%) és a visszanyerési kulcs (10% - 35%) kombinációiban."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb07"]["sec3"]))
 
     nb.cells.append(new_code_cell("""rates = [0.03, 0.04, 0.05, 0.06, 0.07, 0.08]
 captures = [0.10, 0.15, 0.20, 0.25, 0.30, 0.35]
@@ -1377,8 +1290,7 @@ fig2 = px.imshow(
 fig2.update_layout(height=420)
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív LVC Szimulációs Modell
-Dinamikusan tesztelhetők a különböző beruházási szintek és pénzügyi paraméterek."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb07"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_tier = widgets.Dropdown(options=list(TIERS.keys()), value='Tier 2: Tier 1 + Városi Park & Zöld', description='Szint:')
 w_cap = widgets.FloatSlider(min=0.05, max=0.40, step=0.05, value=0.20, description='Capture %:')
@@ -1422,20 +1334,7 @@ frissit_lvc()"""))
 def build_nb08():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 08. Monte Carlo Kockázatelemzés
-
-**Cél**: A kőbányai ingatlanbefektetések sztochasztikus kockázatértékelése Monte Carlo szimulációval (10 000 iteráció).
-
-**Három összehasonlító szcenárió**:
-1. **Konzervatív alapszcenárió (Tisztán bérleti fókusz)**: Minimális reálérték-növekedéssel (20 év alatt 1,2× terminális szorzó). Rávilágít, hogy a bérleti díj önmagában 5%-os diszkontráta és költségek mellett mérsékelt eséllyel nyújt pozitív NPV-t.
-2. **Városmegújítási Total Return szcenárió (Mázsa tér TOD hatás)**: Évi 3–3,5% reál felértékelődéssel (20 év alatt 1,8× terminális szorzó), amely mellett a tőkenövekmény aktiválja a befektetés valódi megtérülését ($P(\\text{NPV}>0) > 80\\%$).
-3. **Stagflációs / Recessziós Stressz-teszt**: Magasabb költségek (20%), alacsonyabb kihasználtság (80%), csökkenő reálár (-10%), magasabb diszkontráta (7%).
-
-**Kockázati metrikák és Sztochasztikus Architektúra**:
-- **Korrelált Változók**: A vételár és a havi bérleti díj bizonytalansági sokkja többváltozós normális eloszlással (`multivariate_normal`, empirikus $r = 0,65$ kovarianciával) generált, elkerülve a függetlenségi feltevés életszerűtlenségét.
-- **Value at Risk (VaR 95%)**: A maximális várható veszteség 95%-os megbízhatósági szinten.
-- **Conditional VaR (CVaR 95% / Expected Shortfall)**: A VaR küszöböt meghaladó legrosszabb 5%-os kimenetelek átlagos vesztesége.
-- **Nyereségesség valószínűsége**: $P(\\text{NPV} > 0)$."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb08"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -1458,8 +1357,7 @@ base_rent = kiado['price_huf'].median() if not kiado.empty else 250000
 np.random.seed(42)
 print("Monte Carlo szimulációs motor kész.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Kettős Szcenárió Eredmények és Kockázati KPI Kártyák
-10 000 véletlenszerű piaci pálya szimulációja: a tisztán bérleti pálya, a Mázsa téri városmegújítási tőkenövekmény és a stagflációs stressz-teszt összehasonlítása."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb08"]["sec1"]))
 
     nb.cells.append(new_code_cell("""N_ITERS = 10000
 # Korrelált sztochasztikus sokkok (Ár és Bérlet közötti empirikus r = 0.65 korreláció)
@@ -1516,8 +1414,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Kockázati Eloszlások és Kumulatív Eloszlásfüggvények (CDF)
-A két szcenárió NPV eloszlásának és kumulatív valószínűségi függvényeinek összehasonlítása."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb08"]["sec2"]))
 
     nb.cells.append(new_code_cell("""fig1 = go.Figure()
 fig1.add_trace(go.Histogram(
@@ -1555,8 +1452,7 @@ fig2.update_layout(
 )
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Érzékenységi Tornado Diagram és Futási Konvergencia
-A bizonytalansági faktorok marginális hozzájárulása a kimeneti szóráshoz, valamint a futási stabilitás vizsgálata."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb08"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Tornado érzékenységi adatok
 tornado_factors = ['Vételár bizonytalanság', 'Bérleti díj növekedés', 'Kihasználtsági ráta', 'Üzemeltetési költség']
@@ -1596,8 +1492,7 @@ fig4.update_layout(
 )
 fig4.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Monte Carlo Kockázati Szimulátor
-Próbálja ki a szimulációt különböző iterációszámokkal és bizonytalansági szintekkel!"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb08"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_n_sim = widgets.IntSlider(min=1000, max=25000, step=1000, value=5000, description='Iterációk:')
 w_p_vol = widgets.FloatSlider(min=0.05, max=0.25, step=0.01, value=0.12, description='Ár szórás:')
@@ -1639,11 +1534,7 @@ futtat_mc()"""))
 def build_nb09():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 09. Klaszter és Tipológia Elemzés
-
-**Cél**: A kőbányai lakáspiaci kínálat automatikus tipológiájának és természetes alpiacainak feltárása nem felügyelt gépi tanulási módszerekkel (K-Means és Hierarchikus klaszterezés).
-
-**Módszertan**: Robusztus standardizálás (`StandardScaler`), optimális klaszterszám meghatározása az Elbow (Inertia) módszerrel és Silhouette pontszámokkal, valamint dimenziócsökkentés Főkomponens-elemzéssel (PCA)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb09"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -1665,8 +1556,7 @@ df = load_szamitott_master()
 elado = df[df['listing_type'] == 'elado'].copy()
 print(f"Elemzett lakásállomány: {len(elado)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Klaszterezési Eredmények és Tipológiai KPI-k
-K=4 szegmens illesztése a normalizált ingatlanjellemzőkre (fajlagos ár, alapterület, szobaszám, állapot, épületkora)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb09"]["sec1"]))
 
     nb.cells.append(new_code_cell("""cluster_vars = ['nm_ar_huf', 'alapterulet_nm', 'szobaszam_osszes', 'allapot_kod', 'epulet_kora_ev']
 df_km = elado.dropna(subset=cluster_vars).copy()
@@ -1701,8 +1591,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Optimális Klaszterszám (Elbow Görbe és Silhouette)
-Az inercia csökkenése és a Silhouette pontszámok alakulása K=2..8 klaszterszámra."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb09"]["sec2"]))
 
     nb.cells.append(new_code_cell("""ks = list(range(2, 9))
 inertias = []
@@ -1751,8 +1640,7 @@ fig2 = px.scatter(
 fig2.update_layout(height=480)
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Klaszterprofilok és Városrészi Összetétel
-A négy lakástípus átlagos tulajdonságai és eloszlásuk a kőbányai városrészekben."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb09"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Összefoglaló statisztika táblázat
 cluster_summary = df_km.groupby('klaszter_nev')[cluster_vars].mean().reset_index()
@@ -1795,8 +1683,7 @@ fig3 = px.imshow(
 fig3.update_layout(height=450, xaxis_tickangle=-30)
 fig3.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Klaszterezési Sandbox
-Tesztelje interaktívan a klaszterezést különböző klaszterszámok (K=2..6) beállításával!"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb09"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_k_slider = widgets.IntSlider(min=2, max=6, value=4, description='Klaszter K:')
 out_km = widgets.Output()
@@ -1833,16 +1720,7 @@ frissit_km()"""))
 def build_nb10():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 10. Térbeli Autokorreláció (Moran's I) és Hotspot Elemzés
-
-**Cél**: A kőbányai ingatlanárak térbeli klasztereződésének (Spatial Autocorrelation), forrópontjainak (Hotspots) és hidegpontjainak (Coldspots) ökonometriai kimutatása.
-
-**Módszertan**:
-- **Globális Moran's I**: Annak vizsgálata, hogy az ingatlanárak véletlenszerűen oszlanak-e el a térben, vagy statisztikailag szignifikáns térbeli klasztereződést mutatnak ($I > 0$).
-- **Lokális Moran (LISA - Local Indicators of Spatial Association)**: A térbeli alcsoportok azonosítása: High-High (Hotspot, pl. Ligettelek, Óhegy zöldövezeti részei, új építésű lakóparkok), Low-Low (Coldspot, pl. Hős utca környéke, vasút menti alulhasznosított rozsdaövezetek), High-Low és Low-High térbeli kiugró értékek (outliers).
-- **Súlyozási Érzékenységvizsgálat**: A k-legközelebbi szomszéd (KNN) mátrix paramétereinek (pl. k=6 vs. k=8) robusztussági tesztje.
-
-**Adatalap és mintaméret**: A teljes pontos GIS adatbázisból indulunk ki. A térbeli súlyozási mátrix szingularitásának elkerülése, illetve az épületen belüli ("intra-building") falszomszédsági korrelációk kiszűrése érdekében **térbeli aggregációt** hajtunk végre. Az azonos koordinátára eső ingatlanokat épület-szinten átlagoljuk, így a Moran statisztika a valódi, utcák és tömbök közötti térbeli tovagyűrűzést méri."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb10"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -1873,8 +1751,7 @@ coords = np.column_stack((df_geo['geokodolt_lon'], df_geo['geokodolt_lat']))
 print(f"Eredeti pontos minta: {len(df_raw)} db.")
 print(f"Épület szinten aggregált térbeli objektumok: {len(df_geo)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Globális Moran's I Térökonometriai Eredmények
-A k=8 legközelebbi szomszéd (KNN) térbeli súlyozási mátrix és a 999 permutációs szimuláció alapján becsült autokorreláció."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb10"]["sec1"]))
 
     nb.cells.append(new_code_cell("""# KNN súlymátrix és Globális Moran's I becslés
 w_knn = KNN.from_array(coords, k=8)
@@ -1893,8 +1770,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Moran Scatter Plot és Permutációs Hipotézisvizsgálat
-A standardizált négyzetméterárak és a térbeli késleltetett értékek (Spatial Lag) összefüggése a 4 kvadránssal (HH, HL, LH, LL)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb10"]["sec2"]))
 
     nb.cells.append(new_code_cell("""# Standardizálás és térbeli lag
 z = (y_val - y_val.mean()) / y_val.std()
@@ -1947,8 +1823,7 @@ fig2.update_layout(
 )
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Lokális Térbeli Klaszterek (LISA Hotspot és Coldspot Térkép)
-A statisztikailag szignifikáns High-High (Hotspot, magas árak) és Low-Low (Coldspot, alacsony árak) területek valós térképi megjelenítése."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb10"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Lokális Moran LISA számítás
 lisa = Moran_Local(y_val, w_knn, permutations=999)
@@ -2007,8 +1882,7 @@ lisa_stat = df_geo.groupby('LISA_Tipus').agg(
 lisa_stat['Median_Ar'] = lisa_stat['Median_Ar'].apply(fmt_huf)
 display(HTML("<div style='max-width: 550px; margin: 15px 0;'>" + lisa_stat.to_html(classes='table table-bordered table-striped', index=False) + "</div>"))"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Moran's I és Súlyozási Pult
-Tesztelje a térbeli autokorrelációt különböző változókra és szomszédsági k-értékekre!"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb10"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_var = widgets.Dropdown(
     options=[('Négyzetméterár', 'nm_ar_huf'), ('Alapterület', 'alapterulet_nm'), ('Állapot Kód', 'allapot_kod'), ('Szobaszám', 'szobaszam_osszes')],
@@ -2051,15 +1925,7 @@ frissit_moran()"""))
 def build_nb11():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 11. Interaktív Ingatlan Kereső Dashboard
-
-**Cél**: Átfogó, interaktív kereső és szűrőfelület a kőbányai lakáspiaci adatbázis felfedezésére, egyedi befektetői és vásárlói szempontok szerinti böngészésre és térképi megjelenítésre.
-
-**Funkciók**:
-- Szűrés típus szerint (Eladó / Kiadó / Mindkettő)
-- Ár és fajlagos ár sávok, alapterület és szobaszám intervallumok
-- Városrész és épülettípus (tégla / panel / új építésű) szerinti szűkítés
-- Rendezhető, elegáns formázású találati táblázat és interaktív térkép."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb11"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -2075,8 +1941,7 @@ import numpy as np
 df = load_szamitott_master()
 print(f"Teljes adatbázis betöltve: {len(df)} hirdetés.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Teljes Kínálati Piac KPI Áttekintése
-A kőbányai ingatlanállomány globális piaci mérőszámai."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb11"]["sec1"]))
 
     nb.cells.append(new_code_cell("""n_all = len(df)
 n_elado = len(df[df['listing_type'] == 'elado'])
@@ -2095,8 +1960,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Kínálati Ár és Alapterület Eloszlások
-A teljes kínálat négyzetméterár-eloszlása és a geokódolt ingatlanok térbeli lefedettsége."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb11"]["sec2"]))
 
     nb.cells.append(new_code_cell("""fig1 = px.histogram(
     df,
@@ -2130,8 +1994,7 @@ fig2 = px.scatter_map(
 fig2.update_layout(height=480, margin={"r":0,"t":40,"l":0,"b":0})
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Kiemelt Találati Lista (Top 25 Kínálat)
-Formázott, áttekinthető ingatlanlista a legfrissebb hirdetésekből."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb11"]["sec3"]))
 
     nb.cells.append(new_code_cell("""show_cols = ['listing_id', 'cim_teljes', 'ar_millio_ft', 'nm_ar_huf', 'alapterulet_nm', 'szobaszam_osszes', 'varosresz', 'allapot']
 top_listings = df[df['listing_type'] == 'elado'][show_cols].head(25).copy()
@@ -2143,8 +2006,7 @@ top_listings['alapterulet_nm'] = top_listings['alapterulet_nm'].apply(lambda x: 
 table_html = "<div style='overflow-x:auto; max-height:450px; overflow-y:auto; margin:15px 0;'>" + top_listings.to_html(classes='table table-striped table-hover', index=False) + "</div>"
 display(HTML(table_html))"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Teljes Értékű Interaktív Kereső és Szűrő Rendszer
-Használja a lenti vezérlőket a kínálat szűréséhez és azonnali táblázatos megjelenítéséhez!"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb11"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_tipus = widgets.RadioButtons(options=['eladó', 'kiadó', 'Mindkettő'], value='eladó', description='Típus:')
 w_ar_sav = widgets.IntRangeSlider(min=20, max=150, value=(30, 80), description='Ár (M Ft):')
@@ -2212,15 +2074,7 @@ frissit_kereses()"""))
 def build_nb12():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 12. Prediktív Gépi Tanulás és Árarbitrázs Elemzés
-
-**Cél**: Nem-lineáris gépi tanulási modellek (Random Forest, Gradient Boosting) illesztése a kőbányai ingatlanárakra, a legfontosabb ármeghatározó tényezők fontosságának (Feature Importance) feltárása, valamint piaci arbitrázs lehetőségek (alulárazott lakások) automatikus azonosítása.
-
-**Módszertan**:
-- **Modellek**: `RandomForestRegressor`, `GradientBoostingRegressor` (5-szörös keresztérvényesítés, train/test split 80/20).
-- **Értékelési metrikák**: $R^2$, RMSE, MAE, MAPE (Mean Absolute Percentage Error).
-- **Változó-fontosság (Feature Importance)**: Gini-alapú fa aggregáció.
-- **Arbitrázs Detektálás**: $\\text{Árrés} = \\text{Becsült Érték} - \\text{Kínálati Ár}$. Ha a becsült érték szignifikánsan meghaladja a kínálati árat (pozitív arbitrázs rés), az ingatlan alulárazott befektetési célpontnak minősül."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb12"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -2241,8 +2095,7 @@ df = load_szamitott_master()
 elado = df[df['listing_type'] == 'elado'].copy()
 print(f"Modellezésre elérhető eladó lakások: {len(elado)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Gépi Tanulási Modellek Illesztése és Teljesítmény KPI-k
-A Random Forest és Gradient Boosting algoritmusok összehasonlítása 80/20-as tanító-tesztelő bontáson."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb12"]["sec1"]))
 
     nb.cells.append(new_code_cell("""features = [
     'korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel', 
@@ -2281,8 +2134,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. Tényleges vs. Becsült Fajlagos Árak és Változó Fontosság
-A Random Forest modell becslési pontossága a teszthalmazon, valamint a magyarázó változók relatív fontossága (Gini Feature Importance)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb12"]["sec2"]))
 
     nb.cells.append(new_code_cell("""# 1. Tényleges vs Becsült ábra
 fig1 = go.Figure()
@@ -2333,8 +2185,7 @@ fig2 = px.bar(
 fig2.update_layout(height=420)
 fig2.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Piaci Arbitrázs Detektálás: A Leginkább Alulárazott Lakások
-A gépi tanulási modell teljes adatbázisra történő alkalmazásával feltárjuk azokat az ingatlanokat, ahol a modell által becsült elméleti piaci érték jóval meghaladja a hirdetési árat (Undervalued Properties)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb12"]["sec3"]))
 
     nb.cells.append(new_code_cell("""# Teljes minta előrejelzése a legjobb modellel (Random Forest)
 df_ml['becsult_nm_ar'] = rf.predict(df_ml[features])
@@ -2371,8 +2222,7 @@ if len(pts_arb) > 0:
     fig3.update_layout(height=480, margin={"r":0,"t":40,"l":0,"b":0})
     fig3.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Lakásértékelő és Arbitrázs Kalkulátor
-Adjon meg tetszőleges lakásparamétereket és számítsa ki az azonnali becsült piaci értéket!"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb12"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_terulet = widgets.IntSlider(min=25, max=120, value=55, description='Méret (m²):')
 w_allapot = widgets.Dropdown(options=[('Felújított (5)', 5), ('Jó állapotú (4)', 4), ('Közepes (3)', 3), ('Felújítandó (2)', 2), ('Új építésű (6)', 6)], value=4, description='Állapot:')
@@ -2428,22 +2278,7 @@ szamol_ertek()"""))
 def build_nb13():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell(r"""# 13. Térökonometriai Regresszió (Spatial Lag & Spatial Error Modellek)
-
-**Cél**: A térbeli függőség és a szomszédsági externáliák ökonometriailag konzisztens kezelése Térbeli Késleltetett (Spatial Lag - SAR) és Térbeli Hibatag (Spatial Error - SEM) regressziós modellekkel.
-
-**Elméleti háttér és motiváció**:
-Az OLS modell feltételezi a megfigyelések függetlenségét ($\text{Cov}(\varepsilon_i, \varepsilon_j) = 0$). Azonban a 10. notebookban kimutatott szignifikáns térbeli autokorreláció (Moran's $I > 0, p < 0.001$) miatt a hagyományos OLS becslés torzított és inkonzisztens.
-
-**Modell specifikációk**:
-1. **Spatial Lag Modell (SAR / SLM - Anselin 1988)**:
-   $$y = \rho W y + X \beta + \varepsilon$$
-   ahol $W y$ a térben szomszédos ingatlanok késleltetett ára, $\rho$ a térbeli autoregresszív paraméter. Becslése Spatial Two-Stage Least Squares (Spatial 2SLS) eljárással történik, ahol a térbeli késleltetett magyarázó változók ($W X$) képezik a belső változó ($W y$) instrumentumait.
-2. **Térbeli Multiplikátor Hatás**:
-   Egy környezeti vagy infrastrukturális beavatkozás közvetlen hatásán túl térbeli tovagyűrűző (Spatial Spillover) hatást fejt ki:
-   $$\text{Teljes Hatás} = \frac{\beta}{1 - \rho}$$
-
-**Adatalap**: Az OLS regresszióval ellentétben a térbeli modellezést megelőzi egy **térbeli aggregáció**: az azonos címen/koordinátán található lakásokat egyetlen épület-szintű megfigyeléssé átlagoljuk, biztosítva, hogy a W mátrix tisztán az épületek/tömbök közötti "spillover" hatásokat mérje."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb13"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -2472,8 +2307,7 @@ coords = np.column_stack((df_geo['geokodolt_lon'], df_geo['geokodolt_lat']))
 print(f"Eredeti hirdetések száma: {len(df_raw)} db.")
 print(f"Térbeli (épület szintű) aggregáció utáni minta: {len(df_geo)} db ingatlan/térbeli egység.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. Térbeli Súlyozási Mátrix és Térbeli Késleltetés (Spatial Lag) Képzése
-A k=8 legközelebbi szomszéd (KNN) standardizált súlymátrix segítségével előállítjuk az endogén térbeli árlagot ($W y$) és a magyarázó változók térbeli instrumentumait ($W X$)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb13"]["sec1"]))
 
     nb.cells.append(new_code_cell("""# 1. KNN súlymátrix
 w_knn = KNN.from_array(coords, k=8)
@@ -2500,8 +2334,7 @@ WX = W_sparse.dot(X_mat)
 df_reg['spatial_lag_y'] = Wy
 print(f"Sikeresen kiszámítva a térbeli késleltetett változók N={len(df_reg)} megfigyelésre.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. OLS vs. Térbeli Késleltetett (Spatial Lag 2SLS) Modellbecslés
-A klasszikus OLS modell és az Anselin-féle Spatial 2SLS (Kétlépcsős legkisebb négyzetek) összevetése. A térbeli lag ($W y$) endogenitását a szomszédsági fizikai és lokációs jellemzők ($W X$) instrumentálják."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb13"]["sec2"]))
 
     nb.cells.append(new_code_cell("""# 1. Klasszikus OLS
 X_const = sm.add_constant(df_reg[x_vars_reg])
@@ -2535,8 +2368,7 @@ kpi_cards = [
 ]
 display(HTML(kpi_grid_html(kpi_cards)))"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Ökonometriai Összehasonlító Táblázat és Hatáselemzés
-A paraméterek stabilitása: látható, hogy a térbeli tovagyűrűzés bevonásával a lokációs változók (metró, vasútállomás) hatása robusztussá válik, a maradék hiba autokorrelációja pedig nullára esik."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb13"]["sec3"]))
 
     nb.cells.append(new_code_cell("""var_names_hu = ['Tengelymetszet (Konstans)'] + [
     'Korrigált alapterület (m²)',
@@ -2588,8 +2420,7 @@ fig1.update_layout(
 )
 fig1.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 4. Interaktív Térökonometriai Szimulátor
-Tesztelje interaktívan a térbeli spillover mértékét és a paraméterek stabilitását különböző k-szomszéd beállítások mellett!"""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb13"]["sec4"]))
 
     nb.cells.append(new_code_cell("""w_k_sar = widgets.IntSlider(min=4, max=16, step=2, value=8, description='k-Szomszéd:')
 out_sar = widgets.Output()
@@ -2630,12 +2461,7 @@ frissit_sar()"""))
 def build_nb14():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 14. Külső POI Adatintegráció és "15 perces város" Elemzés
-
-**Cél**: Kőbánya "15-perces város" jellegének mérése OpenStreetMap (OSM) Point of Interest (POI) adatok integrációjával.
-A modell megvizsgálja, hogy a zöldfelületek, oktatási és vendéglátóipari szolgáltatások közelsége hogyan épül be a lakásárakba.
-
-**Módszertan**: Az `osmnx` csomag segítségével élő térképi adatokat (amenities, parks) kérünk le Kőbányára, majd ezeket összekötjük az ingatlanok koordinátáival."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb14"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -2660,9 +2486,7 @@ df = load_szamitott_master()
 df_pontos = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
 print(f"Elemzett minta (garantált pontos): {len(df_pontos)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. POI Adatok Lekérése és a Határhatás (Edge Effect) Kiküszöbölése
-**Módszertani probléma (Peremhatás)**: Ha az OSM szolgáltatásokat kizárólag Kőbánya szigorú közigazgatási határán belül kérdezzük le, a kerület szélein fekvő ingatlanok (pl. a VIII. kerület Józsefvárossal, a IX. Ferencvárossal, vagy a XIV. Zuglóval határos részek) mesterségesen hátrányba kerülnek, mert az elemzés nem látja a közvetlenül a túloldalon lévő éttermeket, parkokat, iskolákat.
-**Tudományos megoldás**: A közigazgatási határra egy **1200 méteres térbeli puffert** alkalmazunk, így a 15 perces gyalogos izokrónon belüli valós elérhetőséget mérjük a szomszédos kerületek intézményi kínálatával együtt."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb14"]["sec1"]))
 
     nb.cells.append(new_code_cell("""# Pufferelt POI adatbázis betöltése (vagy lekérése)
 cand_paths = [
@@ -2695,8 +2519,7 @@ if poi_data is not None:
     poi_data['centroid'] = poi_data.geometry.centroid
     poi_data = poi_data.to_crs(epsg=4326)"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. A "15-Perces Város" Index Kiszámítása
-A hirdetések koordinátái alapján megnézzük, hány szolgáltatás (POI) érhető el az 5-10-15 perces gyalogos sávokban (375m, 750m, 1125m), most már a szomszédos kerületek átnyúló kínálatát is figyelembe véve."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb14"]["sec2"]))
 
     nb.cells.append(new_code_cell("""if poi_data is not None:
     gdf_ing = gpd.GeoDataFrame(
@@ -2741,8 +2564,7 @@ A hirdetések koordinátái alapján megnézzük, hány szolgáltatás (POI) ér
     fig.update_layout(height=500, margin={"r":0,"t":40,"l":0,"b":0})
     fig.show()"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Hedonikus Árprémium a POI Sűrűség alapján
-Az OSM szolgáltatási sűrűség (3 gyalogos sávban mérve) beépítése a lakásárak lineáris regressziójába."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb14"]["sec3"]))
 
     nb.cells.append(new_code_cell("""import statsmodels.api as sm
 
@@ -2770,14 +2592,7 @@ print(f"Az új modell R² értéke: {model.rsquared:.4f}")"""))
 def build_nb15():
     nb = new_notebook()
     
-    nb.cells.append(new_markdown_cell("""# 15. Lokális Térökonometria (Geographically Weighted Regression - GWR)
-
-**Cél**: A térbeli heterogenitás modellezése Kőbányán. Szemben a SAR (NB13) modellel, amely globális $\\rho$ együtthatót becsül, a GWR megengedi, hogy a magyarázó változók (pl. metrótól való távolság hatása) térben dinamikusan változzanak.
-Például: Lehet, hogy Újhegyen a metró közelsége sokkal nagyobb felárat jelent, mint Óhegyen.
-
-**Módszertan**: Az `mgwr` (Multiscale Geographically Weighted Regression) csomag használata. A paraméterfelületeket interaktív hőtérképen ábrázoljuk.
-
-**Adatalap**: Az algoritmus stabilitása és az egyedi címek okozta szingularitás (lokális multikollinearitás) elkerülése érdekében **épület-szintű térbeli aggregációt** alkalmazunk azokon a lakásokon, amelyek azonos koordinátával rendelkeznek."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb15"]["intro"]))
 
     nb.cells.append(new_code_cell("""import warnings; warnings.filterwarnings('ignore')
 import sys, os
@@ -2800,8 +2615,7 @@ df = load_szamitott_master()
 df_pontos = df[(df['minta_garantalt_pontos'] == 1) & (df['listing_type'] == 'elado')].copy()
 print(f"GWR Mintaelemszám: {len(df_pontos)} db.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 1. GWR Sávszélesség (Bandwidth) Keresése és Modell Illesztése
-A térbeli súlyozáshoz optimális távolságot (sávszélességet) az AICc kritérium minimalizálásával keressük."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb15"]["sec1"]))
 
     nb.cells.append(new_code_cell("""features = ['korrigalt_alapterulet_nm', 'tavolsag_metro_halozati_m']
 df_reg = df_pontos.dropna(subset=['log_nm_ar', 'geokodolt_lon', 'geokodolt_lat'] + features).copy()
@@ -2839,8 +2653,7 @@ else:
     print("Az 'mgwr' csomag nélkül szimulált GWR paraméterfelületet generálunk.")
     df_agg['gwr_tavolsag_metro_halozati_m'] = -0.0001 + np.random.normal(0, 0.00005, len(df_agg))"""))
 
-    nb.cells.append(new_markdown_cell("""### 2. A Metró Távolság Lokális Hatásának Térképes Vizualizációja
-A hőtérképen (scatter_map) azt láthatjuk, hogy Kőbánya mely részein mennyire bünteti az árat a metrótól való távolság. (Ahol sötétebb kék, ott erősebb a negatív együttható, azaz "fájdalmasabb" a metrótól való távolság)."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb15"]["sec2"]))
 
     nb.cells.append(new_code_cell("""target_col = 'gwr_tavolsag_metro_halozati_m'
 
@@ -2862,8 +2675,7 @@ if target_col in df_agg.columns:
 else:
     print("A megjelenítéshez futtassa le a GWR modellt.")"""))
 
-    nb.cells.append(new_markdown_cell("""### 3. Az Együtthatók Térbeli Eloszlása (Boxplot)
-Megvizsgáljuk, hogy az egyes változók hatása mennyire ingadozik a kerületen belül."""))
+    nb.cells.append(new_markdown_cell(NOTEBOOK_DOCS["nb15"]["sec3"]))
 
     nb.cells.append(new_code_cell("""if MGWR_AVAILABLE:
     # A lokális t-statisztikák és paraméterek eloszlása

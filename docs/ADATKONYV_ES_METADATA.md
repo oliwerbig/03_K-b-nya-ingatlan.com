@@ -1,8 +1,8 @@
 # KŐBÁNYA (BUDAPEST X. KERÜLET) INGATLANPIACI ADATKÖNYV ÉS MÓDSZERTANI DOKUMENTÁCIÓ
-**Projekt:** IFK-TDK 2026 Tudományos Diákköri Konferencia Kutatás  
-**Dátum:** 2026. szeptember 26.  
-**Adatgyűjtés időpontja:** 2026. szeptember 26. 10:00 – 12:30 (ingatlan.com teljes census)  
-**Adatállomány mérete:** 1 320 db egyedi hirdetés (1 140 db eladó, 180 db kiadó lakás)  
+**Projekt:** IFK-TDK 2026 Tudományos Diákköri Konferencia Kutatás
+**Dátum:** 2026. szeptember 26.
+**Adatgyűjtés időpontja:** 2026. szeptember 26. 10:00 – 12:30 (ingatlan.com teljes census)
+**Adatállomány mérete:** 1 320 db egyedi hirdetés (1 140 db eladó, 180 db kiadó lakás)
 **Státusz:** **VÉGLEGESÍTETT ÉS LEZÁRT MESTER ADATBÁZIS (FROZEN BASELINE)**
 
 ---
@@ -68,7 +68,7 @@ Minden fájl kriptográfiai SHA-256 hash ellenőrző összeggel van rögzítve, 
 ## 3. TÉRBELI MÓDSZERTAN ÉS A FALSIFIKÁCIÓ-MENTES PRECÍZIÓ ELVE
 
 ### 3.1. A fals precizitás kizárása (No False Precision)
-Az ingatlanhirdetési portálokon a hirdetések jelentős része (~77%) nem tartalmaz házszámot az eladói diszkréció miatt. A magyar ingatlanpiaci kutatások gyakori módszertani hibája, hogy az utcanév közepét vagy a kerület súlypontját rendelik hozzá koordinátaként, majd abból számolnak méterre pontos távolságokat. 
+Az ingatlanhirdetési portálokon a hirdetések jelentős része (~77%) nem tartalmaz házszámot az eladói diszkréció miatt. A magyar ingatlanpiaci kutatások gyakori módszertani hibája, hogy az utcanév közepét vagy a kerület súlypontját rendelik hozzá koordinátaként, majd abból számolnak méterre pontos távolságokat.
 Ez az adathalmaz **szigorúan kizárja a fals precizitást**:
 - **Pontos minta ($N = 296$, 22.4%):** Kizárólag ott határozunk meg koordinátát és távolságot, ahol ingatlanügynökségi JSON-LD pontos koordináta ($N=292$) vagy szövegből bányászott házszámszintű OSM épület-tetőpont ($N=4$) áll rendelkezésre.
 - **Tágabb minta ($N = 1 024$, 77.6%):** Minden térbeli mező (`geokodolt_lat`, `tavolsag_*`, `menetido_*`, `*_5p_seta`, `log_tavolsag_*`) szigorúan **`NULL`**. Ezek az ingatlanok a kerületi szintű panel/tégla, szobaszám, alapterület és ár-ökonometriai elemzésekhez használhatók.

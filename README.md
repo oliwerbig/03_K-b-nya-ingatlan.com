@@ -4,17 +4,18 @@ Ez a repozitórium egy átfogó, **17 modulból** álló, adatalapú ingatlanpia
 
 ## Architektúra
 
-A projekt egy **konfiguráció-vezérelt kutatási keretrendszerre** épül:
+A projekt egy **notebook-vezérelt, kanonizált riportpipeline**:
 
 | Réteg | Hely | Szerep |
 |---|---|---|
-| Nyers adatok | `data/raw/` | Kapart alapadatok (0 koordináta, érintetlen szövegek) |
+| **Elemző gerinc** | `notebooks/00–16.ipynb` | MINDEN számítás + módszertani dokumentáció, területfüggetlenül |
+| Nyers adatok | `data/raw/` | Kapart alapadatok (érintetlen) |
 | Számított adatok | `data/processed/` | Geokódolt + hálózati távolságok + hedonikus dummyk |
 | Kanonikus séma | `data/schema.yaml` | Rögzített mezők és kutatási sávok (immissziós + izokrón) |
 | Területi konfig | `data/areas.yaml` | Kőbánya (fő), Bécs Nordbahnhof (benchmark), további kontrollok |
-| Közös réteg | `notebooks/_utils.py` | Adatbetöltés, formázás, térbeli konfiguráció |
-| Elemző motor | `report_engine/` | 16 fejezet számítási csővezetéke + narratíva + HTML riport |
-| Adatintegritás | `verify_master_data.py` + `SHA256SUMS.txt` | Hash-hitelesített „frozen baseline" |
+| Kódcsomag | `src/ingatlan_tdk/` | Betöltés (`_utils`), séma (`data_io`), integritás (`verify`), CLI |
+| Riportkimenet | `html_reports/` | „Baked" HTML-riportok területenként (a CI generálja) |
+| Adatintegritás | `SHA256SUMS.txt` | Hash-hitelesített „frozen baseline" |
 
 ## Gyors indítás
 
@@ -26,8 +27,9 @@ pip install -e .   # a csomag és a tdk-* konzolparancsok
 # Adatintegritás-ellenőrzés (SHA-256 hash + szerkezeti invariánsok)
 python -m ingatlan_tdk verify
 
-# AZ EGYETLEN hivatalos belépési pont: verify + teljes riport (Kőbánya + Bécs)
-python -m ingatlan_tdk build   # vagy: tdk-build
+# Riportok generálása a notebookokból (területenként „baked" HTML + index)
+python -m ingatlan_tdk report --area kobanya   # egy terület
+python -m ingatlan_tdk report --all            # az összes regisztrált terület
 
 # Fejlesztői ellenőrzések (ruff + tesztek + struktúra) — make nélkül is fut:
 #   pip install -r requirements-dev.txt
@@ -84,4 +86,4 @@ A projekt teljes strukturális, elnevezési és munkafolyamat-szabályzata egy h
 - [`CHANGELOG.md`](CHANGELOG.md) — változásnapló (Keep a Changelog formátum).
 - Döntésnapló: [`docs/decisions/`](docs/decisions/) — Architecture Decision Records (ADR).
 - Licenc: [`LICENSE`](LICENSE) (MIT, a kódra).
-- A szabályok betartatása: `python -m ingatlan_tdk check`, `make check`, pre-commit hookok és a `.github/workflows/ci.yml` CI.
+- A szabályok betartatása: a `.github/workflows/ci.yml` (verify + pytest) és a `deploy-pages.yml` (verify → riport → Pages).

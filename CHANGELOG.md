@@ -63,6 +63,28 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   fájlok: `kobanya_ingatlan_piac_teljes_1320db.xlsx`, `fresh_deep_analysis_metrics.json`,
   `belvaros_network_cache.json`, `kobanya_test_mapping.yaml`.
 
+## [Nem kiadott] — Notebook-vezérelt minimális architektúra
+
+### Megváltoztatva
+- **A notebookok a gerinc:** a `NOTEBOOK_DOCS` módszertani szövegei (általános,
+  területfüggetlen, placeholder-mentes formában) beolvasztva a 00–16 notebookokba
+  markdown cellákként; a 16. notebook kapott komparatív bevezetőt.
+- **Riportpipeline:** az új `tdk-report` a notebookokat futtatja (`nbconvert --execute`)
+  és területenként exportálja a HTML-riportokat + index-oldalt generál;
+  a terület a `TDK_ACTIVE_AREA` env-változóval választható.
+- A véletlent használó notebookok determinisztikusak (seed-ek rögzítve; a GWR-jitter
+  seeded RNG-re cserélve).
+
+### Eltávolítva
+- `report_engine/` (~2 800 sor), `notebook_docs.py`, `report_cli.py` — a párhuzamos
+  elemző motor megszüntetve (ADR-0008).
+- `checks.py`, `Makefile`, pre-commit, ruff-konfig — a betartatás a verify + pytest + CI
+  magra szűkül.
+- `html_reports/` kikerült a gitből (a Pages-CI generálja).
+
+### Dokumentáció
+- `CONTRIBUTING.md`, `AGENTS.md`, `README.md` az új architektúrához igazítva;
+  `docs/decisions/0008-*.md` hozzáadva, az ADR-0003 felülírt státuszú.
 ## [2026-10-06] — Többterületes motor és bécsi benchmark
 
 ### Hozzáadva

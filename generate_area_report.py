@@ -15,10 +15,10 @@ import argparse
 import time
 
 try:
-    if hasattr(sys.stdout, 'reconfigure'):
-        sys.stdout.reconfigure(encoding='utf-8')
-    if hasattr(sys.stderr, 'reconfigure'):
-        sys.stderr.reconfigure(encoding='utf-8')
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8")
 except Exception:
     pass
 
@@ -28,7 +28,7 @@ if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
 from report_engine import AreaAnalyzer, NarrativeGenerator, HTMLReportBuilder
-from notebooks._utils import load_areas_config, list_available_areas, fmt_huf, fmt_eur
+from notebooks._utils import list_available_areas
 
 
 def build_central_hub(all_area_results: dict, output_dir: str = "html_reports") -> str:
@@ -40,26 +40,26 @@ def build_central_hub(all_area_results: dict, output_dir: str = "html_reports") 
     table_rows = []
 
     for area_id, data in all_area_results.items():
-        eda = data['eda']
-        rail = data['railway_paradox']
-        meta = data['metadata']
-        name = data['area_name']
-        role = data['role']
+        eda = data["eda"]
+        rail = data["railway_paradox"]
+        meta = data["metadata"]
+        name = data["area_name"]
+        role = data["role"]
 
-        badge_cls = "badge-primary" if role == 'primary' else "badge-control"
-        badge_lbl = "Fő Mintaterület" if role == 'primary' else "Nemzetközi Benchmark"
+        badge_cls = "badge-primary" if role == "primary" else "badge-control"
+        badge_lbl = "Fő Mintaterület" if role == "primary" else "Nemzetközi Benchmark"
 
-        diszkont = rail['diszkont_150_pct']
+        diszkont = rail["diszkont_150_pct"]
         diszkont_col = "#ef4444" if diszkont < 0 else "#10b981"
 
-        n_total_str = f"{eda['n_total']:,}".replace(',', ' ')
-        curr_sym = data.get('currency_symbol', 'Ft')
-        med_val = data['nb01']['median']
-        med_str = f"{med_val:,.0f} {curr_sym}".replace(',', ' ')
-        if curr_sym == '€' or data.get('currency') == 'EUR':
+        n_total_str = f"{eda['n_total']:,}".replace(",", " ")
+        curr_sym = data.get("currency_symbol", "Ft")
+        med_val = data["nb01"]["median"]
+        med_str = f"{med_val:,.0f} {curr_sym}".replace(",", " ")
+        if curr_sym == "€" or data.get("currency") == "EUR":
             med_sub_str = f"{med_val:,.0f} €"
         else:
-            med_sub_str = f"{med_val:,.0f} Ft (~{med_val/400.0:,.0f} €)"
+            med_sub_str = f"{med_val:,.0f} Ft (~{med_val / 400.0:,.0f} €)"
 
         card = f"""
         <div class="area-card">
@@ -68,8 +68,8 @@ def build_central_hub(all_area_results: dict, output_dir: str = "html_reports") 
             <span style="font-size:0.8rem; color:#64748b; font-weight:700;">ID: {area_id}</span>
           </div>
           <h3 style="font-size:1.35rem; margin-bottom:0.5rem; color:#ffffff;">{name}</h3>
-          <p style="font-size:0.88rem; color:#94a3b8; min-height:45px; margin-bottom:1rem;">{meta.get('description', '')}</p>
-          
+          <p style="font-size:0.88rem; color:#94a3b8; min-height:45px; margin-bottom:1rem;">{meta.get("description", "")}</p>
+
           <div class="mini-kpi-grid">
             <div class="mini-kpi">
               <span class="lbl">Kínálat</span>
@@ -85,10 +85,10 @@ def build_central_hub(all_area_results: dict, output_dir: str = "html_reports") 
             </div>
             <div class="mini-kpi">
               <span class="lbl">5p Állomás</span>
-              <span class="val" style="color:#f59e0b;">{rail['isochrones'][0]['pct']:.1f}%</span>
+              <span class="val" style="color:#f59e0b;">{rail["isochrones"][0]["pct"]:.1f}%</span>
             </div>
           </div>
-          
+
           <div style="margin-top:1.25rem;">
             <a href="{area_id}/index.html" class="btn-primary">📖 Riport Megnyitása &rarr;</a>
           </div>
@@ -102,11 +102,11 @@ def build_central_hub(all_area_results: dict, output_dir: str = "html_reports") 
           <td><strong>{name}</strong></td>
           <td><span class="badge {badge_cls}">{badge_lbl}</span></td>
           <td>{n_total_str} db</td>
-          <td>{eda['pct_pontos']:.1f}%</td>
+          <td>{eda["pct_pontos"]:.1f}%</td>
           <td><strong>{med_sub_str}</strong></td>
-          <td>{eda['mean_area']:.1f} m²</td>
+          <td>{eda["mean_area"]:.1f} m²</td>
           <td style="color:{diszkont_col}; font-weight:700;">{diszkont:+.1f}%</td>
-          <td>{rail['isochrones'][0]['pct']:.1f}% ({rail['isochrones'][0]['count']} db)</td>
+          <td>{rail["isochrones"][0]["pct"]:.1f}% ({rail["isochrones"][0]["count"]} db)</td>
           <td><a href="{area_id}/index.html" style="color:#38bdf8; text-decoration:none; font-weight:600;">Megtekintés &rarr;</a></td>
         </tr>
         """)
@@ -275,19 +275,25 @@ def build_central_hub(all_area_results: dict, output_dir: str = "html_reports") 
 def generate_for_area(area_id: str, output_base_dir: str = "html_reports") -> dict:
     """Egy adott terület teljes riportgenerálásának végrehajtása."""
     t0 = time.time()
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print(f"[>] RIPORT GENERALASA: [{area_id}]")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     # 1. Analitikai modulok futtatása
     print("  [1/4] Adathalmaz feldolgozasa es analitikai modulok futtatasa...")
     analyzer = AreaAnalyzer(area_id)
     analysis_results = analyzer.run_all_analyses()
-    print(f"        -> Mintameret: {analysis_results['eda']['n_total']:,} db hirdetes ({analysis_results['eda']['pct_pontos']:.1f}% pontos GIS).".replace(',', ' '))
-    curr_s = analysis_results.get('currency_symbol', 'Ft')
-    med_v = analysis_results['nb01']['median']
-    print(f"        -> Median ar/m2: {med_v:,.0f} {curr_s}.".replace(',', ' '))
-    print(f"        -> Vasuti immisszios hatas (<150m): {analysis_results['railway_paradox']['diszkont_150_pct']:+.1f}%.")
+    print(
+        f"        -> Mintameret: {analysis_results['eda']['n_total']:,} db hirdetes ({analysis_results['eda']['pct_pontos']:.1f}% pontos GIS).".replace(
+            ",", " "
+        )
+    )
+    curr_s = analysis_results.get("currency_symbol", "Ft")
+    med_v = analysis_results["nb01"]["median"]
+    print(f"        -> Median ar/m2: {med_v:,.0f} {curr_s}.".replace(",", " "))
+    print(
+        f"        -> Vasuti immisszios hatas (<150m): {analysis_results['railway_paradox']['diszkont_150_pct']:+.1f}%."
+    )
 
     # 2. Szöveges értékelés és konklúziók generálása
     print("  [2/4] Tudomanyos narrativa es varostervezesi konkluziok szintezise...")
@@ -303,29 +309,37 @@ def generate_for_area(area_id: str, output_base_dir: str = "html_reports") -> di
     print(f"  [4/4] Sikeres generalas! ({len(created_files)} HTML fajl elkeszult, {dt:.1f}s)")
     for cf in created_files:
         print(f"        [OK] {cf}")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
 
     return analysis_results
 
 
 def main():
-    parser = argparse.ArgumentParser(description="IFK-TDK 2026 Automatizalt Teruleti Riport Generator")
+    parser = argparse.ArgumentParser(
+        description="IFK-TDK 2026 Automatizalt Teruleti Riport Generator"
+    )
     parser.add_argument("--area", help="Celterulet azonositoja (pl. 'kobanya', 'wien_nordbahnhof')")
-    parser.add_argument("--all", action="store_true", help="Az osszes elerheto terulet feldolgozasa")
+    parser.add_argument(
+        "--all", action="store_true", help="Az osszes elerheto terulet feldolgozasa"
+    )
     parser.add_argument("--output_dir", default="html_reports", help="Kimeneti HTML konyvtar")
     args = parser.parse_args()
 
-    cfg = load_areas_config()
     available = list_available_areas()
 
     target_areas = []
     if args.all:
-        target_areas = [a for a in available if a in ['kobanya', 'wien_nordbahnhof'] or os.path.exists(os.path.join("data", "processed", f"{a}_szamitott_master.parquet"))]
+        target_areas = [
+            a
+            for a in available
+            if a in ["kobanya", "wien_nordbahnhof"]
+            or os.path.exists(os.path.join("data", "processed", f"{a}_szamitott_master.parquet"))
+        ]
     elif args.area:
         target_areas = [args.area.strip()]
     else:
         # Default: ha mindkettő megvan, mindkettőt generáljuk
-        target_areas = ['kobanya', 'wien_nordbahnhof']
+        target_areas = ["kobanya", "wien_nordbahnhof"]
 
     all_results = {}
     for aid in target_areas:
@@ -335,6 +349,7 @@ def main():
         except Exception as e:
             print(f"[!] Hiba a(z) '{aid}' terulet generalasakor: {e}")
             import traceback
+
             traceback.print_exc()
 
     # Központi portál (hub) generálása

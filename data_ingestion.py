@@ -41,6 +41,7 @@ from typing import Dict, Optional
 
 SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "data", "schema.yaml")
 
+
 def _load_schema(schema_path: str = SCHEMA_PATH) -> dict:
     """Load the YAML schema file.
 
@@ -51,7 +52,9 @@ def _load_schema(schema_path: str = SCHEMA_PATH) -> dict:
     with open(schema_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
+
 _SCHEMA = _load_schema()
+
 
 def _apply_mapping(df: pd.DataFrame, mapping: Dict[str, str]) -> pd.DataFrame:
     """Rename columns according to ``mapping``.
@@ -60,6 +63,7 @@ def _apply_mapping(df: pd.DataFrame, mapping: Dict[str, str]) -> pd.DataFrame:
     Columns not present in the mapping are left unchanged.
     """
     return df.rename(columns=mapping)
+
 
 def _validate_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """Validate ``df`` against the canonical schema.
@@ -71,8 +75,6 @@ def _validate_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
     required = set(_SCHEMA.get("required", {}).keys())
     optional = set(_SCHEMA.get("optional", {}).keys())
-    all_expected = required.union(optional)
-
     missing_req = required - set(df.columns)
     if missing_req:
         raise ValueError(
@@ -89,18 +91,19 @@ def _validate_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     for col, dtype in all_fields.items():
         if col in df.columns:
             try:
-                if dtype == 'float64':
-                    df[col] = pd.to_numeric(df[col], errors='coerce').astype('float64')
-                elif dtype == 'int64':
-                    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype('int64')
-                elif dtype == 'object':
-                    df[col] = df[col].astype('object')
-            except Exception as e:
+                if dtype == "float64":
+                    df[col] = pd.to_numeric(df[col], errors="coerce").astype("float64")
+                elif dtype == "int64":
+                    df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0).astype("int64")
+                elif dtype == "object":
+                    df[col] = df[col].astype("object")
+            except Exception:
                 pass
 
     # Re‑order columns to match the schema (nice for downstream code)
-    ordered_cols = [c for c in _SCHEMA.get("required", {}) if c in df.columns] + \
-                   [c for c in _SCHEMA.get("optional", {}) if c in df.columns]
+    ordered_cols = [c for c in _SCHEMA.get("required", {}) if c in df.columns] + [
+        c for c in _SCHEMA.get("optional", {}) if c in df.columns
+    ]
     remaining = [c for c in df.columns if c not in ordered_cols]
     df = df[ordered_cols + remaining]
     return df
@@ -127,7 +130,10 @@ def _load_file(path: str, source_type: str) -> pd.DataFrame:
     elif source_type == "json":
         return pd.read_json(path, lines=True)
     else:
-        raise ValueError(f"Unsupported source_type '{source_type}'. Use csv, excel, parquet, or json.")
+        raise ValueError(
+            f"Unsupported source_type '{source_type}'. Use csv, excel, parquet, or json."
+        )
+
 
 def load_and_validate(
     path: str,
@@ -154,6 +160,7 @@ def load_and_validate(
     df = _validate_dataframe(df)
     return df
 
+
 # ---------------------------------------------------------------------------
 # Helper for quick conversion of an Excel file to the canonical Parquet format
 # (useful for the one‑off migration you mentioned).
@@ -177,5 +184,6 @@ def convert_excel_to_parquet(
     )
     df.to_parquet(parquet_path, index=False)
     print(f"✅ Converted {excel_path} → {parquet_path} (schema‑validated)")
+
 
 # End of module

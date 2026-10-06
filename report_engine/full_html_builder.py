@@ -8,35 +8,40 @@ import os
 from typing import Dict, Any, List
 
 CHAPTERS_META = [
-    ('00_adathalmaz_attekintes', '00. Adathalmaz & Adatminőség', 'nb00', '🗂️'),
-    ('01_leiro_statisztika_es_eda', '01. Leíró Statisztika & EDA', 'nb01', '📊'),
-    ('02_arstruktura_es_szegmentacio', '02. Árstruktúra & Szegmentáció', 'nb02', '🏢'),
-    ('03_terbeli_elemzes_es_terkepek', '03. Térbeli Elemzés & GIS Térképek', 'nb03', '🗺️'),
-    ('04_vasuti_paradoxon_es_izokronok', '04. Vasúti Paradoxon & Izokrónok', 'nb04', '🚆'),
-    ('05_poi_es_15_perces_varos', '05. POI Ellátottság & 15p Város', 'nb05', '🚶'),
-    ('06_klaszter_es_tipologia', '06. Klaszteranalízis & Tipológiák', 'nb06', '🧩'),
-    ('07_hedonikus_armodell', '07. Hedonikus Ármodell (OLS)', 'nb07', '📐'),
-    ('08_moran_es_autokorrelacio', '08. Térbeli Autokorreláció & Moran', 'nb08', '🌐'),
-    ('09_terokonometria_sar_sem', '09. Térökonometria (SAR & SEM)', 'nb09', '🔗'),
-    ('10_lokalis_terokonometria_gwr', '10. Lokális Térökonometria (GWR)', 'nb10', '📍'),
-    ('11_gepi_tanulas_es_arbitrazs', '11. Gépi Tanulás & Arbitrázs', 'nb11', '🤖'),
-    ('12_berleti_piac_es_rent_gap', '12. Bérleti Piac & Rent Gap', 'nb12', '🔑'),
-    ('13_monte_carlo_kockazat', '13. Monte Carlo Kockázatelemzés', 'nb13', '🎲'),
-    ('14_lvc_szimulacio', '14. Közösségi Értékmegosztás (LVC)', 'nb14', '🏛️'),
-    ('15_ingatlan_kereso_dashboard', '15. Ingatlan Kereső Dashboard', 'nb15', '🎯')
+    ("00_adathalmaz_attekintes", "00. Adathalmaz & Adatminőség", "nb00", "🗂️"),
+    ("01_leiro_statisztika_es_eda", "01. Leíró Statisztika & EDA", "nb01", "📊"),
+    ("02_arstruktura_es_szegmentacio", "02. Árstruktúra & Szegmentáció", "nb02", "🏢"),
+    ("03_terbeli_elemzes_es_terkepek", "03. Térbeli Elemzés & GIS Térképek", "nb03", "🗺️"),
+    ("04_vasuti_paradoxon_es_izokronok", "04. Vasúti Paradoxon & Izokrónok", "nb04", "🚆"),
+    ("05_poi_es_15_perces_varos", "05. POI Ellátottság & 15p Város", "nb05", "🚶"),
+    ("06_klaszter_es_tipologia", "06. Klaszteranalízis & Tipológiák", "nb06", "🧩"),
+    ("07_hedonikus_armodell", "07. Hedonikus Ármodell (OLS)", "nb07", "📐"),
+    ("08_moran_es_autokorrelacio", "08. Térbeli Autokorreláció & Moran", "nb08", "🌐"),
+    ("09_terokonometria_sar_sem", "09. Térökonometria (SAR & SEM)", "nb09", "🔗"),
+    ("10_lokalis_terokonometria_gwr", "10. Lokális Térökonometria (GWR)", "nb10", "📍"),
+    ("11_gepi_tanulas_es_arbitrazs", "11. Gépi Tanulás & Arbitrázs", "nb11", "🤖"),
+    ("12_berleti_piac_es_rent_gap", "12. Bérleti Piac & Rent Gap", "nb12", "🔑"),
+    ("13_monte_carlo_kockazat", "13. Monte Carlo Kockázatelemzés", "nb13", "🎲"),
+    ("14_lvc_szimulacio", "14. Közösségi Értékmegosztás (LVC)", "nb14", "🏛️"),
+    ("15_ingatlan_kereso_dashboard", "15. Ingatlan Kereső Dashboard", "nb15", "🎯"),
 ]
 
 
 class FullHTMLReportBuilder:
     """Teljes, 16 fejezetes HTML jelentéscsomagot összeállító és mentő osztály."""
 
-    def __init__(self, analysis_data: Dict[str, Any], narratives: Dict[str, str], output_base_dir: str = "html_reports"):
+    def __init__(
+        self,
+        analysis_data: Dict[str, Any],
+        narratives: Dict[str, str],
+        output_base_dir: str = "html_reports",
+    ):
         self.data = analysis_data
         self.narratives = narratives
-        self.area_id = analysis_data['area_id']
-        self.area_name = analysis_data['area_name']
-        self.short_name = analysis_data['short_name']
-        self.role = analysis_data['role']
+        self.area_id = analysis_data["area_id"]
+        self.area_name = analysis_data["area_name"]
+        self.short_name = analysis_data["short_name"]
+        self.role = analysis_data["role"]
         self.out_dir = os.path.join(output_base_dir, self.area_id)
         self.chapters_dir = os.path.join(self.out_dir, "chapters")
         os.makedirs(self.chapters_dir, exist_ok=True)
@@ -191,7 +196,11 @@ class FullHTMLReportBuilder:
 """
 
     def render_header(self, current_title: str, is_chapter: bool = False) -> str:
-        role_badge = '<span class="badge badge-primary">Fő Mintaterület</span>' if self.role == 'primary' else '<span class="badge badge-control">Nemzetközi Benchmark / Kontroll</span>'
+        role_badge = (
+            '<span class="badge badge-primary">Fő Mintaterület</span>'
+            if self.role == "primary"
+            else '<span class="badge badge-control">Nemzetközi Benchmark / Kontroll</span>'
+        )
         root_portal = "../../index.html" if is_chapter else "../index.html"
         return f"""
 <header>
@@ -211,19 +220,21 @@ class FullHTMLReportBuilder:
     def render_nav_bar(self, active_key: str, is_chapter: bool = False) -> str:
         prefix = "" if is_chapter else "chapters/"
         idx_href = "../index.html" if is_chapter else "index.html"
-        
-        links = [f'<a href="{idx_href}" class="nav-link {"active" if active_key == "index" else ""}">🏠 Vezetői Dashboard</a>']
+
+        links = [
+            f'<a href="{idx_href}" class="nav-link {"active" if active_key == "index" else ""}">🏠 Vezetői Dashboard</a>'
+        ]
         for fname, title, key, icon in CHAPTERS_META:
             act = "active" if active_key == key else ""
             href = f"{fname}.html" if is_chapter else f"{prefix}{fname}.html"
             links.append(f'<a href="{href}" class="nav-link {act}">{icon} {title}</a>')
-        
+
         return f'<nav class="nav-bar">{"".join(links)}</nav>'
 
     def build_index_page(self) -> str:
         """A terület fő Vezetői Index összefoglalójának generálása."""
-        exec_html = self.narratives.get('executive_summary', '')
-        
+        exec_html = self.narratives.get("executive_summary", "")
+
         # 16 fejezet kártyarácsa
         cards_html = ""
         for fname, title, key, icon in CHAPTERS_META:
@@ -239,14 +250,14 @@ class FullHTMLReportBuilder:
 </div>
 """
 
-        nb00 = self.data['nb00']
-        nb01 = self.data['nb01']
-        nb04 = self.data['nb04']
-        nb11 = self.data['nb11']
+        nb00 = self.data["nb00"]
+        nb01 = self.data["nb01"]
+        nb04 = self.data["nb04"]
+        nb11 = self.data["nb11"]
 
-        n_total_str = f"{nb00['n_total']:,}".replace(',', ' ')
-        med_str = f"{nb01['median']:,.0f}".replace(',', ' ')
-        u_sqm = self.data.get('unit_sqm', 'Ft/m²')
+        n_total_str = f"{nb00['n_total']:,}".replace(",", " ")
+        med_str = f"{nb01['median']:,.0f}".replace(",", " ")
+        u_sqm = self.data.get("unit_sqm", "Ft/m²")
 
         content = f"""<!DOCTYPE html>
 <html lang="hu">
@@ -266,10 +277,10 @@ class FullHTMLReportBuilder:
   {self.render_nav_bar("index", is_chapter=False)}
 
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-title">Mintaelemszám</div><div class="kpi-value">{n_total_str} db</div><div class="kpi-sub">{nb00['pct_pontos']:.1f}% pontos GIS</div></div>
+    <div class="kpi-card"><div class="kpi-title">Mintaelemszám</div><div class="kpi-value">{n_total_str} db</div><div class="kpi-sub">{nb00["pct_pontos"]:.1f}% pontos GIS</div></div>
     <div class="kpi-card"><div class="kpi-title">Kínálati Medián Ár</div><div class="kpi-value" style="color:#38bdf8;">{med_str} {u_sqm}</div><div class="kpi-sub">Fajlagos középérték</div></div>
-    <div class="kpi-card"><div class="kpi-title">Vasúti Hatás (&lt;150m)</div><div class="kpi-value" style="color:{'#ef4444' if nb04['diszkont_pct']<0 else '#10b981'};">{nb04['diszkont_pct']:+.1f}%</div><div class="kpi-sub">Immissziós eltérés</div></div>
-    <div class="kpi-card"><div class="kpi-title">Random Forest R²</div><div class="kpi-value" style="color:#10b981;">{nb11['r2']:.3f}</div><div class="kpi-sub">Gépi tanulási pontosság</div></div>
+    <div class="kpi-card"><div class="kpi-title">Vasúti Hatás (&lt;150m)</div><div class="kpi-value" style="color:{"#ef4444" if nb04["diszkont_pct"] < 0 else "#10b981"};">{nb04["diszkont_pct"]:+.1f}%</div><div class="kpi-sub">Immissziós eltérés</div></div>
+    <div class="kpi-card"><div class="kpi-title">Random Forest R²</div><div class="kpi-value" style="color:#10b981;">{nb11["r2"]:.3f}</div><div class="kpi-sub">Gépi tanulási pontosság</div></div>
   </div>
 
   {exec_html}
@@ -299,21 +310,23 @@ class FullHTMLReportBuilder:
 
         for idx, (fname, title, key, icon) in enumerate(CHAPTERS_META):
             ch_html = self.narratives.get(key, f"<h1>{title}</h1><p>Fejezet előkészítés alatt.</p>")
-            
+
             # Előző / Következő linkek
             prev_btn = ""
             if idx > 0:
-                p_fname, p_title, _, _ = CHAPTERS_META[idx-1]
+                p_fname, p_title, _, _ = CHAPTERS_META[idx - 1]
                 prev_btn = f'<a href="{p_fname}.html" class="btn-nav">&larr; Előző: {p_title}</a>'
             else:
-                prev_btn = f'<a href="../index.html" class="btn-nav">&larr; Vissza a Főoldalra</a>'
+                prev_btn = '<a href="../index.html" class="btn-nav">&larr; Vissza a Főoldalra</a>'
 
             next_btn = ""
             if idx < len(CHAPTERS_META) - 1:
-                n_fname, n_title, _, _ = CHAPTERS_META[idx+1]
-                next_btn = f'<a href="{n_fname}.html" class="btn-nav">Következő: {n_title} &rarr;</a>'
+                n_fname, n_title, _, _ = CHAPTERS_META[idx + 1]
+                next_btn = (
+                    f'<a href="{n_fname}.html" class="btn-nav">Következő: {n_title} &rarr;</a>'
+                )
             else:
-                next_btn = f'<a href="../index.html" class="btn-nav">Vezetői Összefoglaló &rarr;</a>'
+                next_btn = '<a href="../index.html" class="btn-nav">Vezetői Összefoglaló &rarr;</a>'
 
             page_code = f"""<!DOCTYPE html>
 <html lang="hu">

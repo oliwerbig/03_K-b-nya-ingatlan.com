@@ -9,7 +9,7 @@ Két üzemmód:
 A SHA256SUMS.txt rögzíti a „frozen baseline" mester adatfájljainak
 kriptográfiai ellenőrző összegét (sha256sum formátum). Az ellenőrzés a
 hash-egyezés mellett a számított mester adathalmaz szerkezeti invariánsait
-is vizsgálja — az ADATKONYV_ES_METADATA.md 5. szakaszának megfelelően.
+is vizsgálja — a docs/ADATKONYV_ES_METADATA.md 5. szakaszának megfelelően.
 """
 
 import os
@@ -90,6 +90,7 @@ def verify_sums():
 
 def verify_structure():
     import pandas as pd
+
     results = []
     warnings = []
     kob = pd.read_parquet(_abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
@@ -146,7 +147,9 @@ def verify_structure():
     if os.path.exists(wien_path):
         w = pd.read_parquet(wien_path)
         check("wien összes rekord == 1037", len(w) == 1037)
-        check("wien garantált pontos == 1037", int((w["minta_garantalt_pontos"] == 1).sum()) == 1037)
+        check(
+            "wien garantált pontos == 1037", int((w["minta_garantalt_pontos"] == 1).sum()) == 1037
+        )
 
     return results, warnings
 

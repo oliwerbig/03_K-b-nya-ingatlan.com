@@ -5,6 +5,7 @@ Futtatás:
   pytest tests/                   # pytesttel
   python tests/test_integrity.py  # pytest nélkül is
 """
+
 import os
 import sys
 
@@ -22,6 +23,7 @@ def test_sha256_manifest():
 
 def test_kobanya_record_counts():
     import pandas as pd
+
     df = pd.read_parquet(vmd._abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
     assert len(df) == 1320
     assert int((df["listing_type"] == "elado").sum()) == 1140
@@ -31,6 +33,7 @@ def test_kobanya_record_counts():
 
 def test_kobanya_no_missing_price_or_invalid_area():
     import pandas as pd
+
     df = pd.read_parquet(vmd._abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
     assert int(df["price_huf"].isna().sum()) == 0
     assert int((df["alapterulet_nm"] <= 0).sum()) == 0
@@ -38,6 +41,7 @@ def test_kobanya_no_missing_price_or_invalid_area():
 
 def test_kobanya_route_integrity():
     import pandas as pd
+
     df = pd.read_parquet(vmd._abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
     if {"tavolsag_mazsa_halozati_m", "tavolsag_mazsa_m"}.issubset(df.columns):
         m = df.dropna(subset=["tavolsag_mazsa_halozati_m", "tavolsag_mazsa_m"])
@@ -46,6 +50,7 @@ def test_kobanya_route_integrity():
 
 def test_kobanya_isochrone_hierarchy():
     import pandas as pd
+
     df = pd.read_parquet(vmd._abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
     for prefix in ("mazsa", "metro", "villamos"):
         c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"
@@ -56,11 +61,20 @@ def test_kobanya_isochrone_hierarchy():
 
 def test_wien_record_counts():
     import pandas as pd
+
     p = vmd._abs("data/processed/wien_nordbahnhof_szamitott_master.parquet")
     if os.path.exists(p):
         df = pd.read_parquet(p)
         assert len(df) == 1037
         assert int((df["minta_garantalt_pontos"] == 1).sum()) == 1037
+
+
+def test_structure_compliant():
+    """A CONTRIBUTING.md strukturális szabályainak betartása."""
+    import check_structure
+
+    v = check_structure.violations()
+    assert not v, "Struktúra-szabálysértés(ek): " + "; ".join(v)
 
 
 if __name__ == "__main__":

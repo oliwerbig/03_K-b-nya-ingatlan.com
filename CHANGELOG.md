@@ -36,6 +36,27 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - `run_and_export_all.py`, `notebooks/precalculate_all.py`, `final_deploy.ps1` (a `build_all.py`/CI váltja).
 - `get_exact_stats.py`, `extract_all_numbers.py`, `restructure_project.py` (egyszeri eszközök).
 
+### Hozzáadva
+- `LICENSE` (MIT) és `docs/decisions/` — 7 Architecture Decision Record.
+- `src/ingatlan_tdk/` src-layout csomag + konzolparancsok: `tdk-build`, `tdk-report`,
+  `tdk-verify`, `tdk-check` (`pip install -e .`); `python -m ingatlan_tdk <parancs>`.
+
+### Megváltoztatva
+- Minden modul a csomagba költözött (`_utils`, `data_io`, `verify`, `checks`,
+  `report_engine`, `notebook_docs`, `cli`); a gyökérből minden szkript törölve.
+- A 17 notebook importja: `from ingatlan_tdk._utils import *`.
+- `pyproject.toml`: csomagdefiníció, konzolparancsok, ruff (az E402-kivétel megszűnt).
+- `Makefile`, `ci.yml`, `deploy-pages.yml`: a csomagparancsokra állítva.
+
+### Javítva
+- **GitHub Actions hiba:** `requirements.txt` — a `pywinpty` Windows-only csomag
+  platform-markerrel (`sys_platform == "win32"`), így a Linux CI telepítés már nem száll el.
+
+### Eltávolítva
+- `archive/` teljes törlése (a git history megőrzi); felesleges, hivatkozatlan
+  fájlok: `kobanya_ingatlan_piac_teljes_1320db.xlsx`, `fresh_deep_analysis_metrics.json`,
+  `belvaros_network_cache.json`, `kobanya_test_mapping.yaml`.
+
 ## [2026-10-06] — Többterületes motor és bécsi benchmark
 
 ### Hozzáadva

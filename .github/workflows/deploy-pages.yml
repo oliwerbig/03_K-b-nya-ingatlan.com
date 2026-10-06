@@ -24,17 +24,19 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'
           cache: 'pip'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          pip install -e .
 
       - name: Verify data integrity
-        run: python verify_master_data.py
+        run: python -m ingatlan_tdk verify
 
       - name: Build area reports
-        run: python generate_area_report.py --all
+        run: python -m ingatlan_tdk report --all
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

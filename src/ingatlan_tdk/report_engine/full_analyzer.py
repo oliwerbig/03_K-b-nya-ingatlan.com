@@ -6,11 +6,7 @@ Mind a 16 notebook (00 - 15) teljes statisztikai és gépi tanulásos számítá
 modelljeit, diagnosztikáit és interaktív Plotly updatemenus ábráit előállítja.
 """
 
-import os
-import sys
 import warnings
-
-warnings.filterwarnings("ignore")
 
 import numpy as np
 import pandas as pd
@@ -42,14 +38,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-# Notebooks segédmodul elérése
-_CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-_PROJECT_ROOT = os.path.dirname(_CURRENT_DIR)
-_NOTEBOOKS_DIR = os.path.join(_PROJECT_ROOT, "notebooks")
-if _NOTEBOOKS_DIR not in sys.path:
-    sys.path.append(_NOTEBOOKS_DIR)
-
-from _utils import (
+from .._utils import (
     load_szamitott_master,
     get_area_metadata,
     get_map_center,
@@ -58,6 +47,8 @@ from _utils import (
     VASUT_IMMISSZIO_LABELS,
     PLOTLY_TEMPLATE,
 )
+
+warnings.filterwarnings("ignore")
 
 
 class FullAreaAnalyzer:

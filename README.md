@@ -21,12 +21,13 @@ A projekt egy **konfiguráció-vezérelt kutatási keretrendszerre** épül:
 ```bash
 # Függőségek telepítése (ajánlott virtuális környezetben)
 pip install -r requirements.txt
+pip install -e .   # a csomag és a tdk-* konzolparancsok
 
 # Adatintegritás-ellenőrzés (SHA-256 hash + szerkezeti invariánsok)
-python verify_master_data.py
+python -m ingatlan_tdk verify
 
 # AZ EGYETLEN hivatalos belépési pont: verify + teljes riport (Kőbánya + Bécs)
-python build_all.py
+python -m ingatlan_tdk build   # vagy: tdk-build
 
 # Fejlesztői ellenőrzések (ruff + tesztek + struktúra) — make nélkül is fut:
 #   pip install -r requirements-dev.txt
@@ -81,4 +82,6 @@ A projekt teljes strukturális, elnevezési és munkafolyamat-szabályzata egy h
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — a projekt „alkotmánya": mappatérkép, adatszabályok, elnevezések, commit-konvenció, Definition of Done.
 - [`AGENTS.md`](AGENTS.md) — utasítások AI-asszisztenseknek.
 - [`CHANGELOG.md`](CHANGELOG.md) — változásnapló (Keep a Changelog formátum).
-- A szabályok betartatása: `check_structure.py`, `make check`, pre-commit hookok és a `.github/workflows/ci.yml` CI.
+- Döntésnapló: [`docs/decisions/`](docs/decisions/) — Architecture Decision Records (ADR).
+- Licenc: [`LICENSE`](LICENSE) (MIT, a kódra).
+- A szabályok betartatása: `python -m ingatlan_tdk check`, `make check`, pre-commit hookok és a `.github/workflows/ci.yml` CI.

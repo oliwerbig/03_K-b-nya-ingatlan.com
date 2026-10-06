@@ -39,7 +39,7 @@ import pandas as pd
 import yaml
 from typing import Dict, Optional
 
-SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "data", "schema.yaml")
+SCHEMA_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "schema.yaml")
 
 
 def _load_schema(schema_path: str = SCHEMA_PATH) -> dict:

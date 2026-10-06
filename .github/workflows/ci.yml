@@ -22,18 +22,19 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
+          pip install -e .
 
       - name: Lint (ruff)
-        run: python -m ruff check build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
+        run: python -m ruff check src scripts tests
 
       - name: Compile check
-        run: python -m compileall -q build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
+        run: python -m compileall -q src scripts tests
 
       - name: Data integrity
-        run: python verify_master_data.py
+        run: python -m ingatlan_tdk verify
 
       - name: Structure check
-        run: python check_structure.py
+        run: python -m ingatlan_tdk check
 
       - name: Tests
         run: pytest tests/ -q

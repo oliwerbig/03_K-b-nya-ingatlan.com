@@ -2,7 +2,7 @@
 
 > Ez a fájl a projekt „alkotmánya": itt van rögzítve minden strukturális, elnevezési
 > és munkafolyamat-szabály. Minden változtatásnak meg kell felelnie ezeknek; a
-> géppel ellenőrizhető részét a `check_structure.py`, a `make check` és a CI
+> géppel ellenőrizhető részét az `ingatlan_tdk.checks`, a `make check` és a CI
 > (`.github/workflows/ci.yml`) kényszeríti ki.
 
 ## 1. Projektcél és vízió (röviden)
@@ -21,25 +21,23 @@ gyökér/
 ├── Makefile, pyproject.toml, .editorconfig               # build- és stíluskonfig
 ├── requirements.txt, requirements-dev.txt                # függőségek (futtatás / fejlesztés)
 ├── SHA256SUMS.txt                                        # frozen baseline hash-manifest
-├── build_all.py            # AZ EGYETLEN hivatalos belépési pont
-├── generate_area_report.py # elemző motor CLI
-├── verify_master_data.py   # adatintegritás-ellenőrzés
-├── check_structure.py      # struktúra-/konvenció-ellenőrzés
-├── data_ingestion.py       # séma-validáló betöltő könyvtár
-├── Start_JupyterLab.bat    # interaktív Jupyter-indító (Windows)
-├── docs/                   # adatszótár és módszertani dokumentáció (ADATKONYV)
+├── LICENSE                 # MIT licenc (a kódra)
+├── src/ingatlan_tdk/       # az EGYETLEN kódcsomag (telepítés: pip install -e .)
+│   ├── _utils.py           # adatbetöltés, formázás, térbeli konfiguráció
+│   ├── data_io.py          # séma-validáló betöltő könyvtár
+│   ├── verify.py, checks.py, cli.py, notebook_docs.py
+│   └── report_engine/      # az elemző motor (full_analyzer, full_narrative, full_html_builder)
+├── notebooks/              # interaktív elemző réteg: 00–16.ipynb (from ingatlan_tdk._utils import *)
+├── scripts/                # adatbeszerző/eszköz szkriptek (fetch_*, enrich_*, preprocess_*)
+├── tests/                  # pytest tesztek (tests/test_*.py)
+├── docs/                   # ADATKONYV + decisions/ (ADR-ek)
 ├── data/
 │   ├── raw/                # 1. réteg: kapart, ÉRINTETLEN adat
 │   ├── processed/          # 2. réteg: generált, számított adat (tilos kézzel szerkeszteni)
 │   ├── schema.yaml         # kanonikus adatséma
 │   ├── areas.yaml          # területi regiszter (kobanya, wien_nordbahnhof, ...)
 │   └── mappings/           # nyers → kanonikus oszlopleképezések (YAML)
-├── notebooks/              # interaktív elemző réteg: 00–16.ipynb + _utils.py
-├── report_engine/          # az elemző motor (full_analyzer, full_narrative, full_html_builder, notebook_docs)
-├── scripts/                # adatbeszerző/eszköz szkriptek (fetch_*, enrich_*, preprocess_*)
-├── tests/                  # pytest tesztek (tests/test_*.py)
 ├── html_reports/           # az EGYETLEN generált kimenet (publikációs portál)
-├── archive/                # minden elavult, nem aktív állomány
 └── .github/workflows/      # deploy-pages.yml + ci.yml
 ```
 
@@ -51,7 +49,7 @@ gyökér/
      szerkeszteni** — kizárólag a generáló szkriptek (`scripts/`) írhatják.
 2. **Kanonikus séma:** `data/schema.yaml` rögzíti a mezőket, típusokat és a
    kutatási sávokat (immissziós + izokrón). Minden betöltés a
-   `data_ingestion.load_and_validate()`-on át menjen.
+   `ingatlan_tdk.data_io.load_and_validate()`-on át menjen.
 3. **Területi regiszter:** `data/areas.yaml` — új területet CSAK itt és adatfájlokkal
    lehet felvenni (lásd 10. szakasz), kódmódosítás nélkül.
 4. **Frozen baseline:** a mester adatfájlok SHA-256 hash-e a `SHA256SUMS.txt`-ben.
@@ -87,7 +85,7 @@ gyökér/
 
 ## 6. Notebook-szabályok
 
-1. Minden notebook a `notebooks/_utils.py`-ból importál; adatbetöltés
+1. Minden notebook az `ingatlan_tdk._utils`-ból importál (`from ingatlan_tdk._utils import *`); adatbetöltés
    `load_szamitott_master()` **argumentum nélkül** (az `areas.yaml` `active_area`-ját
    használja).
 2. A 00–15 fejezetek a `report_engine/full_analyzer.py` moduljaival 1:1 szinkronban
@@ -95,20 +93,23 @@ gyökér/
 3. A notebookok a kiadott riportokhoz vezető út dokumentációi; a kanonikus,
    publikált kimenet a `html_reports/` (a `report_engine` generálja).
 4. Checkpoint-mappák (`.ipynb_checkpoints`) és `__pycache__` **nem kerülhetnek
-   a repóba** (a `.gitignore` és a `check_structure.py` is védi).
+   a repóba** (a `.gitignore` és az `ingatlan_tdk.checks` is védi).
+5. A Google Drive által folyamatosan újraírt `desktop.ini`/`.DS_Store` fájlokat a
+   `.gitignore` zárja ki a repóból; a struktúraellenőrzés nem jelzi őket
+   (takarításuk: `make clean`).
 
 ## 7. Belépési pontok
 
 | Parancs | Szerep |
 |---|---|
-| `python build_all.py` | **Az egyetlen hivatalos** teljes csővezeték: verify → riport → verify |
-| `python generate_area_report.py --all` | Elemző motor + HTML riportok (kobanya + wien) |
-| `python verify_master_data.py` | Hash- és szerkezeti integritás |
-| `python check_structure.py` | Repo-struktúra és konvenciók ellenőrzése |
+| `python -m ingatlan_tdk build` (`tdk-build`) | **Az egyetlen hivatalos** teljes csővezeték: verify → riport → verify |
+| `python -m ingatlan_tdk report --all` (`tdk-report`) | Elemző motor + HTML riportok (kobanya + wien) |
+| `python -m ingatlan_tdk verify` (`tdk-verify`) | Hash- és szerkezeti integritás |
+| `python -m ingatlan_tdk check` (`tdk-check`) | Repo-struktúra és konvenciók ellenőrzése |
 | `make check` | Minden fenti egyben (ruff, compileall, verify, pytest, struktúra) |
 
-Minden más, a gyökérben található szkript legacy státuszú, és az `archive/` mappába
-tartozik.
+A gyökérben nincsenek szkriptek: minden kód a `src/ingatlan_tdk/` csomagban él.
+Elavult állományok a git historyban érhetők el.
 
 ## 8. Commit-konvenció (Conventional Commits)
 
@@ -119,7 +120,7 @@ tartozik.
 
 ## 9. Definition of Done (minden változtatásra)
 
-- [ ] `make check` zöld (ruff, compileall, verify_master_data, pytest, check_structure)
+- [ ] `make check` zöld (ruff, compileall, verify, pytest, struktúra)
 - [ ] ha adatfájl változott: `SHA256SUMS.txt` frissítve (`--gen-sums`) és verify zöld
 - [ ] az érintett dokumentáció frissítve (README / ADATKONYV / CHANGELOG)
 - [ ] a commit Conventional Commits szerint készül
@@ -132,8 +133,8 @@ tartozik.
 3. Számított master generálása → `data/processed/<terulet>_szamitott_master.parquet`
    (+ pontos geojson).
 4. `data/areas.yaml` bejegyzés: `id`, `role`, `currency`, `spatial`, `metadata`.
-5. `python verify_master_data.py --gen-sums` + `python verify_master_data.py`.
-6. `python generate_area_report.py --area <terulet>`.
+5. `python -m ingatlan_tdk verify --gen-sums` + `python -m ingatlan_tdk verify`.
+6. `python -m ingatlan_tdk report --area <terulet>`.
 7. `make check` + commit a fenti konvenciók szerint.
 
 ## 11. A szabályok betartatása
@@ -141,7 +142,7 @@ tartozik.
 - **Lokálisan:** `make check`; egyszer: `pip install -r requirements-dev.txt` és
   `pre-commit install`.
 - **CI:** `.github/workflows/ci.yml` minden push/PR-nál futtatja: ruff,
-  `compileall`, `verify_master_data.py`, `pytest`, `check_structure.py`.
-- **A gépi tükör:** a `check_structure.py` a fenti strukturális szabályok
+  `compileall`, `ingatlan_tdk verify`, `pytest`, `ingatlan_tdk check`.
+- **A gépi tükör:** az `ingatlan_tdk.checks` a fenti strukturális szabályok
   végrehajtható formája. Ha szabályt változtatsz ebben a fájlban, a
-  `check_structure.py`-t is frissíteni kell (és fordítva).
+  `src/ingatlan_tdk/checks.py`-t is frissíteni kell (és fordítva).

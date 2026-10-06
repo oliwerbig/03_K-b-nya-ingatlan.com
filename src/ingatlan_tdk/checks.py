@@ -6,14 +6,14 @@ A CONTRIBUTING.md strukturális szabályainak végrehajtható tükre.
 Minden szabályváltozást ide is be kell vezetni (és fordítva).
 
 Használat:
-  python check_structure.py   # exit 0 = minden rendben, exit 1 = szabálysértés
+  python -m ingatlan_tdk check   # exit 0 = minden rendben, exit 1 = szabálysértés
 """
 
 import os
 import re
 import sys
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # A gyökérben engedélyezett fájlok (CONTRIBUTING.md 2. szakasz).
 ROOT_ALLOWED_FILES = {
@@ -29,11 +29,7 @@ ROOT_ALLOWED_FILES = {
     "requirements.txt",
     "requirements-dev.txt",
     "SHA256SUMS.txt",
-    "build_all.py",
-    "generate_area_report.py",
-    "verify_master_data.py",
-    "check_structure.py",
-    "data_ingestion.py",
+    "LICENSE",
     "Start_JupyterLab.bat",
 }
 
@@ -42,11 +38,10 @@ ROOT_ALLOWED_DIRS = {
     "docs",
     "data",
     "notebooks",
-    "report_engine",
     "scripts",
     "tests",
     "html_reports",
-    "archive",
+    "src",
     ".github",
     ".git",
     ".venv",
@@ -61,7 +56,7 @@ FORBIDDEN_FILES = {"desktop.ini", ".DS_Store", "Thumbs.db"}
 NOTEBOOK_RE = re.compile(r"^\d{2}_[a-z0-9_]+\.ipynb$")
 SCRIPT_RE = re.compile(r"^(fetch|enrich|preprocess)_[a-z0-9_]+\.py$")
 
-SKIP_DIRS = {".git", ".venv", "archive", ".ruff_cache", ".pytest_cache", "__pycache__"}
+SKIP_DIRS = {".git", ".venv", "archive", ".ruff_cache", ".pytest_cache", "__pycache__", "kobanya_ingatlan_tdk.egg-info"}
 
 
 def violations():
@@ -69,6 +64,8 @@ def violations():
 
     # 1) Gyökér: csak a kanonikus fájlok/mappák
     for name in sorted(os.listdir(ROOT)):
+        if name.lower() in FORBIDDEN_FILES:
+            continue  # OS/szinkron artifact (desktop.ini stb.), a .gitignore védi a repót
         p = os.path.join(ROOT, name)
         if os.path.isdir(p):
             if name not in ROOT_ALLOWED_DIRS:
@@ -99,10 +96,12 @@ def violations():
                 v.append(f"tilos mappa: {os.path.relpath(os.path.join(dirpath, d), ROOT)}")
         for fn in filenames:
             if fn.lower() in FORBIDDEN_FILES:
-                v.append(f"tilos fájl: {os.path.relpath(os.path.join(dirpath, fn), ROOT)}")
+                # OS/szinkron artifact (Google Drive desktop.ini); a .gitignore kizárja a repóból,
+                # ezért struktúrasértésnek nem számít (a takarítást a `make clean` végzi).
+                continue
 
     # 5) SHA256-manifest: teljes és minden fájl létezik
-    import verify_master_data as vmd
+    from . import verify as vmd
 
     if os.path.exists(vmd.SUMS_PATH):
         manifest = set()
@@ -157,10 +156,10 @@ def main():
         for line in v:
             print(f"  [!] {line}")
         print(f"\n{len(v)} szabálysértés. Lásd: CONTRIBUTING.md")
-        sys.exit(1)
+        return 1
     print("STRUKTÚRA-ELLENŐRZÉS: MINDEN RENDBEN.")
-    sys.exit(0)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

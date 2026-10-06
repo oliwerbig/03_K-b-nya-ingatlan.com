@@ -9,7 +9,7 @@ kiegészítve a valós idejű számítási táblázatokkal, KPI kártyákkal és
 import markdown
 from typing import Dict, Any
 
-from .notebook_docs import NOTEBOOK_DOCS
+from ..notebook_docs import NOTEBOOK_DOCS
 
 
 class SafeDict(dict):

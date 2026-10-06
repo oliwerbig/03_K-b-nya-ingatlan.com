@@ -9,11 +9,7 @@ Futtatás:
 import os
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
-
-import verify_master_data as vmd
+from ingatlan_tdk import verify as vmd
 
 
 def test_sha256_manifest():
@@ -71,9 +67,9 @@ def test_wien_record_counts():
 
 def test_structure_compliant():
     """A CONTRIBUTING.md strukturális szabályainak betartása."""
-    import check_structure
+    from ingatlan_tdk import checks
 
-    v = check_structure.violations()
+    v = checks.violations()
     assert not v, "Struktúra-szabálysértés(ek): " + "; ".join(v)
 
 

@@ -17,15 +17,15 @@ minden ottani szabály rád is kötelező.
 ## Kötelező minden változtatás után
 
 1. `python -m compileall <érintett fájlok>`
-2. `python verify_master_data.py` (adatazonosító-változásnál előtte `--gen-sums`)
+2. `python -m ingatlan_tdk verify` (adatazonosító-változásnál előtte `--gen-sums`)
 3. `python tests/test_integrity.py` (vagy `pytest`)
-4. `python check_structure.py`
+4. `python -m ingatlan_tdk check`
 5. mind zöld legyen, mielőtt commitolsz.
 
 ## Commitok és futtatás
 
 - Commit-üzenet **angolul**, Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`…).
-- Teljes csővezeték: `python build_all.py`; ellenőrzőcsomag: `make check`.
+- Telepítés: `pip install -e .`; teljes csővezeték: `python -m ingatlan_tdk build`; ellenőrzőcsomag: `make check`.
 - Ha adatfájl változik: frissítsd a `SHA256SUMS.txt`-et és a `CHANGELOG.md`-t is.
 
 ## Nyelv

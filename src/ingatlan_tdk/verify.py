@@ -3,8 +3,8 @@
 """verify_master_data.py — IFK-TDK 2026 adatintegritás-ellenőrző.
 
 Két üzemmód:
-  python verify_master_data.py             # ellenőrzés (SHA-256 + szerkezeti invariánsok)
-  python verify_master_data.py --gen-sums  # SHA256SUMS.txt (újra)generálása
+  python -m ingatlan_tdk verify            # ellenőrzés (SHA-256 + szerkezeti invariánsok)
+  python -m ingatlan_tdk verify --gen-sums # SHA256SUMS.txt (újra)generálása
 
 A SHA256SUMS.txt rögzíti a „frozen baseline" mester adatfájljainak
 kriptográfiai ellenőrző összegét (sha256sum formátum). Az ellenőrzés a
@@ -17,7 +17,7 @@ import sys
 import argparse
 import hashlib
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SUMS_PATH = os.path.join(ROOT, "SHA256SUMS.txt")
 
 # A frozen baseline kanonikus mester fájljai (perjellel elválasztott relatív utak).
@@ -189,11 +189,11 @@ def main():
     total_failed = failed + (0 if ok_sums else 1)
     if total_failed == 0:
         print("EREDMÉNY: MINDEN ELLENŐRZÉS SIKERES.")
-        sys.exit(0)
+        return 0
     else:
         print(f"EREDMÉNY: {total_failed} ellenőrzés NEM sikerült.")
-        sys.exit(1)
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

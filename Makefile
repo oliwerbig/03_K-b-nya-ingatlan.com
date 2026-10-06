@@ -1,8 +1,8 @@
 # IFK-TDK 2026 — kényelmi parancsok (GNU make; Windows-on Git Bash-ból).
-# Ha a make nem érhető el, a célok egyenként is futtathatók pythonnal.
+# Telepítés előfeltétele: pip install -e . (a konzolparancsok és a csomag elérhetősége).
 PY := python
 
-.PHONY: check lint format verify test structure report clean
+.PHONY: check lint format verify test structure report build clean
 
 ## A teljes ellenőrző lánc (commit előtt kötelező)
 check: lint verify test structure
@@ -10,30 +10,34 @@ check: lint verify test structure
 
 ## Lint: ruff + szintaxisellenőrzés
 lint:
-	$(PY) -m compileall -q build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
-	$(PY) -m ruff check build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
+	$(PY) -m compileall -q src scripts tests
+	$(PY) -m ruff check src scripts tests
 
 ## Automatikus formázás/javítás
 format:
-	$(PY) -m ruff check --fix build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
-	$(PY) -m ruff format build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
+	$(PY) -m ruff check --fix src scripts tests
+	$(PY) -m ruff format src scripts tests
 
 ## Adatintegritás (hash + szerkezeti invariánsok)
 verify:
-	$(PY) verify_master_data.py
+	$(PY) -m ingatlan_tdk verify
 
 ## Tesztek
 test:
-	$(PY) tests/test_integrity.py
+	$(PY) -m pytest tests/ -q
 
 ## Repo-struktúra és konvenciók
 structure:
-	$(PY) check_structure.py
+	$(PY) -m ingatlan_tdk check
 
 ## Teljes riportgenerálás (kobanya + wien)
 report:
-	$(PY) generate_area_report.py --all
+	$(PY) -m ingatlan_tdk report --all
 
-## __pycache__ takarítás
+## Teljes csővezeték (verify -> report -> verify)
+build:
+	$(PY) -m ingatlan_tdk build
+
+## Takarítás: __pycache__ és Google Drive desktop.ini-k
 clean:
-	@powershell -NoProfile -Command "Get-ChildItem -Recurse -Force -Directory -Filter __pycache__ | Where-Object { $$_.FullName -notmatch '\.venv' } | Remove-Item -Recurse -Force"
+	@powershell -NoProfile -Command "Get-ChildItem -Recurse -Force -Directory -Filter __pycache__ | Where-Object { $$_.FullName -notmatch '\.venv' } | Remove-Item -Recurse -Force; Get-ChildItem -Recurse -Force -Filter desktop.ini | Where-Object { $$_.FullName -notmatch '\.venv' } | Remove-Item -Force"

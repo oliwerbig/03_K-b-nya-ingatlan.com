@@ -15,8 +15,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
 # === Útvonalak ===
-_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-_PROJECT_ROOT = os.path.dirname(_THIS_DIR)
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Keresés a felállított struktúrában: data/processed, data/raw
 DATA_DIR_PROCESSED = os.path.join(_PROJECT_ROOT, "data", "processed")

@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-generate_area_report.py
-IFK-TDK 2026: Automatizált Területi Riport és Elemzés Generátor CLI
+IFK-TDK 2026: Automatizált Területi Riport és Elemzés Generátor CLI.
 
 Használat:
-  python generate_area_report.py --area kobanya
-  python generate_area_report.py --area wien_nordbahnhof
-  python generate_area_report.py --all
+  python -m ingatlan_tdk report --area kobanya
+  python -m ingatlan_tdk report --area wien_nordbahnhof
+  python -m ingatlan_tdk report --all
 """
 
 import os
 import sys
 import argparse
 import time
+
+from .report_engine import AreaAnalyzer, NarrativeGenerator, HTMLReportBuilder
+from ._utils import list_available_areas
 
 try:
     if hasattr(sys.stdout, "reconfigure"):
@@ -21,14 +23,6 @@ try:
         sys.stderr.reconfigure(encoding="utf-8")
 except Exception:
     pass
-
-# Útvonalak beállítása
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-if PROJECT_ROOT not in sys.path:
-    sys.path.append(PROJECT_ROOT)
-
-from report_engine import AreaAnalyzer, NarrativeGenerator, HTMLReportBuilder
-from notebooks._utils import list_available_areas
 
 
 def build_central_hub(all_area_results: dict, output_dir: str = "html_reports") -> str:

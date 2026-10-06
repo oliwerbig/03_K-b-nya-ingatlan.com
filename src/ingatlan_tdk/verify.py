@@ -43,8 +43,19 @@ def _abs(rel):
     return os.path.join(ROOT, rel.replace("/", os.sep))
 
 
+# Szöveges fájlok, amelyeknél a hash-számítás CRLF->LF normalizálással történik.
+# (Windows checkouton CRLF, Linux CI-n LF van — így a hash platformfüggetlen.)
+TEXT_EXTS = {".json", ".csv"}
+
+
 def sha256(path):
     h = hashlib.sha256()
+    ext = os.path.splitext(path)[1].lower()
+    if ext in TEXT_EXTS:
+        with open(path, "rb") as f:
+            data = f.read()
+        h.update(data.replace(b"\r\n", b"\n"))
+        return h.hexdigest()
     with open(path, "rb") as f:
         for chunk in iter(lambda: f.read(65536), b""):
             h.update(chunk)

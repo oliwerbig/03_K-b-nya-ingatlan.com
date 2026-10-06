@@ -32,6 +32,12 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - Lint: ruff bevezetése (`E4/E7/E9/F`), a kódbázis 62 szabálysértésről 0-ra hozva;
   az `E402` a szándékos útvonal-bootstrap mintánál engedélyezve (dokumentálva).
 
+### Javítva
+- `ingatlan_tdk.verify` — a szöveges adatfájlok (.json/.csv) hash-számítása mostantól
+  CRLF->LF normalizálással történik, így a Windows és Linux (CI) checkout ugyanazt a
+  hash-t adja; a `SHA256SUMS.txt` az új, platformfüggetlen hash-ekkel frissítve.
+- `deploy-pages.yml` — `actions/configure-pages` lépés visszatéve a Pages telepítés elé.
+
 ### Eltávolítva (archiválva)
 - `run_and_export_all.py`, `notebooks/precalculate_all.py`, `final_deploy.ps1` (a `build_all.py`/CI váltja).
 - `get_exact_stats.py`, `extract_all_numbers.py`, `restructure_project.py` (egyszeri eszközök).

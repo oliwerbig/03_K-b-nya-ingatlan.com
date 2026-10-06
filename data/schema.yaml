@@ -1,0 +1,120 @@
+# ==============================================================================
+# IFK-TDK 2026 Kutatási Adatséma (Data Schema Specification)
+# ==============================================================================
+# Ez a fájl rögzíti a lakóingatlan-piaci kutatás kanonikus adatsémáját.
+# Minden feldolgozott (számított) terület adathalmazának illeszkednie kell ehhez.
+
+# ==============================================================================
+# Szigorúan rögzített kutatási sávrendszerek (Canon Bins)
+# ==============================================================================
+immission_bands:
+  bins: [0, 150, 300, 500, 1000, 2000]
+  labels:
+    - "<150 m (Immisszió)"       # Közvetlen immissziós zóna (-16.1% diszkont)
+    - "150-300 m (Erős teher)"   # Erős zaj- és rezgésterhelési sáv
+    - "300-500 m (Átmeneti)"     # Mérsékelt hatásövezet
+    - "500-1000 m (Háttérzaj)"   # Átmeneti zóna
+    - "1000-2000 m (Közepes ref.)" # Háttérterület
+    - ">2000 m (Tiszta ref.)"    # Referencia zóna (zajmentes bázis)
+
+isochrone_bands:
+  speed_ms: 1.25                 # Gyaloglási sebesség standard: 1.25 m/s = 4.5 km/h
+  speed_m_per_min: 75.0          # 1.25 * 60 = 75 m/perc
+  bins: [0, 375, 750, 1125]
+  labels:
+    - "≤375 m (5 perc)"          # vasut_5p_seta: közvetlen gyalogos vonzáskörzet
+    - "≤750 m (10 perc)"         # vasut_10p_seta: standard gyalogos elérhetőség
+    - "≤1125 m (15 perc)"        # vasut_15p_seta: elérhetőségi határ (15 perces város)
+
+# ==============================================================================
+# Kötelező mezők (Required Columns)
+# ==============================================================================
+required:
+  # Alapazonosítók és cím
+  listing_id: "object"
+  listing_type: "object"         # "elado" vagy "kiado"
+  cim_teljes: "object"
+  varosresz: "object"
+
+  # Pénzügyi és ármutatók
+  price_huf: "float64"
+  ar_millio_ft: "float64"
+  ar_ezer_ft_ho: "float64"
+  nm_ar_huf: "float64"
+  log_ar: "float64"              # ln(price_huf)
+  log_nm_ar: "float64"           # ln(nm_ar_huf)
+  is_ar_outlier: "int64"         # 0 vagy 1
+
+  # Ingatlanfizikai paraméterek
+  alapterulet_nm: "float64"
+  korrigalt_alapterulet_nm: "float64" # alapterulet + 0.5 * erkely_nm
+  szobaszam_osszes: "float64"
+  allapot_kod: "int64"           # 1..6 skála: 1=felújítandó, 2=közepes, 3=jó, 4=felújított, 5=újszerű, 6=új építésű
+  is_felujitando: "int64"        # 1 ha allapot_kod <= 2
+  is_ujszeru_vagy_uj: "int64"    # 1 ha allapot_kod >= 5
+  is_panel: "int64"              # 0 vagy 1
+  is_tegla: "int64"              # 0 vagy 1
+  has_lift: "int64"              # 0 vagy 1
+  has_klima: "int64"             # 0 vagy 1
+  van_erkely: "int64"            # 0 vagy 1
+  is_foldszint: "int64"          # 0 vagy 1
+  is_zaroszint: "int64"          # 0 vagy 1
+  epulet_kora_ev: "int64"        # max(0, 2026 - epites_eve)
+
+  # Geokódolás és pontosság
+  geokodolt_lat: "float64"
+  geokodolt_lon: "float64"
+  minta_garantalt_pontos: "int64" # 1 ha tetőpont/pontos házszám, 0 ha tágabb
+
+  # Sáv 1: Vasúti immissziós sávok (vágánytól mért távolság)
+  tavolsag_vasut_m: "float64"
+  vasut_zona: "object"           # 6 kategória a 0-150-300-500-1000-2000m sávok szerint
+  is_vasut_immisszio_150m: "int64" # 1 ha tavolsag_vasut_m < 150
+
+  # Sáv 2: Vasúti gyalogos izokrón sávok (állomástól mért távolság, 1.25 m/s)
+  tavolsag_vasut_halozati_m: "float64"
+  menetido_vasut_gyalog_perc: "float64"
+  vasut_5p_seta: "int64"         # 1 ha <= 375m
+  vasut_10p_seta: "int64"        # 1 ha <= 750m
+  vasut_15p_seta: "int64"        # 1 ha <= 1125m
+
+# ==============================================================================
+# Opcionális mezők (Optional Columns - ha rendelkezésre áll)
+# ==============================================================================
+optional:
+  url: "object"
+  postal_code: "object"
+  utca: "object"
+  hazszam_vegleges: "object"
+  allapot: "object"
+  ingatlan_altipus: "object"
+  epites_eve: "float64"
+  erkely_nm: "float64"
+  szobaszam_egesz: "float64"
+  szobaszam_fel: "float64"
+  atlagos_szobameret_nm: "float64"
+  emelet: "object"
+  emelet_szam: "float64"
+  epulet_szintjei_szam: "float64"
+  has_tavfutes: "int64"
+  has_konvektor: "int64"
+  has_megujulo: "int64"
+  kozos_koltseg_huf: "float64"
+  rezsikoltseg_huf: "float64"
+
+  # Városi tömegközlekedési izokrónok (ha van a kerületben)
+  tavolsag_metro_halozati_m: "float64"
+  metro_5p_seta: "int64"
+  metro_10p_seta: "int64"
+  metro_15p_seta: "int64"
+  tavolsag_villamos_halozati_m: "float64"
+  villamos_5p_seta: "int64"
+  villamos_10p_seta: "int64"
+  villamos_15p_seta: "int64"
+  tavolsag_busz_halozati_m: "float64"
+  busz_5p_seta: "int64"
+  busz_10p_seta: "int64"
+
+  # POI sűrűség (375m / 5p séta körzetben)
+  poi_375m_count: "float64"
+

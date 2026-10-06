@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07. Hedonikus Ármodell (OLS) | Budapest X. kerület (Kőbánya)</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false, strict: false});"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #60a5fa;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --bg: #0b0f19;
+      --card-bg: #151c2e;
+      --card-border: #222f49;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.65;
+      padding: 1.5rem 1rem;
+    }
+    .container { max-width: 1260px; margin: 0 auto; }
+    header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      padding: 0.85rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .badge-primary { background: rgba(37,99,235,0.25); color: #60a5fa; border: 1px solid rgba(37,99,235,0.4); }
+    .badge-control { background: rgba(16,185,129,0.25); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+    h1 { font-size: 2.1rem; font-weight: 800; margin-bottom: 0.5rem; color: #ffffff; }
+    h2 { font-size: 1.5rem; font-weight: 700; margin: 2rem 0 1rem 0; color: #ffffff; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.2rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: #93c5fd; }
+    p { color: #cbd5e1; margin-bottom: 1rem; font-size: 0.98rem; }
+    ul, ol { margin: 0 0 1.25rem 1.5rem; color: #cbd5e1; }
+    li { margin-bottom: 0.4rem; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem 0;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .kpi-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-value { font-size: 1.65rem; font-weight: 800; color: #ffffff; margin: 0.3rem 0; }
+    .kpi-sub { font-size: 0.78rem; color: #64748b; }
+    .analysis-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .executive-box {
+      background: linear-gradient(135deg, rgba(30,58,138,0.25) 0%, rgba(15,23,42,0.6) 100%);
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem 0;
+      font-size: 0.88rem;
+    }
+    .data-table th, .data-table td {
+      padding: 0.75rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .data-table th { background: rgba(255,255,255,0.04); color: #93c5fd; font-weight: 600; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .plot-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .chap-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--card-border);
+    }
+    .btn-nav {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      text-decoration: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+    footer {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--card-border);
+      margin-top: 3rem;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+  
+<header>
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div>
+      <span class="badge badge-primary">Fő Mintaterület</span>
+      <h1>07. Hedonikus Ármodell (OLS)</h1>
+      <p style="color:#94a3b8; font-size:0.95rem; margin:0;">Budapest X. kerület (Kőbánya) • IFK-TDK 2026 Kutatási Keretrendszer</p>
+    </div>
+    <div>
+      <a href="../../index.html" style="color:#38bdf8; text-decoration:none; font-weight:700; font-size:0.9rem; background:rgba(56,189,248,0.1); padding:6px 14px; border-radius:8px; border:1px solid rgba(56,189,248,0.3);">🌐 Területi Portál Kezdőlap</a>
+    </div>
+  </div>
+</header>
+
+  <nav class="nav-bar"><a href="../index.html" class="nav-link ">🏠 Vezetői Dashboard</a><a href="00_adathalmaz_attekintes.html" class="nav-link ">🗂️ 00. Adathalmaz & Adatminőség</a><a href="01_leiro_statisztika_es_eda.html" class="nav-link ">📊 01. Leíró Statisztika & EDA</a><a href="02_arstruktura_es_szegmentacio.html" class="nav-link ">🏢 02. Árstruktúra & Szegmentáció</a><a href="03_terbeli_elemzes_es_terkepek.html" class="nav-link ">🗺️ 03. Térbeli Elemzés & GIS Térképek</a><a href="04_vasuti_paradoxon_es_izokronok.html" class="nav-link ">🚆 04. Vasúti Paradoxon & Izokrónok</a><a href="05_poi_es_15_perces_varos.html" class="nav-link ">🚶 05. POI Ellátottság & 15p Város</a><a href="06_klaszter_es_tipologia.html" class="nav-link ">🧩 06. Klaszteranalízis & Tipológiák</a><a href="07_hedonikus_armodell.html" class="nav-link active">📐 07. Hedonikus Ármodell (OLS)</a><a href="08_moran_es_autokorrelacio.html" class="nav-link ">🌐 08. Térbeli Autokorreláció & Moran</a><a href="09_terokonometria_sar_sem.html" class="nav-link ">🔗 09. Térökonometria (SAR & SEM)</a><a href="10_lokalis_terokonometria_gwr.html" class="nav-link ">📍 10. Lokális Térökonometria (GWR)</a><a href="11_gepi_tanulas_es_arbitrazs.html" class="nav-link ">🤖 11. Gépi Tanulás & Arbitrázs</a><a href="12_berleti_piac_es_rent_gap.html" class="nav-link ">🔑 12. Bérleti Piac & Rent Gap</a><a href="13_monte_carlo_kockazat.html" class="nav-link ">🎲 13. Monte Carlo Kockázatelemzés</a><a href="14_lvc_szimulacio.html" class="nav-link ">🏛️ 14. Közösségi Értékmegosztás (LVC)</a><a href="15_ingatlan_kereso_dashboard.html" class="nav-link ">🎯 15. Ingatlan Kereső Dashboard</a></nav>
+
+  <main>
+    
+<h1>07. Hedonikus Ármodell (OLS Regresszió)</h1>
+<p><strong>Cél</strong>: Az ingatlanárakat alkotó paraméterek (szobaszám, állapot, vasút távolság) izolált (ceteris paribus) értékének matematikai meghatározása.</p>
+<hr />
+<h3>📖 A Hedonikus Árelmélet alapjai (Rosen, 1974)</h3>
+<p>Egy lakás nem egyetlen termék, hanem hasznosságot hordozó tulajdonságok (attribútumok) "csomagja". Amikor a vevő kifizeti a vételárat, valójában megvásárol x négyzetmétert, y szobát, bizonyos infrastrukturális adottságokat és z méter távolságot a közlekedési hálózattól. A hedonikus regresszió (OLS) képes ezen tulajdonságok "rejtett (implicit) árát" egyenként, a többi tényező változatlansága mellett meghatározni.</p>
+<hr style="border:0; border-top:1px solid #334155; margin:2rem 0;">
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-title">Modell R²</div><div class="kpi-value" style="color:#38bdf8;">0.450</div><div class="kpi-sub">Magyarázott variancia</div></div>
+  <div class="kpi-card"><div class="kpi-title">Korrigált R²</div><div class="kpi-value">0.429</div><div class="kpi-sub">Szabadságfok-korrigált</div></div>
+  <div class="kpi-card"><div class="kpi-title">F-statisztika</div><div class="kpi-value" style="color:#10b981;">22.2</div><div class="kpi-sub">p &lt; 0.001 (szignifikáns)</div></div>
+  <div class="kpi-card"><div class="kpi-title">Durbin-Watson</div><div class="kpi-value">1.88</div><div class="kpi-sub">Hibatag autokorreláció</div></div>
+</div>
+
+<h3>1. Az OLS Modell Eredményei és az Együtthatók</h3>
+<p><strong>📌 A modell specifikációja:</strong>
+Függő változó: A fajlagos négyzetméterár természetes logaritmusa ($\ln( ext{Ár/m}^2)$). Ennek köszönhetően a becsült együtthatók (Coefficients) közvetlenül százalékos prémiumként (vagy diszkontként) értelmezhetők.</p>
+<p><strong>🔍 Egzakt Eredmények (p-érték és t-statisztika):</strong>
+- Csak azokat a változókat tekintjük érvényesnek, ahol a $P&gt;|t|$ érték kisebb, mint 0.05 (95%-os szignifikancia).
+- A modell determinációs együtthatója ($R^2$) mutatja meg, hogy a beépített változók együttesen a lakásárak varianciájának hány százalékát képesek megmagyarázni. A megmagyarázatlan rész (hibatag) az egyedi, nem számszerűsíthető jellemzőket (pl. kilátás, szomszédok) és a térbeli autokorrelációt tartalmazza.</p>
+<div class="plot-container"><div style="height:420px; width:100%;">                            <div id="8dc97fc7-c902-46a2-bab1-a06be0827c71" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("8dc97fc7-c902-46a2-bab1-a06be0827c71")) {                    Plotly.newPlot(                        "8dc97fc7-c902-46a2-bab1-a06be0827c71",                        [{"marker":{"color":"#2563eb","opacity":0.6},"mode":"markers","name":"Adatok","x":{"dtype":"f8","bdata":"H9UxOhO6K0DNPfLz5NkrQAwFZICthSxAtt1ZjlOJLEAyOPbsFewrQDS1a0XPtStAfsk03MbsK0CKKjQZgtsrQEsQx52M5itASkFOhPriK0A8lG672SosQPxoedsmuytACXWmPiuEK0A2jyrw+NIrQE7\u002fU3U6BCxA522fafrrK0AakoNC87QrQAerjjJjjCxA8Npp7cgpLEDXfPmXLvMrQK6H6MBFASxAyLpq5wTpK0AZ8Z6aJCosQJsDP\u002fpt0itAUUAXxXjGK0B0WHYAhxcsQPDNTPlm1CtAkM2MLbMrLEB+MZjAK+QrQFO1+S09JixAC+ntlU0tLECFNMKEVRIsQOI70WncFCxAIxByUePCK0Dqosvwsj0sQKWVCqyJ\u002fCtAGcUF2GP6K0Diy0X8gVYsQEl6enwx9CtA6NOc\u002fxkELECheY4uGIssQLl4QVcBnixA\u002f6bxNiB2LECEoKNiS1gsQKPWTGIvVCxAadrEXeWMLECYEXN7l5IrQBcyGFBJ8itAvk4jx+4zLECh2KbXgkosQN3y\u002flMW0itAAShnW5yHK0A5jMwDbSosQLOvlGewKyxAw0c0h06JK0CqfO6vvdwrQNjKxJYPsCtAXw+qjH4GLEDZ08FBNKkrQOklJVRwyCtAcHOytTa1LEAD1APOB4ksQGC3uWg9jSxAsz96pyOgK0B7NPRVdbwrQEHhwOyGVixAETfxC627K0AWyXd0b\u002fMrQLY8i\u002f1BDyxA2HgOcMcELEDbFXfRHNwrQOklJVRwyCtApPo8+w8KLEC+talKixMsQFrJY133jytAvyPEnQr6K0Drnm76GygsQI9cYNCQqCtAihtLsDjAK0Dcg1\u002fZLPErQL43fCh9aStAZZdr5SL4K0Cn9wwbbogsQOMxkMieACxAb0FKNWjVK0DXjW1aREksQNCcOnUQtitAOAkfPBelK0AMQ1ohiZYsQKaB2Sv41StA7lK0ew3XK0D7Uv6AWBAsQMtxxtXPDSxADqzh7ZAsLEDHrcuVv\u002f4rQNZrsCTAMCxAC14qjtztK0A2lYo+B3YsQLhotK23jSxACjHhO8lPLEDlnruSRGUsQJlhStPwfCxA6aztdLJ4LEBbo0\u002fKNIwsQF8SDO3lXSxAkXOURhV3LECNujZapk4sQKpmxKvPeCxA+CEPPptNLEBBScwy\u002fWQsQAbMrI3cYixAoOi1D\u002f5LLEBh795TlnksQDeOsw0AaCxAHzj+GJh7LEBSLWt9MncsQM71a5isTixA8ICxXyfsK0AJtoUl+XcsQDaVij4HdixAUi1rfTJ3LECg6LUP\u002fkssQB84\u002fhiYeyxAN46zDQBoLEBfEgzt5V0sQFiVKQIWSyxA5Z67kkRlLECNujZapk4sQNIAIL5yTSxACjHhO8lPLEBeBQa8eWQsQJFzlEYVdyxA+CEPPptNLECqZsSrz3gsQGHv3lOWeSxA6aztdLJ4LEBbo0\u002fKNIwsQLhotK23jSxABsysjdxiLECPr0LPyU4sQBjunGW2fCxAmWFK0\u002fB8LEAfOP4YmHssQOWeu5JEZSxAjbo2WqZOLED4IQ8+m00sQFIta30ydyxAkXOURhV3LECqZsSrz3gsQGHv3lOWeSxA6aztdLJ4LEBSk27Jh3YsQDaVij4HdixAmUYCqnVNLECPr0LPyU4sQBjunGW2fCxACbaFJfl3LECg6LUP\u002fkssQFujT8o0jCxAQUnMMv1kLECZYUrT8HwsQDaVij4HdixAXxIM7eVdLECZRgKqdU0sQJFzlEYVdyxAUi1rfTJ3LECg6LUP\u002fkssQFujT8o0jCxAQUnMMv1kLEDprO10sngsQFp2OzkTKixAqmbEq894LED4IQ8+m00sQLhotK23jSxACjHhO8lPLECNujZapk4sQBjunGW2fCxAHzj+GJh7LECZYUrT8HwsQI\u002f+fX56GyxA\u002fwUevgiOLEBSVRgR8N8rQD8Oh5eJ7ytATIbzfCArLEDjjedhxiUsQNgUn7pm8StAaOHv8XMpLEDbFXfRHNwrQAc+vjJ0EixA2xV30RzcK0DvQoop+tIrQDniMnmpIixA5di8DxVbLEClRjeWoMMrQL\u002fW\u002fRLY9itAxaWFE3CyK0BIO93Q2hQsQM7pFxuXuCtAg++Q8xAYLEAAG+HOZQwsQDAcs4Ct3itAF4ZqIBHiK0BTpnDCxAYsQOIzDQjz0itA8N5ZzOfXK0Bmp3qWUg4sQL7g08TvDyxA8+QHHxQbLECBV0T1e80rQOPVmNp6GSxAwb7D3UWILECe7CEJPYssQPYlezfajCxATl\u002fUZXeOLECmmC2UFJAsQP7RhsKxkSxAyHbQa\u002fP9K0AVcUuTV38sQLfgR\u002fdE6StAzkGDXCE9LEAJ1kGFOx0sQDGNBULw9StAntXrWhQvLECmZhQa9xEsQFwFm8jvwitAsLfKXSfvK0C8zz3VL4UrQGNGuDgqASxAsjdQNkLRK0A\u002fAyeq3OUrQKN2PZrxICxAgfvGSDbsK0CJUB9CHY8sQLwkj+PF3ytAhjm5IF+iK0C2pe990eErQM1u+MlCYixAxYjQVxv8K0C\u002fUUI\u002fLe0rQCRNJXbHbSxAKsG5tsAkLEChMDX1uB8sQM1LOgIcEyxAvjMhPa\u002fTK0BJFTNT5gksQA+GDMVx7StAYjucC5HXK0BKoz9KRv0rQB5W24WzyytA4o8uQLrjK0D\u002fwqTUQsMrQB9mOTk0wytAE\u002fn+7w89LEAVLIgV9yQsQA=="},"y":{"dtype":"f8","bdata":"Vp+rrdi\u002fK0Dtnjws1FosQIzbaABvoSxAqFfKMsSRLEBrmnecomMrQJayDHGsCytAxSCwcmhxK0AHX5hMFUwpQLWmeccpGixAT0ATYcOTK0BnRGlv8EUsQJqZmZmZeStA4L4OnDPiK0DnjCjtDf4rQHh6pSxD3CtAAAAAAADgK0B5WKg1zRssQNcS8kHPRixAnu+nxktXLEAi\u002ffZ14PwqQCL99nXgHCxAwTkjSnvjK0A0orQ3+GIsQNO84xQd6StAFmpN845zK0DiWBe30aAsQNv5fmq89CtA1xLyQc9GLECamZmZmVksQKjGSzeJoStAexSuR+EaLED35GGh1jQsQN9PjZduUixAxY8xdy3hK0CEns2qz3UsQP7UeOkmcSxAuK8D54woLEAOT6+UZYgsQKg1zTtO8StAqMZLN4mhK0DWxW00gDcsQD0K16NwfSxAlkOLbOd7LEBt5\u002fup8ZIsQNNNYhBYuSxAdLUV+8uuLECneccpOnIrQEYldQKaqCtAPSzUmuY9LECXkA96NkssQJyiI7n8xytAVp+rrdi\u002fK0B0RpT2Bn8sQP7UeOkmESxA4C2QoPiRK0AH8BZIULwrQM9m1edqiytA4umVsgzRK0Bg5dAi25krQK7YX3ZP\u002fipARwN4CyTILEBxPQrXo3AsQKAaL90kZixARrbz\u002fdRYK0BkzF1LyMcrQGPuWkI+yCxApgpGJXUiLEDEsS5uo+ErQAg9m1WfKyxAzO7Jw0LNK0CYTBWMSuorQP2H9NvX4SpAjgbwFkhwLEAc6+I2GmAsQKvP1VbsjytAorQ3+MLkK0CWIY51cfsrQHKKjuTyfytAukkMAisHLECDUUmdgAYsQMNkqmBU0itA+aBns+rzK0DHSzeJQeAsQB4Wak3z7itAGw3gLZDAK0DZPXlYqFUtQIC3QILiJyxAqMZLN4mhK0AZc9cS8gEsQBniWBe3sStAvHSTGAS2K0DzjlN0JFcsQJqZmZmZGSxAjnVxGw3ALEBiodY077grQHGsi9toICxAtRX7y+7pK0BX7C+7J48sQIcW2c73cyxAKqkT0ERYLEDV52or9rcsQIlBYOXQYixAK\u002faX3ZNnLEBWfa62Yl8sQNxoAG+BRCxAyAc9m1VfLEAp7Q2+MFksQFTjpZvEQCxAiUFg5dBCLEAIPZtVn2ssQDqSy39IPyxAJzEIrBw6LEBWn6ut2F8sQLdif9k9OSxAqMZLN4lBLEC4QILixzgsQIv9ZffkQSxAiIVa07wjK0AdyeU\u002fpF8sQA3gLZCgeCxAVOOlm8RALECJQWDl0EIsQH0\u002fNV66SSxA\u002fmX35GFBLEBGtvP91DgsQFZ9rrZiPyxA5BQdyeW\u002fLECM22gAb2EsQNV46SYxaCxAcayL22hgLEBWDi2ynU8sQCv2l92TZyxAs3vysFBLLEC4rwPnjEgsQEjhehSuZyxA5IOezapvLEA0orQ3+GIsQPKwUGuadyxA8x\u002fSb19HLEBUdCSX\u002f1AsQD7o2az6XCxAQs9m1edqLEA2zTtO0VEsQGTMXUvIxyxA097gC5NpLEAyVTAqqVMsQLivA+eMSCxA5IOezapvLECOBvAWSFAsQHPXEvJBbyxAgSbChqd3LECfzarP1ZYsQKTfvg6ckyxAfPKwUGt6LEAp7Q2+MFksQPd14JwRZSxAgZVDi2xnLECze\u002fKwUEssQLU3+MJkaixAXkvIBz17LEBQ\u002fBhz13IsQLwFEhQ\u002fhixALbKd76dGLEBwzojS3oAsQIEmwoandyxAjgbwFkhQLEAyVTAqqVMsQIts5\u002fupcSxApSxDHOuCLEDl8h\u002fSb38sQINRSZ2ABixAR3L5D+lXLEAHzhlR2lssQPW52or9hSxAjgbwFkhwLEBvgQTFj3EsQHctIR\u002f0bCxARPrt68BZLEDQs1n1uXosQDJ3LSEfNCxAJzEIrBzaLECneccpOjIsQIofY+5awitAp3nHKTryK0BfKcsQx3osQBZqTfOOcytAfPKwUGt6LEBeukkMAosrQAdfmEwVbCxALSEf9Gy2K0DjpZvEINArQKkT0ETYECxAc9cS8kGPLED1SlmGONYrQNuK\u002fWX3JCxAwcqhRbZTK0DHKTqSyz8sQGUZ4lgX9ytAVFInoIlQK0AlBoGVQ2ssQJAxdy0h3ytAQYLix5gbLEAydy0hHzQsQE0VjErqJCxADr4wmSo4LEBF2PD0SnksQEXY8PRKeSxAbjSAt0ACLECTqYJRSf0rQJvmHafoCCxAv30dOGeELEA2zTtO0XEsQDbNO07RcSxANs07TtFxLEA2zTtO0XEsQDbNO07RcSxAsp3vp8bLLEBz1xLyQc8sQAyTqYJRaSxAGCZTBaMSLECEns2qz3UsQFFrmnecAixA1QloImz4K0COdXEbDaAsQEoMAiuH9itAZ9Xnait2LEDZX3ZPHpYrQNSa5h2naCtAxm00gLdALEALJCh+jJkrQLraiv1lNyxAjZduEoOgK0BtVn2utuIsQAYSFD\u002fGfCxAgQTFjzGXK0DvycNCrYkrQGHD0ytluSxAAJF++zpwLECASL99HfgrQKabxCCw8ixAQYLix5hbLEBGlPYGXzgrQPYoXI\u002fCtStAg1FJnYBmK0DtDb4wmWosQPtcbcX+sitAtvP91HjJK0A51sVtNOArQBNhw9MrxStAxSCwcmjRK0DFILByaNErQMUgsHJo0StArWnecYqOLECu2F92Tx4sQA=="},"type":"scatter","xaxis":"x","yaxis":"y"},{"line":{"color":"red","dash":"dash"},"mode":"lines","name":"Ide\u00e1lis y=x","x":[13.70603300587015,14.353933027299462],"y":[13.70603300587015,14.353933027299462],"type":"scatter","xaxis":"x","yaxis":"y"},{"marker":{"color":"#059669"},"name":"Maradv\u00e1nyok","nbinsx":30,"opacity":0.75,"x":{"dtype":"f8","bdata":"ANwo580Vhz8AJEwJ5x3QPwCA1gSAwas\u002fAOTz4EjhkD\u002fguNMPag7Rv8BT4ItaRNW\u002fQC4qYZrXzr8YXN5kZnv0vwA1S9mUzrk\u002fwD7AzsjNw78AK7D6sxarP4DY83dQY8C\u002fwHUSWheCxz+A2P5+foq1PwBrQlek+7O\u002fAM7bPtP0l7\u002fAlzHJfLbJPwAMJif8ZMG\u002fAFcKn2zBtj+g9k9AxMnevwB0dQ61mqs\u002fABwEHnUmhr+AjdiKzmm8PwA4uaQar6Y\u002fwI51cnS6xL\u002fADSDUVinRP4D1FZm4KrA\u002fAEdFZRQcqz8AB1pAdlvNP2DVvdV+ltC\u002fAJDUP05sor8AOdhPjkCxP4D+Cd4Wyb4\u002fAKJ\u002fvyVKrj8Azf0AXQ68P0DWj1tPJ80\u002fgE\u002f1focUtz8AlsE0zPG4PwAIJWoFGne\u002fAFBDFDKkyL\u002fA8iyI\u002fuXEvwA+N7VZSLC\u002fAFxyZtYchz+AdCOsI1O9PwDMXYUrSsk\u002fgIVtqE7zsD+A+MvVqC6wv0A0w2jTa8K\u002fAP66Yafvkz8AwP4WTXRWPwCCoLY1M5S\u002fgKo7IikevD\u002fAju6xfCbFPwC12ht+iaq\u002fADrMtzJUkT+AUcbrszawv4AEsndXUrK\u002fgL4SCu24ur8A8tzhPbKev2CnqbgbRNm\u002fANePxVXtoj8Akpb59mOovwBgTsVFjLO\u002fQFuiYarTwb8A0i\u002fT6qWWP4BIg2bVbcw\u002fQOU0VQayyT8AUhdJBsyhvwBSABBYXaw\u002fAAZFIlbCu78Aem08dVucP4C9EwYP09y\u002fgPrC7AaOyT+AV00OuyPDPwAAXvMbDRa\u002fAB1vjKVHpb+Aqj5wQlW2v4AO6ej1TrS\u002fAIxLcJS8wT8Ap83pw1OlP0BBiwvONco\u002fALDZD8jggL8ACJWK2\u002fTFPwDFGyZ7q6G\u002fAFQ0agfYpL8gALvgP8bgPwCshkGDdMw\u002fAIAUmiZwfL9g\u002flnQ4ZLSv4DGT0CKILK\u002fABlvkLGEsL8A\u002fk7V\u002fLLBPwCeT6aHk5c\u002fADD5sYVv0j9AGUM9GHTBvwBlvyRJV6C\u002fALBCehFuf78AIVelfCCpPwAxUtvev6m\u002fAEDwZCj3kD8APNIrZqzEPwAQIOrtH6q\u002fAL62VZceob+AApPQCWm2vwCDqQt+ZKm\u002fAMlrV6u\u002fp78AOGWuxxSVPwCrQQ+IBby\u002fAN7AXbGUlb8AHM87i4iKPwDmnPAGyrG\u002fAHm3rWPhob8AC1Azpr2pvwDAFRoaYbe\u002fgLs42XAHvb8ATXZ0TTW\u002fvwCG8AtCj5m\u002fAG3filEN2b8A7Oyf5VSovwC4VhqNynQ\u002fAP+k4vA2u78ALk6rVFqSvwBRfGTd7ri\u002fgBwUXhRPs7+ADC6Md4iyvwAEMPaWZpe\u002fwH9dmE2oxj8A\u002fyAypsiiPwADeMlovqo\u002fAGd7qp+foD8ACPfYCdykvwDM+vjRAp+\u002fACgy5WhUcr8AeVtgYiG4vwAZDmQ\u002f6KG\u002fAApSnk4Pkr+Ak4BNSZ60vwDGt2NCHaa\u002fABOs2h19q78AKCYOP65xPwDaBcO4u6+\u002fAFeS4\u002f0Ior+AdDVhZeO0v8BfiyjuoMg\u002fAEYkqrHsqj8A6MyEsDeIPwDNvjPLUre\u002fALS+1+Opjb8ADjBqykO0vwDcL5jDqJS\u002fAIBmuOKuYL+AJh0eAyewPwBuSjTQlK0\u002fgPFVV9N6tj8ANHuW3c2UPwAheLzIpKe\u002fAIggQpqMoL8AoJ1t2KtVvwDTtasD6LC\u002fAB0C\u002fNQ\u002fpj8AkspiwDKUvwCGcIfVN6A\u002fADJgbv09p7+A60NDlLS5PwAAXrYFSFI\u002fAGKTPTN1s78ASLLpaayOPwDQNmjOiqq\u002fAGTjduntrT8A8BfJdPWKP4BrEvlNybG\u002fgDF65U1zsL8AHlgVJn6cPwAMu2aL6I6\u002fAMJqh20\u002fsD8AceNmtXSxPwBCgfeMhJ+\u002fgO0eiJbrsL8ASG6F77ZxvwCjeK+ipKg\u002fAMqKevsEwz9AFckrhpLEP4Ba95FUl7a\u002fgFIGlilzvL8A3+a4K0DFP4CwatTxdc+\u002fAEVEsNc9xD9A31ZLsUbEvwBAiHZGaMY\u002fAFf6q+7Xsr8AYOh0J8t2vwCQzmI00aG\u002fAEf\u002fKnEWuj8AUAQi8JeiPwAO2n+pD7c\u002fAMH2eHOux7+AP3euYHi1P4DLF+UeQL8\u002f4KUzberw2L9AyfqncbfHPwAAWAUx60w\u002fABX+u9PDvD+Ab2heL622P8BauJ\u002fQfcQ\u002fgMe3NbMQyD\u002fAN4ydF77KP8DhPQfMVso\u002fAIWwh2fTqL8ACSkfrua3PwBI73ozkqC\u002fABAIMi31fr8AaB\u002fmumupvwDAWD\u002fpCKu\u002fABiSmBemrL8AcMvxRUOuvwDIBEt04K+\u002fQN3kg2e62T+Al9mxl\u002frDP6BKNmyRAdA\u002fANsNmCs\u002ftb\u002fAHvJiCSXGPwBAvClrWJk\u002fgOTlQRxUu78A3aErwMLRPwB3gzOxy7k\u002f4Lajo4Hg0D8AHZA4eu6gP+BxNVpjENO\u002fAIUNeVLdyz8Azbf\u002fChTDvwAXZE1jdKY\u002fAP0Yls3swr8AeYEXW+bEP0CpnXALoNM\u002fAApq6CFblr\u002fA8fbKDgnGvwAl1XaYyMU\u002fwA6C6+gHzT8Agu35fOCVP0DQ6VMVndA\u002fgItglAhsuz9gi9PHPevcv8C1iLdcVse\u002fwI749adLy78AKb5ityzIPwCKlM9\u002fOb2\u002fAFiPPG0wnL8AEc153BGtvwAs1F\u002fIHoq\u002fAB1vfs1Ror8AjLsWPEucPwBMde1yaJw\u002fgCbcd6BexD8AnE2hfJ6Kvw=="},"type":"histogram","xaxis":"x2","yaxis":"y2"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"xaxis":{"anchor":"y","domain":[0.0,0.45]},"yaxis":{"anchor":"x","domain":[0.0,1.0]},"xaxis2":{"anchor":"y2","domain":[0.55,1.0]},"yaxis2":{"anchor":"x2","domain":[0.0,1.0]},"annotations":[{"font":{"size":16},"showarrow":false,"text":"Illeszked\u00e9s (T\u00e9nyleges vs. Becs\u00fclt)","x":0.225,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"},{"font":{"size":16},"showarrow":false,"text":"Reziduumok Norm\u00e1leloszl\u00e1sa","x":0.775,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"}],"title":{"text":"Hedonikus OLS Modell Diagnosztika (Budapest X. ker\u00fclet (K\u0151b\u00e1nya))"},"height":420},                        {"responsive": true}                    )                };            </script>        </div></div>
+
+<h3>Teljes Hedonikus Regressziós Eredménytábla (Semi-Log OLS)</h3>
+<div style="overflow-x:auto;">
+  <table class="data-table">
+    <thead><tr><th>Magyarázó Változó</th><th>Együttható (β)</th><th>Standard Hiba</th><th>t-érték</th><th>p-érték</th><th>Implicit Árhatás (%)</th><th>95% Konfidencia Intervallum</th></tr></thead>
+    <tbody><tr><td><code>const</code></td><td><strong>13.4177</strong></td><td>0.1655</td><td>81.05</td><td>0.0000 ***</td><td style='color:#ef4444; font-weight:700;'>+0.0%</td><td>[13.0916; 13.7437]</td></tr><tr><td><code>korrigalt_alapterulet_nm</code></td><td><strong>-0.0002</strong></td><td>0.0007</td><td>-0.32</td><td>0.7457 </td><td style='color:#ef4444; font-weight:700;'>-0.0%</td><td>[-0.0016; 0.0011]</td></tr><tr><td><code>szobaszam_osszes</code></td><td><strong>-0.0366</strong></td><td>0.0194</td><td>-1.89</td><td>0.0605 </td><td style='color:#ef4444; font-weight:700;'>-3.6%</td><td>[-0.0747; 0.0016]</td></tr><tr><td><code>has_lift</code></td><td><strong>0.0726</strong></td><td>0.0317</td><td>2.29</td><td>0.0230 *</td><td style='color:#10b981; font-weight:700;'>+7.5%</td><td>[0.0101; 0.1351]</td></tr><tr><td><code>allapot_kod</code></td><td><strong>0.0635</strong></td><td>0.0094</td><td>6.76</td><td>0.0000 ***</td><td style='color:#10b981; font-weight:700;'>+6.6%</td><td>[0.0450; 0.0820]</td></tr><tr><td><code>van_erkely</code></td><td><strong>0.0469</strong></td><td>0.0288</td><td>1.63</td><td>0.1046 </td><td style='color:#10b981; font-weight:700;'>+4.8%</td><td>[-0.0098; 0.1036]</td></tr><tr><td><code>emelet_szam</code></td><td><strong>0.0032</strong></td><td>0.0052</td><td>0.61</td><td>0.5426 </td><td style='color:#10b981; font-weight:700;'>+0.3%</td><td>[-0.0070; 0.0133]</td></tr><tr><td><code>log_tavolsag_vasut_m</code></td><td><strong>0.0634</strong></td><td>0.0274</td><td>2.31</td><td>0.0216 *</td><td style='color:#10b981; font-weight:700;'>+6.5%</td><td>[0.0094; 0.1175]</td></tr><tr><td><code>is_panel</code></td><td><strong>-0.1279</strong></td><td>0.0340</td><td>-3.76</td><td>0.0002 ***</td><td style='color:#ef4444; font-weight:700;'>-12.0%</td><td>[-0.1949; -0.0610]</td></tr><tr><td><code>tavolsag_vasut_halozati_m</code></td><td><strong>0.0000</strong></td><td>0.0000</td><td>0.17</td><td>0.8653 </td><td style='color:#10b981; font-weight:700;'>+0.0%</td><td>[-0.0000; 0.0000]</td></tr></tbody>
+  </table>
+</div>
+
+<h3>Multikollinearitás Vizsgálat (VIF Elemzés)</h3>
+<table class="data-table">
+  <thead><tr><th>Változó</th><th>VIF Érték</th><th>Diagnózis</th></tr></thead>
+  <tbody><tr><td><code>korrigalt_alapterulet_nm</code></td><td>2.95</td><td>Alacsony (rendben)</td></tr><tr><td><code>szobaszam_osszes</code></td><td>2.76</td><td>Alacsony (rendben)</td></tr><tr><td><code>has_lift</code></td><td>1.85</td><td>Alacsony (rendben)</td></tr><tr><td><code>allapot_kod</code></td><td>2.08</td><td>Alacsony (rendben)</td></tr><tr><td><code>van_erkely</code></td><td>1.53</td><td>Alacsony (rendben)</td></tr><tr><td><code>emelet_szam</code></td><td>1.39</td><td>Alacsony (rendben)</td></tr><tr><td><code>log_tavolsag_vasut_m</code></td><td>3.29</td><td>Alacsony (rendben)</td></tr><tr><td><code>is_panel</code></td><td>1.71</td><td>Alacsony (rendben)</td></tr><tr><td><code>tavolsag_vasut_halozati_m</code></td><td>3.1</td><td>Alacsony (rendben)</td></tr></tbody>
+</table>
+
+
+
+
+
+  </main>
+
+  <div class="chap-nav-footer">
+    <div><a href="06_klaszter_es_tipologia.html" class="btn-nav">&larr; Előző: 06. Klaszteranalízis & Tipológiák</a></div>
+    <div><a href="08_moran_es_autokorrelacio.html" class="btn-nav">Következő: 08. Térbeli Autokorreláció & Moran &rarr;</a></div>
+  </div>
+
+  <footer>
+    <p>IFK-TDK 2026 Kutatási Keretrendszer | Automatizált Elemző és Riport Generátor Motor</p>
+    <p style="font-size:0.75rem; color:#64748b; margin-top:4px;">Budapesti Műszaki és Gazdaságtudományi Egyetem</p>
+  </footer>
+</div>
+</body>
+</html>

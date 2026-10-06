@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09. Térökonometria (SAR & SEM) | Budapest X. kerület (Kőbánya)</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false, strict: false});"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #60a5fa;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --bg: #0b0f19;
+      --card-bg: #151c2e;
+      --card-border: #222f49;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.65;
+      padding: 1.5rem 1rem;
+    }
+    .container { max-width: 1260px; margin: 0 auto; }
+    header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      padding: 0.85rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .badge-primary { background: rgba(37,99,235,0.25); color: #60a5fa; border: 1px solid rgba(37,99,235,0.4); }
+    .badge-control { background: rgba(16,185,129,0.25); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+    h1 { font-size: 2.1rem; font-weight: 800; margin-bottom: 0.5rem; color: #ffffff; }
+    h2 { font-size: 1.5rem; font-weight: 700; margin: 2rem 0 1rem 0; color: #ffffff; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.2rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: #93c5fd; }
+    p { color: #cbd5e1; margin-bottom: 1rem; font-size: 0.98rem; }
+    ul, ol { margin: 0 0 1.25rem 1.5rem; color: #cbd5e1; }
+    li { margin-bottom: 0.4rem; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem 0;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .kpi-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-value { font-size: 1.65rem; font-weight: 800; color: #ffffff; margin: 0.3rem 0; }
+    .kpi-sub { font-size: 0.78rem; color: #64748b; }
+    .analysis-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .executive-box {
+      background: linear-gradient(135deg, rgba(30,58,138,0.25) 0%, rgba(15,23,42,0.6) 100%);
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem 0;
+      font-size: 0.88rem;
+    }
+    .data-table th, .data-table td {
+      padding: 0.75rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .data-table th { background: rgba(255,255,255,0.04); color: #93c5fd; font-weight: 600; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .plot-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .chap-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--card-border);
+    }
+    .btn-nav {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      text-decoration: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+    footer {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--card-border);
+      margin-top: 3rem;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+  
+<header>
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div>
+      <span class="badge badge-primary">Fő Mintaterület</span>
+      <h1>09. Térökonometria (SAR & SEM)</h1>
+      <p style="color:#94a3b8; font-size:0.95rem; margin:0;">Budapest X. kerület (Kőbánya) • IFK-TDK 2026 Kutatási Keretrendszer</p>
+    </div>
+    <div>
+      <a href="../../index.html" style="color:#38bdf8; text-decoration:none; font-weight:700; font-size:0.9rem; background:rgba(56,189,248,0.1); padding:6px 14px; border-radius:8px; border:1px solid rgba(56,189,248,0.3);">🌐 Területi Portál Kezdőlap</a>
+    </div>
+  </div>
+</header>
+
+  <nav class="nav-bar"><a href="../index.html" class="nav-link ">🏠 Vezetői Dashboard</a><a href="00_adathalmaz_attekintes.html" class="nav-link ">🗂️ 00. Adathalmaz & Adatminőség</a><a href="01_leiro_statisztika_es_eda.html" class="nav-link ">📊 01. Leíró Statisztika & EDA</a><a href="02_arstruktura_es_szegmentacio.html" class="nav-link ">🏢 02. Árstruktúra & Szegmentáció</a><a href="03_terbeli_elemzes_es_terkepek.html" class="nav-link ">🗺️ 03. Térbeli Elemzés & GIS Térképek</a><a href="04_vasuti_paradoxon_es_izokronok.html" class="nav-link ">🚆 04. Vasúti Paradoxon & Izokrónok</a><a href="05_poi_es_15_perces_varos.html" class="nav-link ">🚶 05. POI Ellátottság & 15p Város</a><a href="06_klaszter_es_tipologia.html" class="nav-link ">🧩 06. Klaszteranalízis & Tipológiák</a><a href="07_hedonikus_armodell.html" class="nav-link ">📐 07. Hedonikus Ármodell (OLS)</a><a href="08_moran_es_autokorrelacio.html" class="nav-link ">🌐 08. Térbeli Autokorreláció & Moran</a><a href="09_terokonometria_sar_sem.html" class="nav-link active">🔗 09. Térökonometria (SAR & SEM)</a><a href="10_lokalis_terokonometria_gwr.html" class="nav-link ">📍 10. Lokális Térökonometria (GWR)</a><a href="11_gepi_tanulas_es_arbitrazs.html" class="nav-link ">🤖 11. Gépi Tanulás & Arbitrázs</a><a href="12_berleti_piac_es_rent_gap.html" class="nav-link ">🔑 12. Bérleti Piac & Rent Gap</a><a href="13_monte_carlo_kockazat.html" class="nav-link ">🎲 13. Monte Carlo Kockázatelemzés</a><a href="14_lvc_szimulacio.html" class="nav-link ">🏛️ 14. Közösségi Értékmegosztás (LVC)</a><a href="15_ingatlan_kereso_dashboard.html" class="nav-link ">🎯 15. Ingatlan Kereső Dashboard</a></nav>
+
+  <main>
+    
+<h1>09. Térökonometria (SAR és SEM Modellek)</h1>
+<p><strong>Cél</strong>: Az árbecslés pontosságának javítása és a szomszédsági (spillover) hatások beépítése fejlett térbeli modellekkel (Spatial Autoregressive &amp; Spatial Error Model).</p>
+<hr />
+<h3>📖 Miért kellenek a Térökonometriai modellek?</h3>
+<p>Mivel a 08. fejezet bebizonyította a térbeli autokorreláció jelenlétét, az egyszerű OLS becslés együtthatói torzítottak lehetnek. 
+- <strong>SAR (Spatial Autoregressive Model)</strong>: Feltételezi, hogy az ingatlan árát közvetlenül befolyásolja a szomszédos ingatlanok ára (pl. "presztízs" hatás).
+- <strong>SEM (Spatial Error Model)</strong>: Feltételezi, hogy a térbeli összefüggés nem az árak között, hanem a mérhetetlen, kimaradt változók (pl. levegőminőség, lokális közbiztonság) között áll fenn, amelyek beépülnek a hibatagba.</p>
+<hr style="border:0; border-top:1px solid #334155; margin:2rem 0;">
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-title">Térbeli Autoregresszív ρ</div><div class="kpi-value" style="color:#38bdf8;">0.014</div><div class="kpi-sub">Szomszédsági spillover erőssége</div></div>
+  <div class="kpi-card"><div class="kpi-title">Térbeli Multiplikátor</div><div class="kpi-value" style="color:#10b981;">1.01x</div><div class="kpi-sub">1 / (1 - ρ) tovagyűrűzés</div></div>
+  <div class="kpi-card"><div class="kpi-title">SAR Modell R²</div><div class="kpi-value">0.357</div><div class="kpi-sub">vs. OLS: 0.357</div></div>
+  <div class="kpi-card"><div class="kpi-title">Maradvány Moran I</div><div class="kpi-value" style="color:#a855f7;">0.091</div><div class="kpi-sub">vs. OLS: 0.092 (kiszűrve)</div></div>
+</div>
+
+<h3>Modell Összehasonlító Diagnosztika: OLS vs. Spatial Lag (SAR)</h3>
+<table class="data-table">
+  <thead><tr><th>Metrika</th><th>Klasszikus OLS</th><th>Spatial Lag (SAR)</th><th>Értelmezés</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Magyarázóerő (R²)</strong></td><td>0.357</td><td><strong>0.357</strong></td><td>A térbeli késleltetés növeli az illeszkedést</td></tr>
+    <tr><td><strong>Akaike Információs Kritérium (AIC)</strong></td><td>-64.3</td><td><strong>-62.3</strong></td><td>Az alacsonyabb érték a szupérior modellt jelöli</td></tr>
+    <tr><td><strong>Reziduum Moran's I</strong></td><td>0.092</td><td><strong>0.091</strong></td><td>A SAR modell kiszűri a térbeli torzítást</td></tr>
+  </tbody>
+</table>
+
+<div class="plot-container"><div style="height:420px; width:100%;">                            <div id="7eba1e10-629d-4127-8433-812ffe2c789b" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("7eba1e10-629d-4127-8433-812ffe2c789b")) {                    Plotly.newPlot(                        "7eba1e10-629d-4127-8433-812ffe2c789b",                        [{"line":{"color":"#2563eb","width":3},"mode":"lines","name":"T\u00e9rbeli Multiplik\u00e1tor","x":{"dtype":"f8","bdata":"AAAAAAAAAABAvKxudpWBP0C8rG52lZE\u002fYBoDpjFgmj9AvKxudpWhP1DrVwrU+qU\u002fYBoDpjFgqj9wSa5Bj8WuP0C8rG52lbE\u002fyFOCPCXIsz9Q61cK1Pq1P9iCLdiCLbg\u002fYBoDpjFguj\u002fosdhz4JK8P3BJrkGPxb4\u002ffPDBBx98wD9AvKxudpXBPwSIl9XNrsI\u002fyFOCPCXIwz+MH22jfOHEP1DrVwrU+sU\u002fFLdCcSsUxz\u002fYgi3Ygi3IP5xOGD\u002faRsk\u002fYBoDpjFgyj8k5u0MiXnLP+ix2HPgksw\u002frH3D2jeszT9wSa5Bj8XOPzQVmajm3s8\u002ffPDBBx980D9eVje7ygjRP0C8rG52ldE\u002fIiIiIiIi0j8EiJfVza7SP+btDIl5O9M\u002fyFOCPCXI0z+quffv0FTUP4wfbaN84dQ\u002fboXiVihu1T9Q61cK1PrVPzJRzb1\u002fh9Y\u002fFLdCcSsU1z\u002f2HLgk16DXP9iCLdiCLdg\u002fuuiiiy662D+cThg\u002f2kbZP360jfKF09k\u002fYBoDpjFg2j9CgHhZ3ezaPyTm7QyJeds\u002fBkxjwDQG3D\u002fosdhz4JLcP8oXTieMH90\u002frH3D2jes3T+O4ziO4zjeP3BJrkGPxd4\u002fUq8j9TpS3z80FZmo5t7fP4s9By7JNeA\u002ffPDBBx984D9to3zhdMLgP15WN7vKCOE\u002fTwnylCBP4T9AvKxudpXhPzFvZ0jM2+E\u002fIiIiIiIi4j8T1dz7d2jiPwSIl9XNruI\u002f9TpSryP14j\u002fm7QyJeTvjP9egx2LPgeM\u002fyFOCPCXI4z+5Bj0Wew7kP6q59+\u002fQVOQ\u002fm2yyySab5D+MH22jfOHkP33SJ33SJ+U\u002fboXiVihu5T9fOJ0wfrTlP1DrVwrU+uU\u002fQZ4S5ClB5j8yUc29f4fmPyMEiJfVzeY\u002fFLdCcSsU5z8Fav1KgVrnP\u002fYcuCTXoOc\u002f589y\u002fizn5z\u002fYgi3Ygi3oP8k16LHYc+g\u002fuuiiiy666D+rm11lhADpP5xOGD\u002faRuk\u002fjQHTGDCN6T9+tI3yhdPpP29nSMzbGeo\u002fYBoDpjFg6j9Rzb1\u002fh6bqP0KAeFnd7Oo\u002fMzMzMzMz6z8="},"y":{"dtype":"f8","bdata":"AAAAAAAA8D+VoXvkeCPwP\u002f4sqXGQR\u002fA\u002f84ph2Ups8D8amK5zrJHwP0ywgcC5t\u002fA\u002fcwuCaXfe8D\u002fmcfRD6gXxP+bqvVIXLvE\u002fGCeDyANX8T+ciuYJtYDxPwXf5q8wq\u002fE\u002faN1ginzW8T\u002fq67WingLyP2yZmj6dL\u002fI\u002fJpUP435d8j\u002f7F4hXSozyPznyQKkGvPI\u002f7bLLLrvs8j+zptGLbx7zP1G7ErUrUfM\u002fPqyk9PeE8z+eO3fu3LnzP12jIqXj7\u002fM\u002f09wFfxUn9D\u002f12rpLfF\u002f0P4td50kimfQ\u002fBpxxLRLU9D9MriAmVxD1P89Sseb8TfU\u002fY31orA+N9T8g\u002fC1HnM31Pzp5OiKwD\u002fY\u002flTVlTVlT9j+XCh+Hppj2P6SWKUen3\u002fY\u002fh\u002fIaymso9z\u002ff878dBXP3P+\u002fWcC6Fv\u002fc\u002f0TZu1f4N+D\u002fohV7ohV74P7vIBkovsfg\u002fYjVc\u002fBAG+T\u002fHkw80Ql35P27btm3btvk\u002fL6G9hPYS+j9agknMrnH6P3HuRCoh0\u002fo\u002fy5PINGw3+z8UXyJSsJ77P\u002f6QwNsPCfw\u002fCgtQRK92\u002fD8TxmZBtef8PyqbHvlKXP0\u002fHlsRNJzU\u002fT8N5TWU11D+Py\u002fRLtEu0f4\u002f1beu+tZV\u002fz8qjqzBCN\u002f\u002fP5pDnmSANgBAAAAAAACAAEDt+6ABJswAQK4rf8YXGwFAU\u002fMgd\u002f1sAUAQTsRLAsIBQD+7gNhUGgJAYid2Yid2AkB3qlA\u002fsNUCQGYRn0AqOQNAI4e6LNWgA0AaiEpH9gwEQBtWzOvYfQRAPc\u002fzPM\u002fzBEA3IEHsMm8FQN6vyB1m8AVA2qjvbNR3BkBBX9AX9AUHQOKSIVhHmwdAhoPo8V04CEBLaQIC190IQIwxxhhjjAlAnN3Cr8ZECkDXFRsN3QcLQBGhaqub1gtAC1nIQhayDEDnnbqWg5sNQETpXDZDlA5APlE9aOSdD0BddNFFF10QQGbiMaeV9RBAmZmZmZmZEUBY252FfkoSQJ3YiZ3YCRNAlz1g9oDZE0Cqv8\u002fbpLsUQC1btmzZshVATyMs9zTCFkDAtR8lcO0XQIO7se8RORlAqqqqqqqqGkA="},"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"shapes":[{"line":{"color":"#ef4444","dash":"dash","width":2},"type":"line","x0":0.013513036779361887,"x1":0.013513036779361887,"xref":"x","y0":0,"y1":1,"yref":"y domain"}],"annotations":[{"showarrow":false,"text":"Becs\u00fclt \u03c1 = 0.014 (Mult = 1.01x)","x":0.013513036779361887,"xanchor":"left","xref":"x","y":1,"yanchor":"top","yref":"y domain"}],"title":{"text":"T\u00e9rbeli Multiplik\u00e1tor Hat\u00e1sg\u00f6rbe: Szomsz\u00e9ds\u00e1gi Extern\u00e1li\u00e1k Feler\u0151s\u00edt\u00e9se (Budapest X. ker\u00fclet (K\u0151b\u00e1nya))"},"xaxis":{"title":{"text":"T\u00e9rbeli Autoregressz\u00edv Param\u00e9ter (\u03c1)"}},"yaxis":{"title":{"text":"Multiplik\u00e1tor \u00c9rt\u00e9k [1 \u002f (1 - \u03c1)]"}},"height":420},                        {"responsive": true}                    )                };            </script>        </div></div>
+
+<h3>1. SAR Modell és a Térbeli Multiplikátor</h3>
+<p><strong>📌 Az eredmények értelmezése:</strong>
+- <strong>Rho ($
+ho$) paraméter</strong>: A térbeli késleltetés (spatial lag) együtthatója. Szignifikáns jelenléte igazolja, hogy a szomszédos lakások árai hatnak egymásra.
+- <strong>Térbeli Multiplikátor</strong>: A SAR modell legfontosabb tulajdonsága! Értéke <strong>1.27x</strong>, ami azt jelenti, hogy ha egy ingatlan drágul, az az árnövekmény hullámszerűen továbbterjed a szomszédos ingatlanokra is.
+- <strong>Modell illeszkedés</strong>: A SAR modell $R^2$ értéke (<strong>0.794</strong>) jellemzően magasabb az OLS-nél, bizonyítva a térbeli modellezés fölényét.</p>
+
+
+
+
+  </main>
+
+  <div class="chap-nav-footer">
+    <div><a href="08_moran_es_autokorrelacio.html" class="btn-nav">&larr; Előző: 08. Térbeli Autokorreláció & Moran</a></div>
+    <div><a href="10_lokalis_terokonometria_gwr.html" class="btn-nav">Következő: 10. Lokális Térökonometria (GWR) &rarr;</a></div>
+  </div>
+
+  <footer>
+    <p>IFK-TDK 2026 Kutatási Keretrendszer | Automatizált Elemző és Riport Generátor Motor</p>
+    <p style="font-size:0.75rem; color:#64748b; margin-top:4px;">Budapesti Műszaki és Gazdaságtudományi Egyetem</p>
+  </footer>
+</div>
+</body>
+</html>

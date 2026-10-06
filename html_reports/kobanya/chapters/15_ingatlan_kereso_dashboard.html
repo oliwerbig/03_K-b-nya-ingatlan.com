@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15. Ingatlan Kereső Dashboard | Budapest X. kerület (Kőbánya)</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false, strict: false});"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #60a5fa;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --bg: #0b0f19;
+      --card-bg: #151c2e;
+      --card-border: #222f49;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.65;
+      padding: 1.5rem 1rem;
+    }
+    .container { max-width: 1260px; margin: 0 auto; }
+    header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      padding: 0.85rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .badge-primary { background: rgba(37,99,235,0.25); color: #60a5fa; border: 1px solid rgba(37,99,235,0.4); }
+    .badge-control { background: rgba(16,185,129,0.25); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+    h1 { font-size: 2.1rem; font-weight: 800; margin-bottom: 0.5rem; color: #ffffff; }
+    h2 { font-size: 1.5rem; font-weight: 700; margin: 2rem 0 1rem 0; color: #ffffff; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.2rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: #93c5fd; }
+    p { color: #cbd5e1; margin-bottom: 1rem; font-size: 0.98rem; }
+    ul, ol { margin: 0 0 1.25rem 1.5rem; color: #cbd5e1; }
+    li { margin-bottom: 0.4rem; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem 0;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .kpi-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-value { font-size: 1.65rem; font-weight: 800; color: #ffffff; margin: 0.3rem 0; }
+    .kpi-sub { font-size: 0.78rem; color: #64748b; }
+    .analysis-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .executive-box {
+      background: linear-gradient(135deg, rgba(30,58,138,0.25) 0%, rgba(15,23,42,0.6) 100%);
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem 0;
+      font-size: 0.88rem;
+    }
+    .data-table th, .data-table td {
+      padding: 0.75rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .data-table th { background: rgba(255,255,255,0.04); color: #93c5fd; font-weight: 600; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .plot-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .chap-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--card-border);
+    }
+    .btn-nav {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      text-decoration: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+    footer {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--card-border);
+      margin-top: 3rem;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+  
+<header>
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div>
+      <span class="badge badge-primary">Fő Mintaterület</span>
+      <h1>15. Ingatlan Kereső Dashboard</h1>
+      <p style="color:#94a3b8; font-size:0.95rem; margin:0;">Budapest X. kerület (Kőbánya) • IFK-TDK 2026 Kutatási Keretrendszer</p>
+    </div>
+    <div>
+      <a href="../../index.html" style="color:#38bdf8; text-decoration:none; font-weight:700; font-size:0.9rem; background:rgba(56,189,248,0.1); padding:6px 14px; border-radius:8px; border:1px solid rgba(56,189,248,0.3);">🌐 Területi Portál Kezdőlap</a>
+    </div>
+  </div>
+</header>
+
+  <nav class="nav-bar"><a href="../index.html" class="nav-link ">🏠 Vezetői Dashboard</a><a href="00_adathalmaz_attekintes.html" class="nav-link ">🗂️ 00. Adathalmaz & Adatminőség</a><a href="01_leiro_statisztika_es_eda.html" class="nav-link ">📊 01. Leíró Statisztika & EDA</a><a href="02_arstruktura_es_szegmentacio.html" class="nav-link ">🏢 02. Árstruktúra & Szegmentáció</a><a href="03_terbeli_elemzes_es_terkepek.html" class="nav-link ">🗺️ 03. Térbeli Elemzés & GIS Térképek</a><a href="04_vasuti_paradoxon_es_izokronok.html" class="nav-link ">🚆 04. Vasúti Paradoxon & Izokrónok</a><a href="05_poi_es_15_perces_varos.html" class="nav-link ">🚶 05. POI Ellátottság & 15p Város</a><a href="06_klaszter_es_tipologia.html" class="nav-link ">🧩 06. Klaszteranalízis & Tipológiák</a><a href="07_hedonikus_armodell.html" class="nav-link ">📐 07. Hedonikus Ármodell (OLS)</a><a href="08_moran_es_autokorrelacio.html" class="nav-link ">🌐 08. Térbeli Autokorreláció & Moran</a><a href="09_terokonometria_sar_sem.html" class="nav-link ">🔗 09. Térökonometria (SAR & SEM)</a><a href="10_lokalis_terokonometria_gwr.html" class="nav-link ">📍 10. Lokális Térökonometria (GWR)</a><a href="11_gepi_tanulas_es_arbitrazs.html" class="nav-link ">🤖 11. Gépi Tanulás & Arbitrázs</a><a href="12_berleti_piac_es_rent_gap.html" class="nav-link ">🔑 12. Bérleti Piac & Rent Gap</a><a href="13_monte_carlo_kockazat.html" class="nav-link ">🎲 13. Monte Carlo Kockázatelemzés</a><a href="14_lvc_szimulacio.html" class="nav-link ">🏛️ 14. Közösségi Értékmegosztás (LVC)</a><a href="15_ingatlan_kereso_dashboard.html" class="nav-link active">🎯 15. Ingatlan Kereső Dashboard</a></nav>
+
+  <main>
+    
+<h1>15. Integrált Ingatlan Kereső és Döntéstámogató Vezérlőpult</h1>
+<p><strong>Cél</strong>: A korábbi fejezeteken át épített adatbázis és prediktív modellek szintetizálása egyetlen, végfelhasználó-központú, interaktív térképes és táblázatos dashboard formájában.</p>
+<hr />
+<h3>📖 Az Elmélettől a Gyakorlatig</h3>
+<p>A kutatás végső fázisa a transzparencia és a gyakorlati hasznosíthatóság. A feltárt térökonometriai összefüggések, a környezeti terhelések (vasúti diszkontok), a szolgáltatási hálózatok és a Random Forest által predikált valós értékek itt egyetlen dinamikus szűrőrendszerben találkoznak.</p>
+<p>A dashboard bizonyítja a <strong>Data-Driven Real Estate (Adatvezérelt Ingatlanpiac)</strong> létjogosultságát: a racionális, arbitrázst kereső befektetői döntések többé nem intuíciókra, hanem mérnöki pontosságú, többdimenziós prediktív analitikára támaszkodhatnak.</p>
+<hr style="border:0; border-top:1px solid #334155; margin:2rem 0;">
+
+<div class="plot-container"><div style="height:380px; width:100%;">                            <div id="618b58f8-a041-4d9c-baf0-1e03140fec40" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("618b58f8-a041-4d9c-baf0-1e03140fec40")) {                    Plotly.newPlot(                        "618b58f8-a041-4d9c-baf0-1e03140fec40",                        [{"error_x":{"array":{"dtype":"f8","bdata":"nJmZmZmZ+T80MzMzMzMTQJiZmZmZmRNAMjMzMzMzFUBmZmZmZmYaQA=="},"arrayminus":{"dtype":"f8","bdata":"mJmZmZmZ+T80MzMzMzMTQJqZmZmZmRNANDMzMzMzFUCYmZmZmZkZQA=="},"symmetric":false,"type":"data"},"marker":{"color":"#2563eb","size":10},"mode":"markers","name":"Implicit Hat\u00e1s","x":{"dtype":"f8","bdata":"MzMzMzMzF0CamZmZmZkoQJqZmZmZmSdAzczMzMzMIEAAAAAAAAAvwA=="},"y":["\u00c1llapotk\u00f3d (+1 sk\u00e1la)","Lift megl\u00e9te (has_lift)","Erk\u00e9ly kapcsolat (van_erkely)","Vas\u00fat 10p s\u00e9ta (TOD pr\u00e9mium)","Vas\u00fat \u003c150m zaj diszkont"],"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"shapes":[{"line":{"color":"#94a3b8","dash":"dash"},"type":"line","x0":0,"x1":0,"xref":"x","y0":0,"y1":1,"yref":"y domain"}],"title":{"text":"Hedonikus Hat\u00e1sm\u00e1trix \u00e9s Konfidencia Intervallumok (Budapest X. ker\u00fclet (K\u0151b\u00e1nya))"},"xaxis":{"title":{"text":"\u00c1rhat\u00e1s (%)"}},"height":380},                        {"responsive": true}                    )                };            </script>        </div></div>
+<div class="plot-container"><div style="height:450px; width:100%;">                            <div id="0bcd89f5-2830-47a8-bb80-3a0ff8da66e8" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("0bcd89f5-2830-47a8-bb80-3a0ff8da66e8")) {                    Plotly.newPlot(                        "0bcd89f5-2830-47a8-bb80-3a0ff8da66e8",                        [{"line":{"color":"#dc2626","dash":"dash","width":2},"mode":"lines","name":"Zajterhel\u00e9si Diszkont","x":{"dtype":"f8","bdata":"AAAAAAAANEA+sNG7IvM9QD6w0bsi80NAXIi6GbTsSEB7YKN3ReZNQE0cxmrrb1FAXIi6GbTsU0Bs9K7IfGlWQHtgo3dF5lhAisyXJg5jW0CaOIzV1t9dQFRSQMJPLmBAXIi6GbRsYUBkvjRxGKtiQGz0rsh86WNAcyopIOEnZUB7YKN3RWZmQIOWHc+ppGdAisyXJg7jaECSAhJ+ciFqQJo4jNXWX2tAoW4GLTuebECppICEn9xtQLHa+tsDG29AXIi6GbQscEBgo3dF5stwQGS+NHEYa3FAaNnxnEoKckBs9K7IfKlyQG8PbPSuSHNAcyopIOHnc0B3ReZLE4d0QHtgo3dFJnVAf3tgo3fFdUCDlh3PqWR2QIex2vrbA3dAisyXJg6jd0CO51RSQEJ4QJICEn5y4XhAlh3PqaSAeUCaOIzV1h96QJ5TSQEJv3pAoW4GLTtee0ClicNYbf17QKmkgISfnHxArb89sNE7fUCx2vrbA9t9QLX1twc2en5AuBB1M2gZf0C8KzJfmrh\u002fQGCjd0XmK4BA4jBWW397gEBkvjRxGMuAQOZLE4exGoFAaNnxnEpqgUDqZtCy47mBQGz0rsh8CYJA7oGN3hVZgkBvD2z0rqiCQPGcSgpI+IJAcyopIOFHg0D1twc2epeDQHdF5ksT54NA+dLEYaw2hEB7YKN3RYaEQP3tgY3e1YRAf3tgo3clhUABCT+5EHWFQIOWHc+pxIVABST85EIUhkCHsdr622OGQAg\u002fuRB1s4ZAisyXJg4Dh0AMWnY8p1KHQI7nVFJAoodAEHUzaNnxh0CSAhJ+ckGIQBSQ8JMLkYhAlh3PqaTgiEAYq62\u002fPTCJQJo4jNXWf4lAHMZq62\u002fPiUCeU0kBCR+KQCDhJxeibopAoW4GLTu+ikAj\u002fORC1A2LQKWJw1htXYtAJxeibgati0CppICEn\u002fyLQCsyX5o4TIxArb89sNGbjEAvTRzGauuMQLHa+tsDO41AM2jZ8ZyKjUC19bcHNtqNQDeDlh3PKY5AuBB1M2h5jkA6nlNJAcmOQLwrMl+aGI9APrkQdTNoj0DARu+KzLePQCHqZtCyA5BA4jBWW38rkECjd0XmS1OQQGS+NHEYe5BAJQUk\u002fOSikEDmSxOHscqQQKeSAhJ+8pBAaNnxnEoakUApIOEnF0KRQOpm0LLjaZFAq62\u002fPbCRkUBs9K7IfLmRQC07nlNJ4ZFA7oGN3hUJkkCvyHxp4jCSQG8PbPSuWJJAMFZbf3uAkkDxnEoKSKiSQLLjOZUU0JJAcyopIOH3kkA0cRirrR+TQPW3BzZ6R5NAtv72wEZvk0B3ReZLE5eTQDiM1dbfvpNA+dLEYazmk0C6GbTseA6UQHtgo3dFNpRAPKeSAhJelED97YGN3oWUQL40cRirrZRAf3tgo3fVlEBAwk8uRP2UQAEJP7kQJZVAwk8uRN1MlUCDlh3PqXSVQETdDFp2nJVABST85ELElUDGautvD+yVQIex2vrbE5ZAR\u002fjJhag7lkAIP7kQdWOWQMmFqJtBi5ZAisyXJg6zlkBLE4ex2tqWQAxadjynApdAzaBlx3Mql0CO51RSQFKXQE8uRN0MepdAEHUzaNmhl0DRuyLzpcmXQJICEn5y8ZdAU0kBCT8ZmEAUkPCTC0GYQNXW3x7YaJhAlh3PqaSQmEBXZL40cbiYQBirrb894JhA2fGcSgoImUCaOIzV1i+ZQFt\u002fe2CjV5lAHMZq629\u002fmUDdDFp2PKeZQJ5TSQEJz5lAX5o4jNX2mUAg4ScXoh6aQOAnF6JuRppAoW4GLTtumkBitfW3B5aaQCP85ELUvZpA5ELUzaDlmkClicNYbQ2bQGbQsuM5NZtAJxeibgZdm0DoXZH50oSbQKmkgISfrJtAautvD2zUm0ArMl+aOPybQOx4TiUFJJxArb89sNFLnEBuBi07nnOcQC9NHMZqm5xA8JMLUTfDnECx2vrbA+ucQHIh6mbQEp1AM2jZ8Zw6nUD0rsh8aWKdQLX1twc2ip1AdjynkgKynUA3g5Ydz9mdQPjJhaibAZ5AuBB1M2gpnkB5V2S+NFGeQDqeU0kBeZ5A++RC1M2gnkC8KzJfmsieQH1yIepm8J5APrkQdTMYn0AAAAAAAECfQA=="},"y":{"dtype":"f8","bdata":"k9EPdW5lLMBLJGKi\u002fCMrwAmx5o7B8CnAqEYSVBzLKMB8270oc7InwElwnBAzpibA9KdAj8+lJcBCw4lewrAkwKx4USiLxiPAQ9Q1Q6\u002fmIsCQ7FtyuRAiwN7HCag5RCHAJEr3ysSAIMCt32786IsfwFPrONfNJh7AErT1IH3RHMBExWAZRIsbwLEAq+d3UxrAIRwBQXUpGcD5+AYToAwYwEAMGzJj\u002fBbAowg3CzD4FcCW4ERZfv8UwMYFwd3LERTAzoWEHJwuE8AcS5MaeFUSwH5dzB\u002fuhRHAIoBbe5G\u002fEMBX\u002fMxK+gEQwN2SS4eKmQ7ACCfH\u002fiY\u002fDcAzy5KTFPQLwB3fveKltwrAog4TNDWJCcA5PE4jJGgIwMzfKE3bUwfAbGgRAMpLBsBQG2TwZU8FwLHA\u002fe8qXgTAAzACqZp3A8CserJbPJsCwLQOMJ+cyAHAFLMLJU3\u002fAMA8toB\u002f5D4AwHgbfNT7Df+\u002f8fhAK3Ku\u002fb8xOIToc178v46+iRVRHfu\u002f4Zp9g2Hq+b+NrF9zBMX4v49Z1EGgrPe\u002fmTyuFqKg9r\u002fMpwaYfaD1v2y1vKCsq\u002fS\u002f+mc0+q7B87+mDjEZCuLyv9rDp91IDPK\u002fYmloVfs\u002f8b+CAn2BtnzwvwZvQTwohO+\u002fulRi2mQf7r+GH\u002fwFaMrsv657uCp\u002fhOu\u002f5yHFmf9M6r88UnAwRiPpvxUwuQK3Bui\u002fp0CnCb325r8YSD7VyfLlv1Kl5UFV+uS\u002ffRscMd0M5L8kslJF5Snjv9v7yqD2UOK\u002fDadWp5+B4b8Nv9fCc7vgvyPoxFQW\u002fN+\u002fIETFVwWS3r8iPlHw9jfdv2o4hOI17du\u002fqTAK9hSx2r9SE2ib7oLZv4j6RpUkYti\u002fvO+UpR9O17+iyU8+T0bWv7yq0DUpStW\u002f7HpwfilZ1L\u002fqdl\u002fh0XLTv72di7ypltK\u002f+F1zwz3E0b+vbMPCH\u002fvQv5gmoGbmOtC\u002f54L4BloGz7\u002f71L\u002fCJqfNv3dqCRN7V8y\u002fqe1XLKcWy79zqSwJA+TJv\u002fLVCBLuvsi\u002f8\u002f5Syc6mx79QePR6EpvGvzfHhO8sm8W\u002fSMPaIpimxL+q+tz907zDvxOXbBNm3cK\u002fDaJHYNkHwr9WFMENvjvBv3yYLjepeMC\u002f0qfaY2l8v78aysCv\u002fRe+vxMimqhUw7y\u002fArHz5bt9u7\u002fntO3iiEa6vzQb7qQYHbm\u002fIdxFZs8AuL+aipxEGPG2v7lf9\u002fJk7bW\u002f2Osyby31tL+\u002fZci67we0vyRKuZYvJbO\u002f\u002fqN9QnZMsr8S6tI9Un2xvzjfSg1Xt7C\u002fnaj2Ajr0r79PFWIBgoquv72NEqbIMK2\u002fc8ut4Vjmq78j8XGmhaqqv4cplI2pfKm\u002fPTWhgCZcqL+RirJmZUinv5GqTNXVQKa\u002fqzq9xO1Epb+eRtFHKVSkvwvPvUYKbqO\u002fiXUWPRiSor+0sK\u002f637+hvzh6S2fz9qC\u002f4d7wSOk2oL8ifaAZuv6ev1u\u002fLiXdn52\u002fkoAz9INQnL9Dj2Xm\u002fg+bv+pJkR+m3Zm\u002f54uvL9m4mL8lv9++\u002fqCXv0QSGT2ElZa\u002fVMNold2Vlb8kTZXkhKGUvw8LADP6t5O\u002fiJqgMcPYkr844fb5agOSv+Ir0tCBN5G\u002f\u002fVXN65x0kL+sqcJyrHSPvxO44VaYEI6\u002fUjliCEO8jL9+uqlK+naLv7evwMITQIq\u002ff9kanuwWib\u002fzmVE96fqHv3ORo+J064a\u002fn9MOZAHohb9K6dzgBvCEv+2geXoDA4S\u002fcGlvEHsgg79VmGX\u002f9keCvwOQ\u002fuIFeYG\u002f4zt1WjuzgL94kbWfX+x\u002fv\u002fu+rYMAg36\u002fsvKbH5wpfb83S6WQfd97v+mZj\u002fP3o3q\u002fzEc2CmZ2eb9kLQDlKVZ4vzkLKZCsQne\u002fnlGzxF07dr+Y0Nicsz91v\u002fO90ksqT3S\u002fuT7T2ENpc7\u002fBTQzdh41yvwZzoUSDu3G\u002fwkRjEsjycL9VIzUm7TJwv0AI\u002fgsc926\u002fBu4cUpWYbb9BrZaLjklsv2aaS0NYCWu\u002frgFJxkrXab9wrvXLxbJov8GjICIwm2e\u002fbA7GXPePZr92bWCJj5Blv5rGneVynGS\u002f9IVSmSGzY7+uV4VzIdRiv0PscKr9\u002fmG\u002fSyNankYzYb9JlBqfkXBgv42xgWjxbF+\u002fWKdSzzQJXr+k\u002feYkM7Vcvw=="},"type":"scatter"},{"line":{"color":"#059669","dash":"dot","width":2},"mode":"lines","name":"\u00c1llom\u00e1si TOD Pr\u00e9mium","x":{"dtype":"f8","bdata":"AAAAAAAANEA+sNG7IvM9QD6w0bsi80NAXIi6GbTsSEB7YKN3ReZNQE0cxmrrb1FAXIi6GbTsU0Bs9K7IfGlWQHtgo3dF5lhAisyXJg5jW0CaOIzV1t9dQFRSQMJPLmBAXIi6GbRsYUBkvjRxGKtiQGz0rsh86WNAcyopIOEnZUB7YKN3RWZmQIOWHc+ppGdAisyXJg7jaECSAhJ+ciFqQJo4jNXWX2tAoW4GLTuebECppICEn9xtQLHa+tsDG29AXIi6GbQscEBgo3dF5stwQGS+NHEYa3FAaNnxnEoKckBs9K7IfKlyQG8PbPSuSHNAcyopIOHnc0B3ReZLE4d0QHtgo3dFJnVAf3tgo3fFdUCDlh3PqWR2QIex2vrbA3dAisyXJg6jd0CO51RSQEJ4QJICEn5y4XhAlh3PqaSAeUCaOIzV1h96QJ5TSQEJv3pAoW4GLTtee0ClicNYbf17QKmkgISfnHxArb89sNE7fUCx2vrbA9t9QLX1twc2en5AuBB1M2gZf0C8KzJfmrh\u002fQGCjd0XmK4BA4jBWW397gEBkvjRxGMuAQOZLE4exGoFAaNnxnEpqgUDqZtCy47mBQGz0rsh8CYJA7oGN3hVZgkBvD2z0rqiCQPGcSgpI+IJAcyopIOFHg0D1twc2epeDQHdF5ksT54NA+dLEYaw2hEB7YKN3RYaEQP3tgY3e1YRAf3tgo3clhUABCT+5EHWFQIOWHc+pxIVABST85EIUhkCHsdr622OGQAg\u002fuRB1s4ZAisyXJg4Dh0AMWnY8p1KHQI7nVFJAoodAEHUzaNnxh0CSAhJ+ckGIQBSQ8JMLkYhAlh3PqaTgiEAYq62\u002fPTCJQJo4jNXWf4lAHMZq62\u002fPiUCeU0kBCR+KQCDhJxeibopAoW4GLTu+ikAj\u002fORC1A2LQKWJw1htXYtAJxeibgati0CppICEn\u002fyLQCsyX5o4TIxArb89sNGbjEAvTRzGauuMQLHa+tsDO41AM2jZ8ZyKjUC19bcHNtqNQDeDlh3PKY5AuBB1M2h5jkA6nlNJAcmOQLwrMl+aGI9APrkQdTNoj0DARu+KzLePQCHqZtCyA5BA4jBWW38rkECjd0XmS1OQQGS+NHEYe5BAJQUk\u002fOSikEDmSxOHscqQQKeSAhJ+8pBAaNnxnEoakUApIOEnF0KRQOpm0LLjaZFAq62\u002fPbCRkUBs9K7IfLmRQC07nlNJ4ZFA7oGN3hUJkkCvyHxp4jCSQG8PbPSuWJJAMFZbf3uAkkDxnEoKSKiSQLLjOZUU0JJAcyopIOH3kkA0cRirrR+TQPW3BzZ6R5NAtv72wEZvk0B3ReZLE5eTQDiM1dbfvpNA+dLEYazmk0C6GbTseA6UQHtgo3dFNpRAPKeSAhJelED97YGN3oWUQL40cRirrZRAf3tgo3fVlEBAwk8uRP2UQAEJP7kQJZVAwk8uRN1MlUCDlh3PqXSVQETdDFp2nJVABST85ELElUDGautvD+yVQIex2vrbE5ZAR\u002fjJhag7lkAIP7kQdWOWQMmFqJtBi5ZAisyXJg6zlkBLE4ex2tqWQAxadjynApdAzaBlx3Mql0CO51RSQFKXQE8uRN0MepdAEHUzaNmhl0DRuyLzpcmXQJICEn5y8ZdAU0kBCT8ZmEAUkPCTC0GYQNXW3x7YaJhAlh3PqaSQmEBXZL40cbiYQBirrb894JhA2fGcSgoImUCaOIzV1i+ZQFt\u002fe2CjV5lAHMZq629\u002fmUDdDFp2PKeZQJ5TSQEJz5lAX5o4jNX2mUAg4ScXoh6aQOAnF6JuRppAoW4GLTtumkBitfW3B5aaQCP85ELUvZpA5ELUzaDlmkClicNYbQ2bQGbQsuM5NZtAJxeibgZdm0DoXZH50oSbQKmkgISfrJtAautvD2zUm0ArMl+aOPybQOx4TiUFJJxArb89sNFLnEBuBi07nnOcQC9NHMZqm5xA8JMLUTfDnECx2vrbA+ucQHIh6mbQEp1AM2jZ8Zw6nUD0rsh8aWKdQLX1twc2ip1AdjynkgKynUA3g5Ydz9mdQPjJhaibAZ5AuBB1M2gpnkB5V2S+NFGeQDqeU0kBeZ5A++RC1M2gnkC8KzJfmsieQH1yIepm8J5APrkQdTMYn0AAAAAAAECfQA=="},"y":{"dtype":"f8","bdata":"PgDMXvr4LEAuBISaRfAsQHYYd60h5CxATmDRP5fULEBtz5BWscEsQATDIUB9qyxAzZcyfQqSLEAGuAimanUsQH5wq0yxVSxAtgpB3PMyLEBpFgF2SQ0sQG5lI8zK5CtAC\u002f01+5G5K0BxLkViuosrQNI2QHpgWytAxVICraEoK0COO2QsnPMqQFa7tMluvCpA6ZbwzTiDKkAaqwrTGUgqQAcAjZ4xCypAHPDS\u002fZ\u002fMKUCZiROkhIwpQEk3agr\u002fSilA260CUi4IKUC3P4QoMcQoQPQ00K4lfyhAJLYeYik5KEAIWH4HWfInQG12s5nQqidAKltuOatiJ0C7s8kfAxonQCkY\u002fpLx0CZAE2Az3Y6HJkACM1VF8j0mQDigzQky9CVAto4GXWOqJUAfdJFjmmAlQHDs0zPqFiVACXYX12TNJECisNpLG4QkQHr6QokdOyRAQBiOg3ryI0DJq2QxQKojQKiO75F7YiNADKSTszgbI0C+VTm7gtQiQLaoBuxjjiJAGp10r+VIIkAGXKqdEAQiQA6ECobsvyFAOa7gd4B8IUATAx\u002fL0jkhQPZmHSnp9yBAumFNlci2IEDybtd1dXYgQJDWF5zzNiBAZhHlmYzwH0C1de2R4HQfQPtdmKjn+h5AfT\u002fKfKWCHkCajuHSHAweQA60FqNPlx1AwzVSJz8kHUDtznXo67IcQEV6FstVQxxAcJKmG3zVG0CFKhCaXWkbQHWdwIT4\u002fhpAoREno0qWGkCeUKhPUS8aQCjcCoEJyhlAsJte029mGUCs2mOQgAQZQJGadbc3pBhA5XT7BJFFGECVdGf5h+gXQERrxN8XjRdAOFnZ0zszF0DIhubH7toWQJrsAIorhBZAf4AQyewuFkBT7XUZLdsVQDkoXPnmiBVATj261BQ4FUDTkAkJsegUQGqztOi1mhRAf8VCvh1OFEBJQ0PP4gIUQNHt\u002fV7\u002fuBNA+1\u002fqsG1wE0DJuPIKKCkTQMWdhLco4xJA2rJzB2qeEkALf7BT5loSQNKQ1v6XGBJAYJCUdnnXEUDhyvA0hZcRQGOfbMG1WBFAiBQJsgUbEUBbvi6sb94QQBT8emXuohBAN3h0pHxoEECKuChBFS8QQHngaEtm7Q9AaFhwnaJ+D0BlsXWX1REPQIMP9371pg5ALJJnwPg9DkDvnZfv1dYNQCwOA8iDcQ1Ap3YHLfkNDUAKeAQqLawMQJsIaPIWTAxAenGo4a3tC0Caoi176ZALQJBiK2rBNQtAccRtgS3cCkBhNBm7JYQKQKtTXziiLQpAgsYpQZvYCUDoALxDCYUJQAAMTdTkMglA8iqarCbiCEACNXOrx5IIQE1qQdTARAhAp3mJTgv4B0CtX2lloKwHQBm6Eod5YgdAFR5CRJAZB0CO9LNP3tEGQD5Vl31diwZAp07\u002fwgdGBkBdAFM11wEGQCTkvAnGvgVATpqZlM58BUB3huZI6zsFQLOCsLcW\u002fARA0eiCj0u9BEBeK9ebhH8EQI0yhcS8QgRABqw0De8GBEDYd8+UFswDQGFY9ZQukgNA+wZxYTJZA0B4y65nHSEDQNywNC7r6QJA224cVJezAkBXHI+QHX4CQLG8QrJ5SQJA7Lb5nqcVAkC7QwRTo+IBQAvdw+BosAFAEbgwcPR+AUCtUGE+Qk4BQNILFJ1OHgFAv\u002fQ68hXvAECyl4m3lMAAQGb7BHrHkgBArbmV2aplAEBaNpyIOzkAQMTyhkt2DQBAwfbV8K\u002fE\u002fz9t2Dztum\u002f\u002fP1UQqnwHHP8\u002fQb19sI\u002fJ\u002fj+n9FG6TXj+P7gnQOs7KP4\u002fuIMqs1TZ\u002fT\u002fxQAmgkov9P8nSO13wPv0\u002fMuvdsmjz\u002fD\u002fAQiCF9qj8P8AWpdOUX\u002fw\u002fEE7guD4X\u002fD8NNXtp78\u002f7PxjBuzOiifs\u002fq0vvflJE+z\u002fitNjK+\u002f\u002f6P4DdIa+ZvPo\u002fHGjQ2id6+j9Isb0Tojj6P6HuETYE+Pk\u002fZWTCM0q4+T\u002fDoRIUcHn5P7izGPNxO\u002fk\u002fpj5EAUz++D\u002f\u002fbuiC+sH4P1GxyM95hvg\u002fbiKoUsZL+D89qNuI3BH4P22k3gG52Pc\u002f\u002fjHqXlig9z8V345St2j3P6zUUKDSMfc\u002f+F1GHKf79j+AwbiqMcb2Pzpexz9vkfY\u002fH\u002f8M31xd9j8hWEeb9yn2Pw=="},"type":"scatter"},{"line":{"color":"#2563eb","width":4},"mode":"lines","name":"Nett\u00f3 Ered\u0151 Hat\u00e1s","x":{"dtype":"f8","bdata":"AAAAAAAANEA+sNG7IvM9QD6w0bsi80NAXIi6GbTsSEB7YKN3ReZNQE0cxmrrb1FAXIi6GbTsU0Bs9K7IfGlWQHtgo3dF5lhAisyXJg5jW0CaOIzV1t9dQFRSQMJPLmBAXIi6GbRsYUBkvjRxGKtiQGz0rsh86WNAcyopIOEnZUB7YKN3RWZmQIOWHc+ppGdAisyXJg7jaECSAhJ+ciFqQJo4jNXWX2tAoW4GLTuebECppICEn9xtQLHa+tsDG29AXIi6GbQscEBgo3dF5stwQGS+NHEYa3FAaNnxnEoKckBs9K7IfKlyQG8PbPSuSHNAcyopIOHnc0B3ReZLE4d0QHtgo3dFJnVAf3tgo3fFdUCDlh3PqWR2QIex2vrbA3dAisyXJg6jd0CO51RSQEJ4QJICEn5y4XhAlh3PqaSAeUCaOIzV1h96QJ5TSQEJv3pAoW4GLTtee0ClicNYbf17QKmkgISfnHxArb89sNE7fUCx2vrbA9t9QLX1twc2en5AuBB1M2gZf0C8KzJfmrh\u002fQGCjd0XmK4BA4jBWW397gEBkvjRxGMuAQOZLE4exGoFAaNnxnEpqgUDqZtCy47mBQGz0rsh8CYJA7oGN3hVZgkBvD2z0rqiCQPGcSgpI+IJAcyopIOFHg0D1twc2epeDQHdF5ksT54NA+dLEYaw2hEB7YKN3RYaEQP3tgY3e1YRAf3tgo3clhUABCT+5EHWFQIOWHc+pxIVABST85EIUhkCHsdr622OGQAg\u002fuRB1s4ZAisyXJg4Dh0AMWnY8p1KHQI7nVFJAoodAEHUzaNnxh0CSAhJ+ckGIQBSQ8JMLkYhAlh3PqaTgiEAYq62\u002fPTCJQJo4jNXWf4lAHMZq62\u002fPiUCeU0kBCR+KQCDhJxeibopAoW4GLTu+ikAj\u002fORC1A2LQKWJw1htXYtAJxeibgati0CppICEn\u002fyLQCsyX5o4TIxArb89sNGbjEAvTRzGauuMQLHa+tsDO41AM2jZ8ZyKjUC19bcHNtqNQDeDlh3PKY5AuBB1M2h5jkA6nlNJAcmOQLwrMl+aGI9APrkQdTNoj0DARu+KzLePQCHqZtCyA5BA4jBWW38rkECjd0XmS1OQQGS+NHEYe5BAJQUk\u002fOSikEDmSxOHscqQQKeSAhJ+8pBAaNnxnEoakUApIOEnF0KRQOpm0LLjaZFAq62\u002fPbCRkUBs9K7IfLmRQC07nlNJ4ZFA7oGN3hUJkkCvyHxp4jCSQG8PbPSuWJJAMFZbf3uAkkDxnEoKSKiSQLLjOZUU0JJAcyopIOH3kkA0cRirrR+TQPW3BzZ6R5NAtv72wEZvk0B3ReZLE5eTQDiM1dbfvpNA+dLEYazmk0C6GbTseA6UQHtgo3dFNpRAPKeSAhJelED97YGN3oWUQL40cRirrZRAf3tgo3fVlEBAwk8uRP2UQAEJP7kQJZVAwk8uRN1MlUCDlh3PqXSVQETdDFp2nJVABST85ELElUDGautvD+yVQIex2vrbE5ZAR\u002fjJhag7lkAIP7kQdWOWQMmFqJtBi5ZAisyXJg6zlkBLE4ex2tqWQAxadjynApdAzaBlx3Mql0CO51RSQFKXQE8uRN0MepdAEHUzaNmhl0DRuyLzpcmXQJICEn5y8ZdAU0kBCT8ZmEAUkPCTC0GYQNXW3x7YaJhAlh3PqaSQmEBXZL40cbiYQBirrb894JhA2fGcSgoImUCaOIzV1i+ZQFt\u002fe2CjV5lAHMZq629\u002fmUDdDFp2PKeZQJ5TSQEJz5lAX5o4jNX2mUAg4ScXoh6aQOAnF6JuRppAoW4GLTtumkBitfW3B5aaQCP85ELUvZpA5ELUzaDlmkClicNYbQ2bQGbQsuM5NZtAJxeibgZdm0DoXZH50oSbQKmkgISfrJtAautvD2zUm0ArMl+aOPybQOx4TiUFJJxArb89sNFLnEBuBi07nnOcQC9NHMZqm5xA8JMLUTfDnECx2vrbA+ucQHIh6mbQEp1AM2jZ8Zw6nUD0rsh8aWKdQLX1twc2ip1AdjynkgKynUA3g5Ydz9mdQPjJhaibAZ5AuBB1M2gpnkB5V2S+NFGeQDqeU0kBeZ5A++RC1M2gnkC8KzJfmsieQH1yIepm8J5APrkQdTMYn0AAAAAAAECfQA=="},"y":{"dtype":"f8","bdata":"YNWFN31x0j8w\u002fh2Cj8TsP2g7g\u002fQAm\u002fc\u002fmGb8ruslAEDEz0u3+DwEQOxKFb4oFQhAZL\u002fHt+uwC0AQ0\u002fsdoRIPQKTvs0hMHhFA5mwWMomYEkCyU0oHIPkTQCA7M0giQRVAzmV9YJpxFkA1fRvIi4sXQFGCRx3zjxhAePEOOcZ\u002fGUDYsWc\u002f9FsaQPt1vqtlJRtAsRHgWvzcG0A7XQ6Tk4McQM7z\u002fgoAGh1Alddu8A+hHUCcMuLuihkeQMxoEzcyhB5A6NWAh8DhHkBSNHU26jIfQGoM1D1deB9AJuzhSMGyH0C5sy\u002fEt+IfQLaR4PdtBCBAaJG8eeESIEDuAOX6\u002fRwgQGKgThoIIyBAapwukEElIED0o4E86SMgQEVogzY7HyBAmzQC3XAXIEBLbXjnwAwgQIj4qO++\u002fh9AENStWfzeH0DuI9xpmLofQJrt7cLskR9A9laWdE5lH0B0\u002fAgjDjUfQHIWwC54AR9A3AlX3NTKHkBwnVF8aJEeQMjhqpJzVR5AfNMJ\u002fjIXHkDpzHwe4NYdQLjxn\u002fuwlB1ATM0VathQHUAzXDwwhgsdQJGgCyrnxBxAdqkNbCV9HEA6mmJlaDQcQCq8xQDV6htADveKxI2gG0AUNY7xslUbQBowEKFiChtA5vR94bi+GkCpCiLSz3IaQJikv72\u002fJhpAhpEZNJ\u002faGUCmxGcig44ZQEJUv+p+QhlAW6pxeqT2GECCYWhfBKsYQMvog9ytXxhAMY4D\u002fa4UGEBa+v2mFMoXQK188azqfxdAzsZz3js2F0DK4ggYEu0WQA9MKVJ2pBZAoyB\u002fr3BcFkCzYGKKCBUWQL0nnIFEzhVALbZ4hCqIFUCTBTDev0IVQPJ8rEAJ\u002fhRAgzG3zgq6FEC58JAlyHYUQI0d\u002f2VENBRAnzXTPILyE0BkmfPqg7ETQI7560xLcRNAoI8L4tkxE0B+DBfTMPMSQGjrk\u002fhQtRJA5Juy4Dp4EkAhutzU7jsSQHFS7N5sABJAbfMQzrTFEUC\u002fGWc7xosRQCJKRo6gUhFAaPhJAEMaEUAeJxmhrOIQQCl58FncqxBAbj7y8NB1EECG1j8MiUAQQFuX3zQDDBBATXbksnuwD0DPX3WhbkoPQPH29bfb5Q5AKYNRUr+CDkAUq\u002fepFSEOQHI+stnawA1ApPQ34QpiDUBIMICooQQNQFKd2wKbqAxAxkfVsfJNDEC1k99npPQLQJ1N0MqrnAtAG9oudgRGC0BsX1f9qfAKQD+Yde2XnApAUddZz8lJCkAQnSopO\u002fgJQLH89H\u002fnpwlA4OsdWcpYCUCTeLY73woJQMnBtLEhvghAxHMTSY1yCEA9bdmUHSgIQKcZCy7O3gdA0vSGtJqWB0CDlc7Pfk8HQG+HvS92CQdAKikvjXzEBkB0r5SqjYAGQAJefFSlPQZA0fQKYr\u002f7BUCaQWi117oFQDu2HzzqegVA0tZ17\u002fI7BUB9RbPU7f0EQDQlZv3WwARA0IGah6qEBEA\u002fYAqeZEkEQPkPRngBDwRA7kzVWn3VA0BauFGX1JwDQDwme4wDZQNAdDVGpgYuA0DeoOVd2vcCQMawzjl7wgJApi25zeWNAkCVLpu6FloCQFkYoa4KJwJAQBwiZb70AUARgZGmLsMBQFP7bEhYkgFA2FUoLThiAUDzphZEyzIBQCJLUYkOBAFA5tmcBf\u002fVAEAYRkzOmagAQNVXIgXcewBA2aox2MJPAEBxWbuBSyQAQEbyGJDm8v8\u002f7he1+m6e\u002fz88DT7\u002fKkv\u002fPzUT5HAV+f4\u002fydLIOSmo\u002fj8WP7JaYVj+P\u002fl5vOq4Cf4\u002fxecKFyu8\u002fT+mm3gis2\u002f9Py9DSGVMJP0\u002f6rTTTPLZ\u002fD+TQjtboJD8P7XtFCdSSPw\u002fvpobWwMB\u002fD88XN61r7r7P1rubwlTdfs\u002fbHgWO+kw+z+UqPtCbu36Pw083Sveqvo\u002f1wS+EjVp+j8lfJcmbyj6P53vC6iI6Pk\u002f7lUZ6X2p+T9s1sxMS2v5P+sN90btLfk\u002fJRrhW2Dx+D8odAIgobX4P\u002f+gtzesevg\u002fZ7\u002f5Vn5A+D8G+BZBFAf4P4rVa8hqzvc\u002fu4gdzn6W9z9pHNVBTV\u002f3PzaceyHTKPc\u002f5jD3eA3z9j82NOlh+b32P849bQOUifY\u002fdSrZkdpV9j9iHn5OyiL2Pw=="},"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"shapes":[{"line":{"color":"#64748b","dash":"solid","width":1},"type":"line","x0":0,"x1":1,"xref":"x domain","y0":0,"y1":0,"yref":"y"}],"title":{"text":"A Vas\u00fat Kett\u0151s Gazdas\u00e1gi Hat\u00e1sg\u00f6rb\u00e9je a T\u00e1vols\u00e1g F\u00fcggv\u00e9ny\u00e9ben (Budapest X. ker\u00fclet (K\u0151b\u00e1nya))"},"xaxis":{"title":{"text":"T\u00e1vols\u00e1g a Vas\u00fati Infrastrukt\u00far\u00e1t\u00f3l (m\u00e9ter)"}},"yaxis":{"title":{"text":"Becs\u00fclt Tiszta \u00c1rhat\u00e1s (%)"}},"height":450},                        {"responsive": true}                    )                };            </script>        </div></div>
+
+
+
+
+  </main>
+
+  <div class="chap-nav-footer">
+    <div><a href="14_lvc_szimulacio.html" class="btn-nav">&larr; Előző: 14. Közösségi Értékmegosztás (LVC)</a></div>
+    <div><a href="../index.html" class="btn-nav">Vezetői Összefoglaló &rarr;</a></div>
+  </div>
+
+  <footer>
+    <p>IFK-TDK 2026 Kutatási Keretrendszer | Automatizált Elemző és Riport Generátor Motor</p>
+    <p style="font-size:0.75rem; color:#64748b; margin-top:4px;">Budapesti Műszaki és Gazdaságtudományi Egyetem</p>
+  </footer>
+</div>
+</body>
+</html>

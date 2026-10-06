@@ -1,0 +1,111 @@
+# ==============================================================================
+# IFK-TDK 2026: Területi Adatbázis Konfiguráció (Multi-Area Configuration)
+# ==============================================================================
+# Ez a fájl regisztrálja a párhuzamosan vizsgált kutatási és kontroll területeket.
+# Bármelyik új terület feldolgozása után automatikusan bekapcsolható a vizsgálatba.
+
+active_area: "kobanya"
+
+areas:
+  # ----------------------------------------------------------------------------
+  # FŐ MINTATERÜLET: Kőbánya (Budapest X. kerület)
+  # ----------------------------------------------------------------------------
+  kobanya:
+    id: "kobanya"
+    name: "Budapest X. kerület (Kőbánya)"
+    short_name: "Kőbánya"
+    role: "primary"                     # primary | control
+    is_active: true
+    data:
+      raw_file: "data/raw/kobanya_ingatlan_nyers_alap_1320db.xlsx"
+      master_parquet: "data/processed/kobanya_ingatlan_szamitott_master.parquet"
+      pontos_geojson: "data/processed/kobanya_ingatlan_szamitott_pontos.geojson"
+    currency: "HUF"
+    currency_symbol: "Ft"
+    unit_sqm: "Ft/m²"
+    unit_total: "Ft"
+    unit_million: "M Ft"
+    unit_rent: "Ft/hó"
+    spatial:
+      center_lat: 47.475
+      center_lon: 19.120
+      main_station: "Kőbánya alsó vasútállomás"
+    metadata:
+      n_total: 1320
+      n_pontos: 296
+      description: "Fő mintaterület: poszt-szocialista vasúti paradoxon és barnamezős diszkont vizsgálata"
+
+  # ----------------------------------------------------------------------------
+  # 1. KONTROLL TERÜLET: pl. Ferencváros / Közvágóhíd (Déli folyosó)
+  # ----------------------------------------------------------------------------
+  kontroll_1:
+    id: "kontroll_1"
+    name: "1. Kontroll Terület (pl. Ferencváros / Közvágóhíd)"
+    short_name: "Kontroll 1"
+    role: "control"
+    is_active: false                    # Aktiválandó az adathalmaz beérkezésekor
+    data:
+      raw_file: "data/raw/kontroll_1.xlsx"
+      master_parquet: "data/processed/kontroll_1_szamitott_master.parquet"
+      pontos_geojson: "data/processed/kontroll_1_pontos.geojson"
+    spatial:
+      center_lat: 47.468
+      center_lon: 19.078
+      focus_project_name: "Közvágóhíd / Déli Körvasút"
+      focus_lat: 47.4695
+      focus_lon: 19.0722
+      main_station: "Közvágóhíd megállóhely"
+    metadata:
+      description: "Déli vasúti tengely: dinamikusan fejlődő rozsdaövezeti tranzit-folyosó"
+
+  # ----------------------------------------------------------------------------
+  # 2. KONTROLL TERÜLET: pl. Zugló / Rákosrendező (Északi folyosó)
+  # ----------------------------------------------------------------------------
+  kontroll_2:
+    id: "kontroll_2"
+    name: "2. Kontroll Terület (pl. Zugló / Rákosrendező)"
+    short_name: "Kontroll 2"
+    role: "control"
+    is_active: false                    # Aktiválandó az adathalmaz beérkezésekor
+    data:
+      raw_file: "data/raw/kontroll_2.xlsx"
+      master_parquet: "data/processed/kontroll_2_szamitott_master.parquet"
+      pontos_geojson: "data/processed/kontroll_2_pontos.geojson"
+    spatial:
+      center_lat: 47.525
+      center_lon: 19.102
+      focus_project_name: "Rákosrendező Millenniumi Negyed"
+      focus_lat: 47.5280
+      focus_lon: 19.0910
+      main_station: "Rákosrendező vasútállomás"
+    metadata:
+      description: "Északi vasúti tengely: nagy léptékű kötöttpályás barnamező és TOD potenciál"
+
+  # ----------------------------------------------------------------------------
+  # NEMZETKÖZI BENCHMARK: Bécs 2. kerület (Leopoldstadt / Nordbahnhof)
+  # ----------------------------------------------------------------------------
+  wien_nordbahnhof:
+    id: "wien_nordbahnhof"
+    name: "Bécs 2. kerület (Leopoldstadt / Nordbahnhof)"
+    short_name: "Bécs Nordbahnhof"
+    role: "control"
+    is_active: true
+    data:
+      raw_file: "data/raw/wien_nordbahnhof_ingatlan_adatbazis.xlsx"
+      master_parquet: "data/processed/wien_nordbahnhof_szamitott_master.parquet"
+      pontos_geojson: "data/processed/wien_nordbahnhof_pontos.geojson"
+    currency: "EUR"
+    currency_symbol: "€"
+    unit_sqm: "€/m²"
+    unit_total: "€"
+    unit_million: "k €"
+    unit_rent: "€/hó"
+    spatial:
+      center_lat: 48.2250
+      center_lon: 16.3900
+      main_station: "Wien Praterstern (Nordbahnhof)"
+    metadata:
+      n_total: 1037
+      n_pontos: 1037
+      description: "Nemzetközi Best Practice: modern bécsi vasúti barnamezős megújítás és TOD tranzit-fejlesztés"
+

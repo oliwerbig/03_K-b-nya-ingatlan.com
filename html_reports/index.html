@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IFK-TDK 2026: Területalapú Ingatlanpiaci Riport Portál</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #0b0f19;
+      --card-bg: #151c2e;
+      --card-border: #222f49;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+    .container { max-width: 1240px; margin: 0 auto; }
+    header {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      background: linear-gradient(180deg, rgba(37,99,235,0.15) 0%, rgba(15,23,42,0) 100%);
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 2.5rem;
+    }
+    .badge {
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-primary { background: rgba(37,99,235,0.25); color: #60a5fa; border: 1px solid rgba(37,99,235,0.4); }
+    .badge-control { background: rgba(16,185,129,0.25); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+    h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 0.75rem; }
+    p.sub { color: var(--text-muted); font-size: 1.1rem; max-width: 800px; margin: 0 auto; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .area-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .mini-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      background: rgba(0,0,0,0.2);
+      padding: 0.85rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .mini-kpi { display: flex; flex-direction: column; }
+    .mini-kpi .lbl { font-size: 0.72rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+    .mini-kpi .val { font-size: 1.15rem; font-weight: 800; color: #ffffff; margin-top: 2px; }
+    .btn-primary {
+      display: block;
+      text-align: center;
+      background: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.92rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+    .comp-table th, .comp-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--card-border);
+      text-align: left;
+    }
+    .comp-table th { background: rgba(255,255,255,0.04); color: #93c5fd; font-weight: 600; }
+    .comp-table tr:hover td { background: rgba(255,255,255,0.02); }
+    footer {
+      text-align: center;
+      padding: 3rem 0 1rem 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div style="margin-bottom:0.75rem;">
+      <span class="badge badge-primary">IFK-TDK 2026 Kutatási Keretrendszer</span>
+    </div>
+    <h1>Területalapú Ingatlanpiaci és Térökonometriai Riport Portál</h1>
+    <p class="sub">Univerzális elemző notebookokból automatikusan generált interaktív HTML riportcsomagok és komparatív benchmarkok.</p>
+  </header>
+
+  <h2 style="font-size:1.5rem; margin-bottom:1.25rem; color:#ffffff;">📍 Elemzett Kutatási Területek</h2>
+  <div class="grid">
+    
+        <div class="area-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <span class="badge badge-primary">Fő Mintaterület</span>
+            <span style="font-size:0.8rem; color:#64748b; font-weight:700;">ID: kobanya</span>
+          </div>
+          <h3 style="font-size:1.35rem; margin-bottom:0.5rem; color:#ffffff;">Budapest X. kerület (Kőbánya)</h3>
+          <p style="font-size:0.88rem; color:#94a3b8; min-height:45px; margin-bottom:1rem;"></p>
+          
+          <div class="mini-kpi-grid">
+            <div class="mini-kpi">
+              <span class="lbl">Kínálat</span>
+              <span class="val">1 320 db</span>
+            </div>
+            <div class="mini-kpi">
+              <span class="lbl">Medián Ár/m²</span>
+              <span class="val" style="color:#38bdf8;">1 184 478 Ft</span>
+            </div>
+            <div class="mini-kpi">
+              <span class="lbl">Vasúti Hatás</span>
+              <span class="val" style="color:#ef4444;">-15.5%</span>
+            </div>
+            <div class="mini-kpi">
+              <span class="lbl">5p Állomás</span>
+              <span class="val" style="color:#f59e0b;">2.0%</span>
+            </div>
+          </div>
+          
+          <div style="margin-top:1.25rem;">
+            <a href="kobanya/index.html" class="btn-primary">📖 Riport Megnyitása &rarr;</a>
+          </div>
+        </div>
+        
+        <div class="area-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <span class="badge badge-control">Nemzetközi Benchmark</span>
+            <span style="font-size:0.8rem; color:#64748b; font-weight:700;">ID: wien_nordbahnhof</span>
+          </div>
+          <h3 style="font-size:1.35rem; margin-bottom:0.5rem; color:#ffffff;">Bécs 2. kerület (Leopoldstadt / Nordbahnhof)</h3>
+          <p style="font-size:0.88rem; color:#94a3b8; min-height:45px; margin-bottom:1rem;"></p>
+          
+          <div class="mini-kpi-grid">
+            <div class="mini-kpi">
+              <span class="lbl">Kínálat</span>
+              <span class="val">1 037 db</span>
+            </div>
+            <div class="mini-kpi">
+              <span class="lbl">Medián Ár/m²</span>
+              <span class="val" style="color:#38bdf8;">9 247 €</span>
+            </div>
+            <div class="mini-kpi">
+              <span class="lbl">Vasúti Hatás</span>
+              <span class="val" style="color:#ef4444;">-22.5%</span>
+            </div>
+            <div class="mini-kpi">
+              <span class="lbl">5p Állomás</span>
+              <span class="val" style="color:#f59e0b;">10.6%</span>
+            </div>
+          </div>
+          
+          <div style="margin-top:1.25rem;">
+            <a href="wien_nordbahnhof/index.html" class="btn-primary">📖 Riport Megnyitása &rarr;</a>
+          </div>
+        </div>
+        
+  </div>
+
+  <h2 style="font-size:1.5rem; margin:2.5rem 0 1rem 0; color:#ffffff;">⚖️ Komparatív Területi Összehasonlító Táblázat</h2>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Terület</th>
+        <th>Szerepkör</th>
+        <th>Minta</th>
+        <th>GIS Pontosság</th>
+        <th>Medián Ár / m²</th>
+        <th>Átlag Méret</th>
+        <th>Vasúti Hatás (&lt;150m)</th>
+        <th>5p Állomáselérés</th>
+        <th>Riport</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td><strong>Budapest X. kerület (Kőbánya)</strong></td>
+          <td><span class="badge badge-primary">Fő Mintaterület</span></td>
+          <td>1 320 db</td>
+          <td>22.4%</td>
+          <td><strong>1,184,478 Ft (~2,961 €)</strong></td>
+          <td>57.6 m²</td>
+          <td style="color:#ef4444; font-weight:700;">-15.5%</td>
+          <td>2.0% (5 db)</td>
+          <td><a href="kobanya/index.html" style="color:#38bdf8; text-decoration:none; font-weight:600;">Megtekintés &rarr;</a></td>
+        </tr>
+        
+        <tr>
+          <td><strong>Bécs 2. kerület (Leopoldstadt / Nordbahnhof)</strong></td>
+          <td><span class="badge badge-control">Nemzetközi Benchmark</span></td>
+          <td>1 037 db</td>
+          <td>100.0%</td>
+          <td><strong>9,247 €</strong></td>
+          <td>77.5 m²</td>
+          <td style="color:#ef4444; font-weight:700;">-22.5%</td>
+          <td>10.6% (92 db)</td>
+          <td><a href="wien_nordbahnhof/index.html" style="color:#38bdf8; text-decoration:none; font-weight:600;">Megtekintés &rarr;</a></td>
+        </tr>
+        
+    </tbody>
+  </table>
+
+  <footer>
+    <p>IFK-TDK 2026 Kutatási Keretrendszer | Automatizált Elemző és Riport Generátor Motor</p>
+    <p style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">Budapesti Műszaki és Gazdaságtudományi Egyetem</p>
+  </footer>
+</div>
+</body>
+</html>

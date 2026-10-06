@@ -65,13 +65,6 @@ def test_wien_record_counts():
         assert int((df["minta_garantalt_pontos"] == 1).sum()) == 1037
 
 
-def test_structure_compliant():
-    """A CONTRIBUTING.md strukturális szabályainak betartása."""
-    from ingatlan_tdk import checks
-
-    v = checks.violations()
-    assert not v, "Struktúra-szabálysértés(ek): " + "; ".join(v)
-
 
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]

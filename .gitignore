@@ -40,3 +40,6 @@ desktop.ini
 
 # Build artifacts
 *.egg-info/
+
+# General riport kimenet (a CI allitja elo)
+html_reports/

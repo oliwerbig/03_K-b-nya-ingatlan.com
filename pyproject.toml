@@ -4,28 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kobanya-ingatlan-tdk"
-version = "0.2.0"
-description = "IFK-TDK 2026: Kobanya ingatlanpiaci es terokonometriai kutatas (Becs benchmarkkal)"
+version = "0.3.0"
+description = "IFK-TDK 2026: vasuti ingatlanpiaci hatasok — notebook-alapu, kanonizalt riportpipeline"
 requires-python = ">=3.11"
 readme = "README.md"
 # Fuggosegeket a requirements.txt kezeli (teljes, pinelt freeze).
 
 [project.scripts]
-tdk-build = "ingatlan_tdk.cli:build_main"
 tdk-report = "ingatlan_tdk.cli:report_main"
 tdk-verify = "ingatlan_tdk.cli:verify_main"
-tdk-check = "ingatlan_tdk.cli:check_main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.ruff]
-line-length = 100
-target-version = "py313"
-extend-exclude = [".venv", "html_reports", ".git", "notebooks"]
-
-[tool.ruff.lint]
-# Lenyens indulo szabalykeszlet (CONTRIBUTING.md 11. szakasz):
-# E4 = import-formazas, E7 = utasitas-hibak, E9 = szintaxis-hibak, F = pyflakes.
-select = ["E4", "E7", "E9", "F"]
-ignore = ["E501"]

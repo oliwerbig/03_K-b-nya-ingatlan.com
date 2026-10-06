@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """python -m ingatlan_tdk belépési pont."""
-
 import sys
 
 from .cli import main

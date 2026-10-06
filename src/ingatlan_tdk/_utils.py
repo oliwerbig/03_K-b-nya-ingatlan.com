@@ -66,6 +66,9 @@ def _resolve_area(area=None):
     """
     if area is not None:
         return area
+    env_area = os.environ.get("TDK_ACTIVE_AREA")
+    if env_area:
+        return env_area
     cfg = load_areas_config()
     return cfg.get("active_area", "kobanya")
 

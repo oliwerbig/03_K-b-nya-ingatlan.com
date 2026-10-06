@@ -6,4 +6,4 @@ konfiguráció-vezérelt elemző motorja, adatrétegei és parancssori eszközei
 Telepítés: pip install -e .
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

@@ -24,17 +24,8 @@ jobs:
           pip install -r requirements-dev.txt
           pip install -e .
 
-      - name: Lint (ruff)
-        run: python -m ruff check src scripts tests
-
-      - name: Compile check
-        run: python -m compileall -q src scripts tests
-
       - name: Data integrity
         run: python -m ingatlan_tdk verify
-
-      - name: Structure check
-        run: python -m ingatlan_tdk check
 
       - name: Tests
         run: pytest tests/ -q

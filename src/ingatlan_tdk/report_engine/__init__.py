@@ -7,5 +7,4 @@ from .full_analyzer import FullAreaAnalyzer as AreaAnalyzer
 from .full_narrative import FullNarrativeGenerator as NarrativeGenerator
 from .full_html_builder import FullHTMLReportBuilder as HTMLReportBuilder
 
-__all__ = ['AreaAnalyzer', 'NarrativeGenerator', 'HTMLReportBuilder']
-
+__all__ = ["AreaAnalyzer", "NarrativeGenerator", "HTMLReportBuilder"]

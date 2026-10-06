@@ -56,7 +56,15 @@ FORBIDDEN_FILES = {"desktop.ini", ".DS_Store", "Thumbs.db"}
 NOTEBOOK_RE = re.compile(r"^\d{2}_[a-z0-9_]+\.ipynb$")
 SCRIPT_RE = re.compile(r"^(fetch|enrich|preprocess)_[a-z0-9_]+\.py$")
 
-SKIP_DIRS = {".git", ".venv", "archive", ".ruff_cache", ".pytest_cache", "__pycache__", "kobanya_ingatlan_tdk.egg-info"}
+SKIP_DIRS = {
+    ".git",
+    ".venv",
+    "archive",
+    ".ruff_cache",
+    ".pytest_cache",
+    "__pycache__",
+    "kobanya_ingatlan_tdk.egg-info",
+}
 
 
 def violations():

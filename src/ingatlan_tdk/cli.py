@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """ingatlan_tdk.cli — konzolos belépési pontok.
 
-  python -m ingatlan_tdk build|report|verify|check [opciók]
-  tdk-build / tdk-report / tdk-verify / tdk-check   (pip install -e . után)
+python -m ingatlan_tdk build|report|verify|check [opciók]
+tdk-build / tdk-report / tdk-verify / tdk-check   (pip install -e . után)
 """
+
 import sys
 
 

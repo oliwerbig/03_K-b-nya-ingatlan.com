@@ -47,23 +47,21 @@ Minden fájl kriptográfiai SHA-256 hash ellenőrző összeggel van rögzítve, 
 
 | Réteg | Fájlnév | Formátum | Méret | Leírás |
 |---|---|---|---|---|
-| **1. Nyers** | `data/kobanya_parsed_raw_corpus.json` | JSON | 5.65 MB | Tisztított JSON korpusz (alapforrás) |
-| **1. Nyers** | `data/kobanya_ingatlan_nyers_master.db` | SQLite3 | 7.57 MB | Relációs adatbázis FTS5 keresővel |
-| **1. Nyers** | `data/kobanya_ingatlan_nyers_master.parquet` | Parquet | 0.15 MB | Oszlopos adattárolás (gyors Python I/O) |
-| **1. Nyers** | `data/kobanya_elado_nyers.csv` | CSV (UTF-8-BOM)| 0.78 MB | 1 140 eladó lakás táblázata |
-| **1. Nyers** | `data/kobanya_kiado_nyers.csv` | CSV (UTF-8-BOM)| 0.13 MB | 180 kiadó lakás táblázata |
-| **1. Nyers** | `kobanya_ingatlan_nyers_alap_1320db.xlsx` | Excel (XLSX) | 0.44 MB | 4 munkalapos professzionális Excel |
-| **2. Számított** | `data/kobanya_enriched_corpus.json` | JSON | 9.75 MB | Teljes bővített korpusz (174 mező) |
-| **2. Számított** | `data/kobanya_ingatlan_szamitott_master.db` | SQLite3 | 7.95 MB | Számított SQLite adatbázis FTS5-tel |
-| **2. Számított** | `data/kobanya_ingatlan_szamitott_master.parquet`| Parquet | 0.29 MB | Számított oszlopos adattároló |
-| **2. Számított** | `data/kobanya_elado_szamitott.csv` | CSV (UTF-8-BOM)| 0.77 MB | 1 140 eladó lakás (133 változó) |
-| **2. Számított** | `data/kobanya_kiado_szamitott.csv` | CSV (UTF-8-BOM)| 0.13 MB | 180 kiadó lakás (140 változó) |
-| **2. Számított** | `data/kobanya_ingatlan_szamitott_pontos.geojson`| GeoJSON | 1.41 MB | 296 db pontos épület tetőpont (QGIS) |
-| **2. Számított** | `data/kobanya_elado_szamitott_pontos.geojson` | GeoJSON | 1.21 MB | 254 db pontos eladó tetőpont |
-| **2. Számított** | `data/kobanya_kiado_szamitott_pontos.geojson` | GeoJSON | 0.20 MB | 42 db pontos kiadó tetőpont |
-| **2. Számított** | `kobanya_ingatlan_szamitott_modellezes_1320db.xlsx`| Excel (XLSX)| 0.81 MB | Modellezési munkafüzet izokrón KPI-kkal |
+| **1. Nyers** | `data/raw/kobanya_parsed_raw_corpus.json` | JSON | 5.65 MB | Tisztított JSON korpusz (alapforrás) |
+| **1. Nyers** | `data/raw/kobanya_ingatlan_nyers_master.db` | SQLite3 | 7.57 MB | Relációs adatbázis FTS5 keresővel |
+| **1. Nyers** | `data/raw/kobanya_elado_nyers.csv` | CSV (UTF-8-BOM)| 0.78 MB | 1 140 eladó lakás táblázata |
+| **1. Nyers** | `data/raw/kobanya_kiado_nyers.csv` | CSV (UTF-8-BOM)| 0.13 MB | 180 kiadó lakás táblázata |
+| **1. Nyers** | `data/raw/kobanya_ingatlan_nyers_alap_1320db.xlsx` | Excel (XLSX) | 0.44 MB | 4 munkalapos professzionális Excel |
+| **2. Számított** | `data/processed/kobanya_ingatlan_szamitott_master.db` | SQLite3 | 7.95 MB | Számított SQLite adatbázis FTS5-tel |
+| **2. Számított** | `data/processed/kobanya_ingatlan_szamitott_master.parquet`| Parquet | 0.29 MB | Számított oszlopos adattároló |
+| **2. Számított** | `data/processed/kobanya_elado_szamitott.csv` | CSV (UTF-8-BOM)| 0.77 MB | 1 140 eladó lakás (133 változó) |
+| **2. Számított** | `data/processed/kobanya_kiado_szamitott.csv` | CSV (UTF-8-BOM)| 0.13 MB | 180 kiadó lakás (140 változó) |
+| **2. Számított** | `data/processed/kobanya_ingatlan_szamitott_pontos.geojson`| GeoJSON | 1.41 MB | 296 db pontos épület tetőpont (QGIS) |
+| **2. Számított** | `data/processed/kobanya_elado_pontos.geojson` | GeoJSON | 1.21 MB | 254 db pontos eladó tetőpont |
+| **2. Számított** | `data/processed/kobanya_kiado_pontos.geojson` | GeoJSON | 0.20 MB | 42 db pontos kiadó tetőpont |
+| **2. Számított** | `data/processed/kobanya_ingatlan_szamitott_modellezes_1320db.xlsx`| Excel (XLSX)| 0.81 MB | Modellezési munkafüzet izokrón KPI-kkal |
 
-*(A pontos hexadecimális ellenőrző kódokat a `SHA256SUMS.txt` tartalmazza.)*
+*(A pontos hexadecimális ellenőrző kódokat a gyökérben lévő `SHA256SUMS.txt` tartalmazza, és a `verify_master_data.py` ellenőrzi.)*
 
 ---
 
@@ -246,7 +244,7 @@ A `verify_master_data.py` rendszerellenőrző futása során az alábbi kulcsfon
 4. **Hedonikus logikai konzisztencia:**
    - Korrigált alapterület $<$ Nettó alapterület: **0 db**.
    - Negatív épületkor: **0 db** (a 2027/2028-ban átadandó tervezett új építések kora egységesen 0 év).
-   - Izokrón hierarchia: $\text{5p} \le \text{10p} \le \text{15p}$ minden célpontra teljesül.
+   - Izokrón hierarchia: $\text{5p} \le \text{10p} \le \text{15p}$ minden célpontra teljesül (kivéve 1 ismert, rögzített vasúti anomáliát: `listing_id` 35461173, ahol `vasut_5p_seta=1` és `vasut_10p_seta=0` — adatgenerálási szinten javítandó).
 
 ---
 
@@ -262,3 +260,24 @@ $$\ln(P_i) = \alpha + \sum_{k} \beta_k X_{ki} + \sum_{m} \gamma_m Z_{mi} + \delt
 ### 6.2. Mintaválasztási ajánlás
 - **Alminta A (Térbeli és Izokrón Elemzés):** `WHERE minta_garantalt_pontos = 1` ($N = 254$ eladó lakás). Ezen a mintán futtatható le a legmagasabb precizitású térbeli ökonometria és hálózati elérhetőségi vizsgálat.
 - **Alminta B (Teljes Kerületi Hedonika):** `WHERE kinalat_tipus = 'elado'` ($N = 1 140$ eladó lakás). Ezen a mintán a városrészi fix hatásokkal és épülettípusokkal becsülhetők az alapvető kőbányai árugorások.
+
+---
+
+## 7. TÖBBTERÜLETES KITERJESZTÉS (MULTI-AREA EXTENSION)
+
+A „frozen baseline" kőbányai minta mellett a kutatás egy **nemzetközi benchmarkkal**
+bővült, és a keretrendszer tetszőleges számú terület kezelésére alkalmas
+(`data/areas.yaml`):
+
+| Terület | Szerepkör | Minta | Garantált pontos | Valuta |
+|---|---|---|---|---|
+| Budapest X. kerület (Kőbánya) | fő mintaterület | 1 320 db (1 140 eladó / 180 kiadó) | 296 db | HUF |
+| Bécs 2. kerület (Nordbahnhof) | nemzetközi benchmark | 1 037 db (868 eladó / 169 kiadó) | 1 037 db | EUR |
+| Kontroll 1 (pl. Ferencváros) | kontroll (előkészítve) | — | — | — |
+| Kontroll 2 (pl. Zugló) | kontroll (előkészítve) | — | — | — |
+
+A bécsi mester adathalmaz (`data/processed/wien_nordbahnhof_szamitott_master.parquet`)
+és pontos geokódolt réteg (`data/processed/wien_nordbahnhof_pontos.geojson`) ugyanazt a
+kanonikus sémát követi, mint Kőbánya. A teljes elemzési csővezetéket a
+`report_engine/` csomag futtatja (`python generate_area_report.py --all`), a kimeneti
+többterületes portál pedig a `html_reports/index.html`.

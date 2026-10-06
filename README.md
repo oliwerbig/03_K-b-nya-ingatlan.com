@@ -25,8 +25,12 @@ pip install -r requirements.txt
 # Adatintegritás-ellenőrzés (SHA-256 hash + szerkezeti invariánsok)
 python verify_master_data.py
 
-# Teljes riportcsomag generálása (Kőbánya + Bécs + központi portál)
-python generate_area_report.py --all
+# AZ EGYETLEN hivatalos belépési pont: verify + teljes riport (Kőbánya + Bécs)
+python build_all.py
+
+# Fejlesztői ellenőrzések (ruff + tesztek + struktúra) — make nélkül is fut:
+#   pip install -r requirements-dev.txt
+#   make check   (vagy: python -m ruff check . / python tests/test_integrity.py / python check_structure.py)
 ```
 
 A generált többterületes HTML-portál a [`html_reports/index.html`](html_reports/index.html) fájlban nyílik meg.
@@ -66,5 +70,15 @@ A projekt nem 17 különálló elemzés, hanem egy egymásra épülő, szorosan 
 
 - A „frozen baseline" mester adatfájljainak SHA-256 ellenőrző összegei a `SHA256SUMS.txt`-ben.
 - A `verify_master_data.py` ellenőrzi a hash-eket és a szerkezeti invariánsokat (rekordszám, precizitási arányok, útvonal-integritás, izokrón-hierarchia).
-- A részletes adatszótár és módszertan: [`data/processed/ADATKONYV_ES_METADATA.md`](data/processed/ADATKONYV_ES_METADATA.md).
+- A részletes adatszótár és módszertan: [`docs/ADATKONYV_ES_METADATA.md`](docs/ADATKONYV_ES_METADATA.md).
 - A kapart forrás-HTML-ek nincsenek archiválva a repóban; az elsődleges nyers forrás a `data/raw/kobanya_parsed_raw_corpus.json` (tisztított JSON korpusz).
+
+## Konvenciók és fejlesztés
+
+A projekt teljes strukturális, elnevezési és munkafolyamat-szabályzata egy helyen,
+**géppel ellenőrizhetően** van rögzítve:
+
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — a projekt „alkotmánya": mappatérkép, adatszabályok, elnevezések, commit-konvenció, Definition of Done.
+- [`AGENTS.md`](AGENTS.md) — utasítások AI-asszisztenseknek.
+- [`CHANGELOG.md`](CHANGELOG.md) — változásnapló (Keep a Changelog formátum).
+- A szabályok betartatása: `check_structure.py`, `make check`, pre-commit hookok és a `.github/workflows/ci.yml` CI.

@@ -33,3 +33,7 @@ desktop.ini
 .idea/
 *.swp
 *.swo
+
+# Tooling caches
+.ruff_cache/
+.pytest_cache/

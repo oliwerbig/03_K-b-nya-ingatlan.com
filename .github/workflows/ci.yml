@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Lint (ruff)
+        run: python -m ruff check build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
+
+      - name: Compile check
+        run: python -m compileall -q build_all.py generate_area_report.py verify_master_data.py check_structure.py data_ingestion.py report_engine scripts notebooks/_utils.py tests
+
+      - name: Data integrity
+        run: python verify_master_data.py
+
+      - name: Structure check
+        run: python check_structure.py
+
+      - name: Tests
+        run: pytest tests/ -q

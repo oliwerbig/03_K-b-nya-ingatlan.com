@@ -69,6 +69,14 @@ def report_main() -> int:
             return False
         return True
 
+    # Tisztítás: az elavult korábbi riportok törlése a rebuild előtt
+    # (a notebook-átnevezések/eltávolítások után nem maradhat holt oldal a Pages-en).
+    import shutil
+    for area in targets:
+        shutil.rmtree(os.path.join(args.output_dir, area), ignore_errors=True)
+    for _old in glob.glob(os.path.join(args.output_dir, "*.html")):
+        os.remove(_old)
+
     for area in targets:
         out = os.path.join(args.output_dir, area)
         os.makedirs(out, exist_ok=True)

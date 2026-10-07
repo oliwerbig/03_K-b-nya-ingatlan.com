@@ -120,11 +120,19 @@ def verify_structure():
     check("kobanya nincs hiányzó ár", int(kob["price_huf"].isna().sum()) == 0)
     check("kobanya nincs érvénytelen alapterület", int((kob["alapterulet_nm"] <= 0).sum()) == 0)
 
-    # 3. Fizikai útvonal-integritás: hálózati >= euklidészi (0 hiba)
-    if {"tavolsag_mazsa_halozati_m", "tavolsag_mazsa_m"}.issubset(kob.columns):
-        m = kob.dropna(subset=["tavolsag_mazsa_halozati_m", "tavolsag_mazsa_m"])
-        bad = int((m["tavolsag_mazsa_halozati_m"] < m["tavolsag_mazsa_m"]).sum())
-        check("kobanya hálózati < euklidészi hiba == 0", bad == 0)
+    # 3. Fizikai útvonal-integritás: kötöttpálya = min(metró, vasút, villamos)
+    kp_cols = ["tavolsag_kotottpalya_halozati_m", "tavolsag_metro_halozati_m",
+               "tavolsag_vasut_halozati_m", "tavolsag_villamos_halozati_m"]
+    if set(kp_cols).issubset(kob.columns):
+        m = kob.dropna(subset=kp_cols)
+        min3 = m[["tavolsag_metro_halozati_m", "tavolsag_vasut_halozati_m",
+                  "tavolsag_villamos_halozati_m"]].min(axis=1)
+        bad = int(((m["tavolsag_kotottpalya_halozati_m"] - min3).abs() > 1.0).sum())
+        check("kobanya kötöttpálya == min(metró, vasút, villamos)", bad == 0)
+    # A hálózati sétatávolságok 0-tól indulnak és 1125 m felett is lehetnek
+    if "tavolsag_vasut_halozati_m" in kob.columns:
+        m = kob.dropna(subset=["tavolsag_vasut_halozati_m"])
+        check("kobanya nincs negatív hálózati távolság", int((m["tavolsag_vasut_halozati_m"] < 0).sum()) == 0)
 
     # 4. Hedonikus logikai konzisztencia
     if {"korrigalt_alapterulet_nm", "alapterulet_nm"}.issubset(kob.columns):
@@ -134,24 +142,14 @@ def verify_structure():
     if "epulet_kora_ev" in kob.columns:
         check("kobanya negatív épületkor == 0", int((kob["epulet_kora_ev"] < 0).sum()) == 0)
 
-    # 5. Izokrón-hierarchia: 5p <= 10p <= 15p
-    # Rögzített baseline kivétel: a "vasut" izokrónnál 1 rekord (listing_id 35461173,
-    # Füzér utca) 5p=1 / 10p=0 / 15p=1 ellentmondást hordoz. Ezt az adatgenerálás
-    # szintjén kell javítani; addig ismert, pinelt anomáliaként (WARN) kezeljük.
-    known_iso = {"vasut": 1}
-    for prefix in ("mazsa", "metro", "vasut", "villamos"):
+    # 5. Izokrón-hierarchia: 5p <= 10p <= 15p (a kánon szerint tranzitív dummyk)
+    for prefix in ("vasut", "metro", "villamos", "busz", "park", "kotottpalya",
+                   "iskola", "ovoda", "bolt", "gyogyszertar", "orvos"):
         c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"
         if {c5, c10, c15}.issubset(kob.columns):
             m = kob.dropna(subset=[c5, c10, c15])
             bad = int(((m[c5] > m[c10]) | (m[c10] > m[c15])).sum())
-            expected = known_iso.get(prefix, 0)
-            if bad <= expected:
-                if bad:
-                    warnings.append(f"{prefix} izokrón: {bad} ismert baseline anomália")
-                else:
-                    check(f"kobanya {prefix} izokrón-hierarchia == 0 hiba", True)
-            else:
-                check(f"kobanya {prefix} izokrón-hierarchia <= {expected} hiba", False)
+            check(f"kobanya {prefix} izokrón-hierarchia == 0 hiba", bad == 0)
 
     # 6. Bécsi benchmark
     wien_path = _abs("data/processed/wien_nordbahnhof_szamitott_master.parquet")
@@ -161,6 +159,12 @@ def verify_structure():
         check(
             "wien garantált pontos == 1037", int((w["minta_garantalt_pontos"] == 1).sum()) == 1037
         )
+        for prefix in ("vasut", "metro", "villamos", "busz", "kotottpalya"):
+            c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"
+            if {c5, c10, c15}.issubset(w.columns):
+                m = w.dropna(subset=[c5, c10, c15])
+                bad = int(((m[c5] > m[c10]) | (m[c10] > m[c15])).sum())
+                check(f"wien {prefix} izokrón-hierarchia == 0 hiba", bad == 0)
 
     return results, warnings
 

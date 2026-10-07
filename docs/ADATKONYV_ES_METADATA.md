@@ -83,7 +83,6 @@ A légvonalbeli (euklidészi) távolság szisztematikusan alábecsüli a valós 
   $$\text{menetido\_gyalog\_perc} = \frac{\text{tavolsag\_halozati\_m}}{1.25 \times 60} = \frac{\text{tavolsag\_halozati\_m}}{75}$$
 - **Kerülő faktor (Detour Index):**
   $$\text{kerulo\_faktor} = \frac{\text{tavolsag\_halozati\_m}}{\text{tavolsag\_euklideszi\_m}}$$
-  *(A Mázsa térnél az átlagos kerülő faktor 1.28x, azaz a lakosoknak 28%-kal hosszabb utat kell megtenniük a tereptárgyak miatt, mint a légvonal.)*
 
 ### 3.3. Sétaizokrónok (5, 10, 15 perc) a fix méteres pufferek helyett
 A kutatási terv és a bírálói elvárások szerint nem absztrakt 500m/1000m-es köröket használunk, hanem valós emberi időráfordítást tükröző izokrón dummykat:
@@ -92,19 +91,21 @@ A kutatási terv és a bírálói elvárások szerint nem absztrakt 500m/1000m-e
 - **`*_15p_seta`:** $\le 15.0\text{ perc}$ gyaloglás ($\le 1125\text{ m}$ valós sétaút) – elérhetőségi határérték.
 
 ### 3.4. Közlekedési módok és POI-k Kőbányán
-1. **Mázsa tér (Fókuszpont):** A tervezett multifunkcionális sportcsarnok és városközpont projekt helyszíne ($19.1294^\circ\text{ E}, 47.4866^\circ\text{ N}$).
-2. **Villamosmegállók (75 db OSM megálló):** Az 1-es, 3-as, 28-as, 37-es és 62-es villamosok megállói. Kőbánya legfontosabb felszíni kötöttpályás gerinchálózata.
-3. **Metróállomások (8 db állomás):** M3 déli szakasz (Kőbánya-Kispest, Határ út, Pöttyös utca, Ecseri út, Népliget) és M2 kelet-pesti szakasz (Örs vezér tere, Pillangó utca, Puskás Ferenc Stadion).
-4. **Vasútállomások (4 db állomás):** Kőbánya alsó, Kőbánya felső, Kőbánya-Kispest, Rákos. (A belső kerületi MÁV vonalak S-Bahn jellegű gyorsvasúti kapcsolatot adnak a Nyugati és Keleti pályaudvarokhoz BKK bérlettel).
-5. **Buszmegállók (281 db OSM megálló):** A kerület sűrű hálózata (95.6%-os elérhetőség 5 percen belül).
-6. **Integrált Kötöttpályás Index:**
+1. **Villamosmegállók (75 db OSM megálló):** Az 1-es, 3-as, 28-as, 37-es és 62-es villamosok megállói. Kőbánya legfontosabb felszíni kötöttpályás gerinchálózata.
+2. **Metróállomások (8 db állomás):** M3 déli szakasz (Kőbánya-Kispest, Határ út, Pöttyös utca, Ecseri út, Népliget) és M2 kelet-pesti szakasz (Örs vezér tere, Pillangó utca, Puskás Ferenc Stadion).
+3. **Vasútállomások (4 db állomás):** Kőbánya alsó, Kőbánya felső, Kőbánya-Kispest, Rákos. (A belső kerületi MÁV vonalak S-Bahn jellegű gyorsvasúti kapcsolatot adnak a Nyugati és Keleti pályaudvarokhoz BKK bérlettel).
+4. **Buszmegállók (281 db OSM megálló):** A kerület sűrű hálózata (95.6%-os elérhetőség 5 percen belül).
+5. **Integrált Kötöttpályás Index:**
    $$\text{tavolsag\_kotottpalya\_halozati\_m} = \min(\text{metro}, \text{vasut}, \text{villamos})$$
-7. **Jelentős közparkok (5 db):** Óhegy park, Népliget, Rottenbiller park, Sportliget / Újhegyi tó, Csajkovszkij park.
-8. **Belváros / CBD (Deák Ferenc tér):** Valós közúti/gyalogos hálózaton OSRM útvonalkereséssel validálva.
+6. **Jelentős közparkok (5 db):** Óhegy park, Népliget, Rottenbiller park, Sportliget / Újhegyi tó, Csajkovszkij park.
 
 ---
 
 ## 4. RÉSZLETES ADATSZÓTÁR (VARIABLE CODEBOOK)
+
+> **Kánon:** a változók kanonikus neveit, típusait és a rögzített sávhatárokat
+> a `data/schema.yaml` rögzíti — ez az egyetlen hivatkozás. A fókuszterületi
+> (Mázsa tér) és CBD (belváros) változók kikerültek a kánonból.
 
 ### 4.1. Alapvető azonosítók és címadatok
 | Változónév | Típus | Nyers | Számított | Leírás és értelmezés |
@@ -143,7 +144,7 @@ A kutatási terv és a bírálói elvárások szerint nem absztrakt 500m/1000m-e
 | `alapterulet_nm` | REAL | ✓ | ✓ | Hivatalos nettó hasznos lakóterület ($m^2$) |
 | `log_alapterulet` | REAL | ✗ | ✓ | $\ln(\text{alapterulet\_nm})$ |
 | `erkely_nm` | REAL | ✓ | ✓ | Erkély mérete $m^2$-ben (NULL ha nincs) |
-| `van_erkely` | INTEGER (0/1)| ✗ | ✓ | 1 ha van erkély vagy loggia |
+| `has_erkely` | INTEGER (0/1)| ✗ | ✓ | 1 ha van erkély vagy loggia (kanonikus név; korábban: `van_erkely`) |
 | `korrigalt_alapterulet_nm`| REAL | ✗ | ✓ | **Hedonikus korrigált terület:** $\text{alapterület} + 0.5 \times \text{erkély}$ |
 | `szobaszam_egesz` | INTEGER | ✓ | ✓ | Egész szobák száma ($\ge 12\text{ m}^2$) |
 | `szobaszam_fel` | INTEGER | ✓ | ✓ | Félszobák száma ($< 12\text{ m}^2$) |
@@ -189,15 +190,6 @@ A kutatási terv és a bírálói elvárások szerint nem absztrakt 500m/1000m-e
 
 | Célpont / Kategória | Változónév | Mértékegység | Leírás és Módszertan |
 |---|---|---|---|
-| **Mázsa tér** | `tavolsag_mazsa_m` | méter | Légvonalbeli euklidészi távolság |
-| **Mázsa tér** | `tavolsag_mazsa_halozati_m`| méter | OSM gyalogos hálózati útvonalhossz |
-| **Mázsa tér** | `kerulo_faktor_mazsa` | arány | $\text{Hálózat} / \text{Euklidészi}$ |
-| **Mázsa tér** | `menetido_mazsa_gyalog_perc`| perc | Gyaloglási idő ($1.25\text{ m/s}$ átlagsebesség) |
-| **Mázsa tér Izokrón**| `mazsa_5p_seta` | dummy (0/1) | 1 ha Mázsa tér elérhető $\le 5$ perc sétával ($N=5$) |
-| **Mázsa tér Izokrón**| `mazsa_10p_seta` | dummy (0/1) | 1 ha Mázsa tér elérhető $\le 10$ perc sétával ($N=19$) |
-| **Mázsa tér Izokrón**| `mazsa_15p_seta` | dummy (0/1) | 1 ha Mázsa tér elérhető $\le 15$ perc sétával ($N=47$) |
-| **Mázsa tér Log** | `log_tavolsag_mazsa_halozati_m`| log-méter | $\ln(\text{tavolsag\_mazsa\_halozati\_m} + 1)$ |
-| **Mázsa tér Log** | `log_menetido_mazsa_perc` | log-perc | $\ln(\text{menetido\_mazsa\_gyalog\_perc})$ |
 | **Metróállomások** | `tavolsag_metro_halozati_m`| méter | Hálózati távolság a legközelebbi metróig |
 | **Metróállomások** | `legkozelebbi_metro_halozati`| szöveg | Legközelebbi M2 vagy M3 állomás neve |
 | **Metróállomások** | `menetido_metro_gyalog_perc`| perc | Gyaloglási idő a legközelebbi metróhoz |
@@ -218,10 +210,6 @@ A kutatási terv és a bírálói elvárások szerint nem absztrakt 500m/1000m-e
 | **Közparkok** | `tavolsag_park_halozati_m` | méter | Legközelebbi közpark hálózati távolsága |
 | **Közparkok** | `legkozelebbi_park_halozati`| szöveg | Legközelebbi park neve (Óhegy park, Népliget, stb.) |
 | **Közpark Izokrón** | `park_5p_seta`, `10p`, `15p` | dummy (0/1) | 5, 10, 15 perces park-elérhetőségi izokrónok |
-| **CBD / Belváros** | `tavolsag_belvaros_halozati_m`| méter | Deák Ferenc tér hálózati útvonalhossza |
-| **CBD / Belváros** | `kerulo_faktor_belvaros` | arány | Belvárosi útvonal kerülő faktora |
-| **CBD / Belváros** | `menetido_belvaros_gyalog_perc`| perc | Belváros gyalogos menetidő |
-| **CBD Log** | `log_tavolsag_belvaros_halozati_m`| log-méter | $\ln(\text{tavolsag\_belvaros\_halozati\_m} + 1)$ |
 
 ---
 
@@ -251,11 +239,11 @@ A `verify_master_data.py` rendszerellenőrző futása során az alábbi kulcsfon
 ## 6. AJÁNLOTT KUTATÁSI ÉS ÖKONOMETRIAI FELHASZNÁLÁS
 
 ### 6.1. Hedonikus árregresszió specifikációja (OLS / WLS)
-$$\ln(P_i) = \alpha + \sum_{k} \beta_k X_{ki} + \sum_{m} \gamma_m Z_{mi} + \delta \cdot \text{Mázsa\_Izokrón}_i + \varepsilon_i$$
+$$\ln(P_i) = \alpha + \sum_{k} \beta_k X_{ki} + \sum_{m} \gamma_m Z_{mi} + \sum_{j} \delta_j \cdot \text{Vasút\_Zóna}_{ji} + \sum_{l} \theta_l \cdot \text{Vasút\_Izokrón}_{li} + \varepsilon_i$$
 - **Függő változó:** `log_ar` (vagy `log_nm_ar`)
 - **Fizikai kontrollváltozók ($X_k$):** `korrigalt_alapterulet_nm`, `szobaszam_osszes`, `is_foldszint`, `is_zaroszint`, `has_lift`, `has_klima`, `allapot_kod`, `is_panel`, `epulet_kora_ev`, `has_tavfutes`
-- **Környezeti és tranzit kontrollok ($Z_m$):** `kotottpalya_5p_seta`, `park_10p_seta`, `log_tavolsag_belvaros_halozati_m`, `varosresz` (fix hatások / dummyk)
-- **Fő tesztváltozó ($\delta$):** `mazsa_5p_seta`, `mazsa_10p_seta`, `mazsa_15p_seta` (vagy a folyamatos `log_tavolsag_mazsa_halozati_m`)
+- **Környezeti és tranzit kontrollok ($Z_m$):** `kotottpalya_5p_seta`, `park_10p_seta`, `poi_15p_count`, `varosresz` (fix hatások / dummyk)
+- **Fő tesztváltozók ($\delta_j$, $\theta_l$):** `vasut_zona` (6 diszjunkt immissziós sáv, referencia: >2000 m) és `vasut_5p_seta` / `vasut_10p_seta` / `vasut_15p_seta` (hálózati TOD izokrónok; referencia: >1125 m). A folytonos `log_tavolsag_vasut_m` robusztusságvizsgálatként.
 
 ### 6.2. Mintaválasztási ajánlás
 - **Alminta A (Térbeli és Izokrón Elemzés):** `WHERE minta_garantalt_pontos = 1` ($N = 254$ eladó lakás). Ezen a mintán futtatható le a legmagasabb precizitású térbeli ökonometria és hálózati elérhetőségi vizsgálat.

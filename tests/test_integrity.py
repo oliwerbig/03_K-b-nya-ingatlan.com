@@ -39,16 +39,20 @@ def test_kobanya_route_integrity():
     import pandas as pd
 
     df = pd.read_parquet(vmd._abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
-    if {"tavolsag_mazsa_halozati_m", "tavolsag_mazsa_m"}.issubset(df.columns):
-        m = df.dropna(subset=["tavolsag_mazsa_halozati_m", "tavolsag_mazsa_m"])
-        assert int((m["tavolsag_mazsa_halozati_m"] < m["tavolsag_mazsa_m"]).sum()) == 0
+    cols = ["tavolsag_kotottpalya_halozati_m", "tavolsag_metro_halozati_m",
+            "tavolsag_vasut_halozati_m", "tavolsag_villamos_halozati_m"]
+    if set(cols).issubset(df.columns):
+        m = df.dropna(subset=cols)
+        min3 = m[cols[1:]].min(axis=1)
+        assert int(((m[cols[0]] - min3).abs() > 1.0).sum()) == 0
 
 
 def test_kobanya_isochrone_hierarchy():
     import pandas as pd
 
     df = pd.read_parquet(vmd._abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
-    for prefix in ("mazsa", "metro", "villamos"):
+    for prefix in ("vasut", "metro", "villamos", "busz", "park", "kotottpalya",
+                   "iskola", "ovoda", "bolt", "gyogyszertar", "orvos"):
         c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"
         if {c5, c10, c15}.issubset(df.columns):
             m = df.dropna(subset=[c5, c10, c15])

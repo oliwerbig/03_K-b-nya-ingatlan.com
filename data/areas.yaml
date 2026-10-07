@@ -30,6 +30,10 @@ areas:
       center_lat: 47.475
       center_lon: 19.120
       main_station: "Kőbánya alsó vasútállomás"
+      buffers:
+        rail_buffer_m: 2000      # immissziós sávok teljessége (a legnagyobb sávhatár)
+        poi_buffer_m: 1125       # hálózati POI-sávok teljessége (legnagyobb izokrón)
+        network_buffer_m: 1250   # úthálózat: 1125 m + útvonal-margin
     metadata:
       n_total: 1320
       n_pontos: 296
@@ -51,10 +55,11 @@ areas:
     spatial:
       center_lat: 47.468
       center_lon: 19.078
-      focus_project_name: "Közvágóhíd / Déli Körvasút"
-      focus_lat: 47.4695
-      focus_lon: 19.0722
       main_station: "Közvágóhíd megállóhely"
+      buffers:
+        rail_buffer_m: 2000      # immissziós sávok teljessége (a legnagyobb sávhatár)
+        poi_buffer_m: 1125       # hálózati POI-sávok teljessége (legnagyobb izokrón)
+        network_buffer_m: 1250   # úthálózat: 1125 m + útvonal-margin
     metadata:
       description: "Déli vasúti tengely: dinamikusan fejlődő rozsdaövezeti tranzit-folyosó"
 
@@ -74,10 +79,11 @@ areas:
     spatial:
       center_lat: 47.525
       center_lon: 19.102
-      focus_project_name: "Rákosrendező Millenniumi Negyed"
-      focus_lat: 47.5280
-      focus_lon: 19.0910
       main_station: "Rákosrendező vasútállomás"
+      buffers:
+        rail_buffer_m: 2000      # immissziós sávok teljessége (a legnagyobb sávhatár)
+        poi_buffer_m: 1125       # hálózati POI-sávok teljessége (legnagyobb izokrón)
+        network_buffer_m: 1250   # úthálózat: 1125 m + útvonal-margin
     metadata:
       description: "Északi vasúti tengely: nagy léptékű kötöttpályás barnamező és TOD potenciál"
 
@@ -104,6 +110,10 @@ areas:
       center_lat: 48.2250
       center_lon: 16.3900
       main_station: "Wien Praterstern (Nordbahnhof)"
+      buffers:
+        rail_buffer_m: 2000      # immissziós sávok teljessége (a legnagyobb sávhatár)
+        poi_buffer_m: 1125       # hálózati POI-sávok teljessége (legnagyobb izokrón)
+        network_buffer_m: 1250   # úthálózat: 1125 m + útvonal-margin
     metadata:
       n_total: 1037
       n_pontos: 1037

@@ -295,16 +295,35 @@ def filter_df(df, listing_type="mind", pontos_only=False, varosreszek=None):
 
 VASUT_IMMISSZIO_BINS = [0.0, 150.0, 300.0, 500.0, 1000.0, 2000.0, np.inf]
 VASUT_IMMISSZIO_LABELS = [
-    "<150 m (Immisszió)",
-    "150-300 m (Erős teher)",
-    "300-500 m (Átmeneti)",
-    "500-1000 m (Háttérzaj)",
-    "1000-2000 m (Közepes ref.)",
-    ">2000 m (Tiszta ref.)",
+    "<150 m",
+    "150-300 m",
+    "300-500 m",
+    "500-1000 m",
+    "1000-2000 m",
+    ">2000 m (referencia)",
 ]
 
 IZOKRON_BINS = [0.0, 375.0, 750.0, 1125.0]
-IZOKRON_LABELS = ["≤375 m (5 perc)", "≤750 m (10 perc)", "≤1125 m (15 perc)"]
+# Diszjunkt sávok: a modellekben a referencia-kategória a >1125 m (kívül)
+IZOKRON_LABELS = ["0-375 m (5 perc)", "375-750 m (10 perc)", "750-1125 m (15 perc)"]
+
+# === Adatalapú leíró sávok (kánon: data/schema.yaml) ===
+# Méretkategóriák — CSAK leíró ábrákhoz (a modellekben folytonos log-méret)
+MERET_BINS = [0.0, 44.0, 53.0, 68.0, np.inf]
+MERET_LABELS = ["<44 m²", "44-53 m²", "53-68 m²", "≥68 m²"]
+
+# Építési korszakok az epulet_kora_ev (év) alapján
+EPITES_EVE_BINS = [0.0, 10.0, 30.0, 60.0, np.inf]
+EPITES_EVE_LABELS = [
+    "0-10 év (új)",
+    "10-30 év (rendszerváltás utáni)",
+    "30-60 év (panel-korszak)",
+    "60+ év (háború előtti)",
+]
+
+# POI-sávok (hálózati elérhetőség)
+POI_BINS = [0.0, 375.0, 750.0, 1125.0]
+POI_LABELS = ["5p (0-375 m)", "10p (375-750 m)", "15p (750-1125 m)"]
 
 # === Városrészek és stílusok ===
 
@@ -444,9 +463,6 @@ def get_area_spatial_config(area: str = None) -> dict:
     return {
         "center_lat": spatial.get("center_lat", 47.475),
         "center_lon": spatial.get("center_lon", 19.120),
-        "focus_project_name": spatial.get("focus_project_name", "Fókusz Akcióterület"),
-        "focus_lat": spatial.get("focus_lat", 47.4866),
-        "focus_lon": spatial.get("focus_lon", 19.1294),
         "main_station": spatial.get("main_station", "Központi Vasútállomás"),
     }
 

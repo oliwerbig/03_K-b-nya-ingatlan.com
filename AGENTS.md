@@ -36,5 +36,6 @@ minden ottani szabály rád is kötelező.
 
 - A felhasználónak szóló magyarázat, dokumentáció és kérdés **magyarul**.
 - Commit-üzenetek és új, nem-domain kötött kód **angolul**.
-- A meglévő magyar domain-nevek (`load_szamitott_master`, `tavolsag_vasut_m`)
-  részei az adatsémának — tilos őket átnevezni.
+- A változók a kanonikus sémát (`data/schema.yaml`) követik. A domain-oszlopnevek
+  csak a kánon-migráció keretében (a notebookokkal és az exportokkal EGYÜTT,
+  `scripts/canonize_schema.py`-vel) módosíthatók; a kánon az egyetlen hivatkozás.

@@ -373,8 +373,9 @@ def build_tod_dummies(df, prefix="vasut", min_ref_n=20):
 
 def drop_constant_columns(X):
     """Konstans oszlopok eldobása (pl. Bécsben is_panel ≡ 0) — különben a
-    design-mátrix ranghiányos, az együtthatók nem azonosíthatók."""
-    keep = [c for c in X.columns if X[c].nunique(dropna=False) > 1]
+    design-mátrix ranghiányos, az együtthatók nem azonosíthatók.
+    A 'const' (tengelymetszet) oszlopot SOHA nem dobjuk el."""
+    keep = [c for c in X.columns if c == 'const' or X[c].nunique(dropna=False) > 1]
     dropped = [c for c in X.columns if c not in keep]
     if dropped:
         print(f"[modell] konstans oszlopok eldobva (ranghiány elkerülése): {dropped}")

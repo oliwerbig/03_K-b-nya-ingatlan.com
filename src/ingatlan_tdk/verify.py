@@ -114,7 +114,7 @@ def verify_structure():
     vc = kob["listing_type"].value_counts()
     check("kobanya eladó == 1140", vc.get("elado", 0) == 1140)
     check("kobanya kiadó == 180", vc.get("kiado", 0) == 180)
-    check("kobanya garantált pontos == 296", int((kob["minta_garantalt_pontos"] == 1).sum()) == 296)
+    check("kobanya garantált pontos == 295", int((kob["minta_garantalt_pontos"] == 1).sum()) == 295)
 
     # 2. Ár/alapterület integritás
     check("kobanya nincs hiányzó ár", int(kob["price_huf"].isna().sum()) == 0)

@@ -32,7 +32,13 @@ def report_main() -> int:
     ap.add_argument("--area", help="Csak egy terület (pl. 'kobanya', 'wien_nordbahnhof')")
     ap.add_argument("--all", action="store_true", help="Az összes elérhető terület")
     ap.add_argument("--output-dir", default="html_reports", help="Kimeneti könyvtár")
+    ap.add_argument("--parallel", type=int, default=0,
+                    help="Párhuzamos notebook-végrehajtás (alapértelmezés: CPU-magok - 1, max 6)")
     args = ap.parse_args()
+    if args.parallel <= 0:
+        import multiprocessing
+        args.parallel = max(1, min(6, multiprocessing.cpu_count() - 1))
+        # CI-n 2 magon ez 1 lenne — legalább 2-t hagyunk, a BLAS-szálak úgyis 1-re vannak fogva
 
     areas = list_available_areas()
     targets = [args.area] if args.area else areas
@@ -77,21 +83,32 @@ def report_main() -> int:
     for _old in glob.glob(os.path.join(args.output_dir, "*.html")):
         os.remove(_old)
 
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    jobs = []
     for area in targets:
         out = os.path.join(args.output_dir, area)
         os.makedirs(out, exist_ok=True)
-        print(f"=== RIPORT: [{area}] -> {out} ===", flush=True)
+        print(f"=== RIPORT: [{area}] -> {out} (párhuzamos: {args.parallel}) ===", flush=True)
         for i in range(16):
             matches = sorted(glob.glob(os.path.join(notebooks_dir, f"{i:02d}_*.ipynb")))
-            if not matches:
-                continue
-            nb = matches[0]
-            ok = _execute(nb, out, area=area)
-            if not ok:
-                failures += 1
+            if matches:
+                jobs.append((matches[0], out, area))
 
-    # 16. komparatív notebook: egyszer, területfüggetlenül
+    # 16. komparatív notebook: egyszer, területfüggetlenül (legvégén)
     cmp = sorted(glob.glob(os.path.join(notebooks_dir, "16_*.ipynb")))
+
+    if jobs:
+        with ThreadPoolExecutor(max_workers=args.parallel) as pool:
+            futures = {pool.submit(_execute, nb, out, area): nb
+                       for nb, out, area in jobs}
+            for fut in as_completed(futures):
+                nb = futures[fut]
+                ok = fut.result()
+                print(f"  [{'OK ' if ok else 'HIBA'}] {os.path.basename(nb)}", flush=True)
+                if not ok:
+                    failures += 1
+
     if cmp:
         if not _execute(cmp[0], args.output_dir):
             failures += 1

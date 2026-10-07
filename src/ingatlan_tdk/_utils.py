@@ -379,7 +379,9 @@ def setup_plotly():
     import plotly.io as pio
 
     pio.templates.default = PLOTLY_TEMPLATE
-    pio.renderers.default = "notebook_connected"
+    pio.renderers.default = "notebook"
+# "notebook" renderer: interaktívan is működik, az nbconvert-exportban pedig
+    # önálló (CDN plotly.js-re épülő) ábrákat állít elő — a GitHub Pages-re ez kell.
 
 
 def kpi_card_html(title, value, subtitle="", color="#1e3a8a"):

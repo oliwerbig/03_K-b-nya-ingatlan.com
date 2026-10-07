@@ -24,6 +24,12 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - `README.md` — Konvenciók szekció és frissített hivatkozások.
 
 ### Javítva
+- `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
+  szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
+  CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
+- A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
+  épülő) ábrákat tartalmaz a GitHub Pages-hez.
+### Javítva
 - `report_engine/full_narrative.py` — 5 fejezetépítő hiányzó mértékegység-definíciója
   javítva (nb02, nb04, nb06, nb12, nb14; ezek `NameError`-rel elszálltak volna friss
   riportgenerálásnál).
@@ -32,6 +38,12 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - Lint: ruff bevezetése (`E4/E7/E9/F`), a kódbázis 62 szabálysértésről 0-ra hozva;
   az `E402` a szándékos útvonal-bootstrap mintánál engedélyezve (dokumentálva).
 
+### Javítva
+- `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
+  szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
+  CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
+- A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
+  épülő) ábrákat tartalmaz a GitHub Pages-hez.
 ### Javítva
 - `ingatlan_tdk.verify` — a szöveges adatfájlok (.json/.csv) hash-számítása mostantól
   CRLF->LF normalizálással történik, így a Windows és Linux (CI) checkout ugyanazt a
@@ -54,6 +66,12 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - `pyproject.toml`: csomagdefiníció, konzolparancsok, ruff (az E402-kivétel megszűnt).
 - `Makefile`, `ci.yml`, `deploy-pages.yml`: a csomagparancsokra állítva.
 
+### Javítva
+- `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
+  szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
+  CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
+- A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
+  épülő) ábrákat tartalmaz a GitHub Pages-hez.
 ### Javítva
 - **GitHub Actions hiba:** `requirements.txt` — a `pywinpty` Windows-only csomag
   platform-markerrel (`sys_platform == "win32"`), így a Linux CI telepítés már nem száll el.
@@ -95,6 +113,12 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - `verify_master_data.py`, `SHA256SUMS.txt` (14 mester fájl), `tests/test_integrity.py`.
 - `html_reports/` többterületes portál, `notebooks/16_komparativ_harom_terulet_elemzes.ipynb`.
 
+### Javítva
+- `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
+  szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
+  CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
+- A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
+  épülő) ábrákat tartalmaz a GitHub Pages-hez.
 ### Javítva
 - `notebooks/_utils.py` — `area=None` alapértelmezések (a notebookok újra futtathatók).
 - `requirements.txt` — `spreg`, `mgwr`, `markdown` pótlása (SAR/SEM és GWR reprodukálható).

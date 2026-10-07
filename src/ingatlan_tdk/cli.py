@@ -43,32 +43,47 @@ def report_main() -> int:
     py = sys.executable
     notebooks_dir = os.path.join(ROOT, "notebooks")
     env = os.environ.copy()
+    # CI-stabilizálás: a 2-magos runneren a párhuzamos BLAS/loky túlvállalás holtpontot okozhat
+    env.setdefault("OMP_NUM_THREADS", "1")
+    env.setdefault("OPENBLAS_NUM_THREADS", "1")
+    env.setdefault("MKL_NUM_THREADS", "1")
     failures = 0
+
+    def _execute(nb, out_dir, area=None):
+        local = env.copy()
+        if area:
+            local["TDK_ACTIVE_AREA"] = area
+        cmd = [
+            py, "-m", "nbconvert", "--to", "html", "--execute", nb,
+            "--output-dir", out_dir,
+            "--ExecutePreprocessor.timeout=900",
+            "--ExecutePreprocessor.kernel_name=python3",
+        ]
+        try:
+            subprocess.run(cmd, env=local, timeout=1200, check=False)
+        except subprocess.TimeoutExpired:
+            print(f"  [!] IDŐTÚLLÉPÉS: {os.path.basename(nb)} (>1200 s)", flush=True)
+            return False
+        return True
 
     for area in targets:
         out = os.path.join(args.output_dir, area)
         os.makedirs(out, exist_ok=True)
-        env["TDK_ACTIVE_AREA"] = area
         print(f"=== RIPORT: [{area}] -> {out} ===", flush=True)
         for i in range(16):
             matches = sorted(glob.glob(os.path.join(notebooks_dir, f"{i:02d}_*.ipynb")))
             if not matches:
                 continue
             nb = matches[0]
-            cmd = [py, "-m", "nbconvert", "--to", "html", "--execute", nb, "--output-dir", out]
-            rc = subprocess.run(cmd, env=env).returncode
-            if rc != 0:
+            ok = _execute(nb, out, area=area)
+            if not ok:
                 failures += 1
-                print(f"  [!] Hiba: {os.path.basename(nb)} (exit {rc})", flush=True)
 
     # 16. komparatív notebook: egyszer, területfüggetlenül
     cmp = sorted(glob.glob(os.path.join(notebooks_dir, "16_*.ipynb")))
     if cmp:
-        cmd = [py, "-m", "nbconvert", "--to", "html", "--execute", cmp[0], "--output-dir", args.output_dir]
-        rc = subprocess.run(cmd).returncode
-        if rc != 0:
+        if not _execute(cmp[0], args.output_dir):
             failures += 1
-            print(f"  [!] Hiba: {os.path.basename(cmp[0])} (exit {rc})", flush=True)
 
     _build_index(args.output_dir, targets)
     print(f"[OK] Riportgenerálás kész (hibás notebook: {failures}).", flush=True)

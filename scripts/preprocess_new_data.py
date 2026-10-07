@@ -331,6 +331,7 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
         df["erkely_nm"] = 0.0
 
     df["van_erkely"] = (df["erkely_nm"] > 0).astype(int)
+    df["has_erkely"] = df["van_erkely"]  # a kanonikus séma neve
     # Hedonikus korrigált alapterület: alapterület + 0.5 * erkély
     df["korrigalt_alapterulet_nm"] = df["alapterulet_nm"] + 0.5 * df["erkely_nm"]
 
@@ -452,17 +453,45 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
         | ((emelet_sz >= szintek_sz) & (emelet_sz > 1) & szintek_sz.notna())
     ).astype(int)
 
-    # 6. Épület kora 2026-ban
+    # 6. Épület kora 2026-ban — a TELJES rendelkezésre álló évinformációval
+    # (pontos év + becsült év + a portál saját korszak-kategóriája).
     if "epites_eve" in df.columns:
         df["epites_eve"] = pd.to_numeric(df["epites_eve"], errors="coerce")
-        # ŐSZINTE korszakadatok: a hiányzó év NEM kap 1980-at; az év>=2025 (új építésű
-        # hirdetések éve) 0 korral szerepel, a hiányzó év kora NaN marad.
-        df["epulet_kora_ev"] = np.where(
-            df["epites_eve"].isna(), np.nan,
-            np.maximum(0, 2026 - df["epites_eve"])).astype(float)
     else:
         df["epites_eve"] = np.nan
-        df["epulet_kora_ev"] = 45  # Medián épületkor becslés
+    # A becsült évvel pótoljuk a hiányzó pontos évet (Kőbányán ~900 sor).
+    if "epites_eve_becsult" in df.columns:
+        df["epites_eve_becsult"] = pd.to_numeric(df["epites_eve_becsult"], errors="coerce")
+        df["epites_eve"] = df["epites_eve"].fillna(df["epites_eve_becsult"])
+    df["epulet_kora_ev"] = np.where(
+        df["epites_eve"].isna(), np.nan,
+        np.maximum(0, 2026 - df["epites_eve"])).astype(float)
+    # Korszak: évből, ha van; különben a portál saját kategóriájából (szótáras leképezés).
+    era_from_year = np.where(
+        df["epites_eve"].isna(), None,
+        np.where(df["epites_eve"] >= 2025, "Új építésű (2025+)",
+                 pd.cut(2026 - df["epites_eve"], bins=[-0.1, 10, 30, 60, np.inf],
+                        labels=["0-10 év", "10-30 év (rendszerváltás utáni)",
+                                "30-60 év (panel-korszak)", "60+ év (háború előtti)"]
+                        ).astype("object")))
+    era_map = {
+        "Nem ismert": "Ismeretlen", "Ismeretlen": "Ismeretlen", "nincs megadva": "Ismeretlen",
+        "1950 előtt (klasszikus polgári/tégla)": "60+ év (háború előtti)",
+        "1950-1979 (szocialista modern)": "30-60 év (panel-korszak)",
+        "1980-1999 (késő panel/tégla)": "10-30 év (rendszerváltás utáni)",
+        "2000-2019 (újszerű)": "10-30 év (rendszerváltás utáni)",
+        "2020 után (új építésű)": "Új építésű (2025+)",
+        "Altbau (<1945)": "60+ év (háború előtti)",
+        "1945-1990": "30-60 év (panel-korszak)",
+        "1991-2000": "10-30 év (rendszerváltás utáni)",
+        "Neubau (>2000)": "0-10 év",
+    }
+    era_from_cat = (df["epites_eve_kategoria"].astype(str).map(era_map)
+                    if "epites_eve_kategoria" in df.columns else None)
+    df["epites_eve_kategoria"] = pd.Series(
+        [e if e is not None and str(e) != "nan" else c for e, c in zip(era_from_year, era_from_cat)]
+        if era_from_cat is not None else era_from_year
+    ).fillna("Ismeretlen").astype("object")
 
     # 7. Városrész fallback
     if "varosresz" not in df.columns or df["varosresz"].isna().all():

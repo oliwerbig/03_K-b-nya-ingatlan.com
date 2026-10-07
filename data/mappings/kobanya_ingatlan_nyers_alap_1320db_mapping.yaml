@@ -5,6 +5,8 @@ cim_teljes: cim_teljes
 emelet: emelet
 emelet_szam: emelet
 epites_eve: epites_eve
+epites_eve_becsult: epites_eve_becsult
+epites_eve_kategoria: epites_eve_kategoria
 erkely_nm: erkely_nm
 futes: futes
 ingatlan_altipus: ingatlan_altipus

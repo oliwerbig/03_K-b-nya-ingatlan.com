@@ -511,19 +511,25 @@ def fit_canonical_hedonic(df):
     phys = [c for c in CANON_PHYSICAL if c in d.columns and d[c].nunique(dropna=False) > 1]
     rail = canonical_rail_dummies(d)
     zones, ref_zone = build_immission_dummies(d)
-    # FŐ MODELL: fizikai + VASÚTÁLLOMÁS TOD-dummyk + immissziós sávok EGYÜTT
+    # VÁROSRÉSZ-FIXED EFFECTEK: a városrészi minőség (Óhegy-prémium stb.)
+    # elnyelése nélkül a sáv-együtthatók összetételi torzítást kapnak
+    # (a referencia-zóna a prémium városrészekkel esik egybe).
+    _vr = pd.get_dummies(d['varosresz'].fillna('Ismeretlen'), drop_first=True)
+    vr_cols = [c for c in _vr.columns if 0.02 < _vr[c].mean() < 0.98]
+    vr = _vr[vr_cols]
+    # FŐ MODELL: fizikai + VASÚTÁLLOMÁS TOD-dummyk + immissziós sávok + városrész-FE EGYÜTT
     # (a sáv–TOD kollinearitás mérsékelt: max VIF ~3,6 — a kettős hatás
     # egyetlen modellben azonosítható; ez a kutatás központi specifikációja).
     tod_cols = [c for c in rail.columns if c.startswith('tod')]
-    X = sm.add_constant(pd.concat([d[phys], rail[tod_cols], zones], axis=1).astype(float))
+    X = sm.add_constant(pd.concat([d[phys], rail[tod_cols], zones, vr], axis=1).astype(float))
     y = d['log_nm_ar']
     model = sm.OLS(y, X).fit(cov_type='HC1')
-    # ROBUSZTUSSÁG A: fizikai + sávok (TOD nélkül)
-    Xz = sm.add_constant(pd.concat([d[phys], zones], axis=1).astype(float))
+    # ROBUSZTUSSÁG A: fizikai + sávok + városrész-FE (TOD nélkül)
+    Xz = sm.add_constant(pd.concat([d[phys], zones, vr], axis=1).astype(float))
     model_zones = sm.OLS(y, Xz).fit(cov_type='HC1')
-    # ROBUSZTUSSÁG B: fizikai + kötöttpálya-dummyk + sávok
+    # ROBUSZTUSSÁG B: fizikai + kötöttpálya-dummyk + sávok + városrész-FE
     kp_cols = [c for c in rail.columns if c.startswith('kp')]
-    Xk = sm.add_constant(pd.concat([d[phys], rail[kp_cols], zones], axis=1).astype(float))
+    Xk = sm.add_constant(pd.concat([d[phys], rail[kp_cols], zones, vr], axis=1).astype(float))
     model_kp = sm.OLS(y, Xk).fit(cov_type='HC1')
     return {
         'model': model,
@@ -533,6 +539,7 @@ def fit_canonical_hedonic(df):
         'tod_cols': tod_cols,   # vasútállomás TOD (5/10/15p sávok)
         'kp_cols': kp_cols,     # kötöttpálya (robusztusság)
         'zone_cols': list(zones.columns),
+        'vr_cols': vr_cols,
         'ref_zone': ref_zone,
         'X': X, 'y': y, 'n': int(model.nobs),
     }

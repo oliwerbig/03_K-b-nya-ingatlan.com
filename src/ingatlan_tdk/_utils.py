@@ -469,6 +469,171 @@ def cached_compute(area, key, fn, force=False):
     return res
 
 
+# === Önálló, API-kulcs nélküli alaptérkép (ingyenes csempék + vektoros tartalék) ===
+
+TILE_SOURCES_FREE = [
+    ("OpenStreetMap", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
+    ("Carto Voyager", "https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"),
+    ("Wikimedia OSM", "https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"),
+]
+
+TILE_UA = {"User-Agent": "IFK-TDK-2026-Research/1.0 (educational research; contact: github.com/oliwerbig)"}
+
+
+def project_coords(df, lat_col="geokodolt_lat", lon_col="geokodolt_lon"):
+    """Lokális síkvetület (méter): x = lon*cos(mid_lat)*111320, y = lat*110540."""
+    import math as _m
+    mid = float(df[lat_col].mean())
+    ls = 111320.0 * _m.cos(_m.radians(mid))
+    las = 110540.0
+    return df[lon_col] * ls, df[lat_col] * las, ls, las
+
+
+def build_area_basemap(area=None, force=False):
+    """Ingyenes, API-kulcs NÉLKÜLI csempe-térkép a terület bbox-jára (OSM → Carto →
+    Wikimedia sorrendben), a kész PNG-t cache-elve. Fallback: vektoros rétegek.
+    A visszaadott dict a 2D ábrákhoz (b64 + georeferált kiterjedés) és a 3D padlóhoz
+    (rgb) is használható."""
+    import base64 as _b64
+    import io as _io
+    import json as _json
+    import math as _m
+    import urllib.request as _urlreq
+
+    from PIL import Image
+
+    area = area or os.environ.get("TDK_ACTIVE_AREA", "kobanya")
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    cache_p = os.path.join(RESULTS_DIR, f"basemap_{area}.json")
+    if not force and os.path.exists(cache_p):
+        try:
+            return _json.load(open(cache_p, encoding="utf-8"))
+        except Exception:
+            pass
+
+    df = load_szamitott_master()
+    p = df[(df["minta_garantalt_pontos"] == 1) & (df["listing_type"] == "elado")]
+    if len(p) < 5:
+        p = df.dropna(subset=["geokodolt_lat", "geokodolt_lon"])
+    px_, py_, ls, las = project_coords(p)
+    # A csempe-bbox a minta 2–98%-os kvantilise (a kilógó pontok ne zsugorítsák a felbontást)
+    lat0, lat1 = float(p["geokodolt_lat"].quantile(0.02)), float(p["geokodolt_lat"].quantile(0.98))
+    lon0, lon1 = float(p["geokodolt_lon"].quantile(0.02)), float(p["geokodolt_lon"].quantile(0.98))
+    out = {"west": float(px_.min()), "east": float(px_.max()),
+           "south": float(py_.min()), "north": float(py_.max()),
+           "b64": None, "rgb": None, "source": None, "zoom": None, "tiles": 0,
+           "streets": [], "rails": [], "stations": []}
+
+    raw_dir = os.path.join(os.path.dirname(os.path.dirname(RESULTS_DIR)), "raw")
+    try:
+        for e in _json.load(open(os.path.join(raw_dir, f"osm_streets_{area}_1250m.json"), encoding="utf-8")).get("elements", []):
+            g = e.get("geometry")
+            if g and len(g) >= 2:
+                out["streets"].append([[pt["lon"] * ls, pt["lat"] * las] for pt in g])
+    except Exception:
+        pass
+    try:
+        for e in _json.load(open(os.path.join(raw_dir, f"osm_{area}_transit_2000m.json"), encoding="utf-8")).get("elements", []):
+            if e.get("type") == "way" and e.get("geometry") and len(e["geometry"]) >= 2:
+                if e.get("tags", {}).get("railway") in ("rail", "light_rail"):
+                    out["rails"].append([[pt["lon"] * ls, pt["lat"] * las] for pt in e["geometry"]])
+            elif e.get("type") == "node" and e.get("tags", {}).get("railway") in ("station", "halt"):
+                out["stations"].append([e["lon"] * ls, e["lat"] * las])
+    except Exception:
+        pass
+
+    for src_name, tmpl in TILE_SOURCES_FREE:
+        for Z in (16, 15, 14):
+            def _d2n(lat, lon, z):
+                n = 2 ** z
+                return (int((lon + 180.0) / 360.0 * n),
+                        int((1.0 - _m.asinh(_m.tan(_m.radians(lat))) / _m.pi) / 2.0 * n))
+
+            def _n2d(xt, yt, z):
+                n = 2 ** z
+                return (_m.degrees(_m.atan(_m.sinh(_m.pi * (1 - 2 * yt / n)))),
+                        xt / n * 360.0 - 180.0)
+
+            x0, y1 = _d2n(lat0, lon0, Z)
+            x1, y0 = _d2n(lat1, lon1, Z)
+            cols, rows = x1 - x0 + 1, y1 - y0 + 1
+            if cols * rows > 64:  # csempe-limit: élesebb térkép (épület/utca szint), elfogadható HTML-méret
+                continue
+            img = Image.new("RGB", (cols * 256, rows * 256), (242, 242, 242))
+            got = 0
+            for i, xt in enumerate(range(x0, x1 + 1)):
+                for j, yt in enumerate(range(y0, y1 + 1)):
+                    try:
+                        req = _urlreq.Request(tmpl.format(z=Z, x=xt, y=yt), headers=TILE_UA)
+                        tile = Image.open(_io.BytesIO(_urlreq.urlopen(req, timeout=20).read())).convert("RGB")
+                        img.paste(tile, (i * 256, j * 256))
+                        got += 1
+                    except Exception:
+                        pass
+            if got == 0:
+                continue
+            lat_n, lon_w = _n2d(x0, y0, Z)
+            lat_s, _ = _n2d(x0, y1 + 1, Z)
+            _, lon_e = _n2d(x1 + 1, y0, Z)
+            buf = _io.BytesIO()
+            img.save(buf, format="PNG")
+            out.update({
+                "b64": "data:image/png;base64," + _b64.b64encode(buf.getvalue()).decode("ascii"),
+                "west": lon_w * ls, "east": lon_e * ls, "north": lat_n * las, "south": lat_s * las,
+                "w_m": (lon_e - lon_w) * ls, "h_m": (lat_n - lat_s) * las,
+                "rgb": (np.asarray(img).astype(float) / 255.0).tolist(),
+                "source": src_name, "zoom": Z, "tiles": got,
+            })
+            _json.dump(out, open(cache_p, "w", encoding="utf-8"))
+            return out
+    _json.dump(out, open(cache_p, "w", encoding="utf-8"))
+    return out
+
+
+def add_basemap_to_fig(fig, bm, opacity=0.95):
+    """A kész csempe-térkép beillesztése 2D ábra alá (vetített métertengelyekre)."""
+    import plotly.graph_objects as _go
+    if bm.get("b64"):
+        fig.add_layout_image(dict(source=bm["b64"], xref="x", yref="y",
+                                  x=bm["west"], y=bm["north"],
+                                  sizex=bm.get("w_m", bm["east"] - bm["west"]),
+                                  sizey=bm.get("h_m", bm["north"] - bm["south"]),
+                                  sizing="stretch", layer="below", opacity=opacity))
+    else:
+        add_vector_layers_to_fig(fig, bm)
+    fig.add_annotation(text="© OpenStreetMap közreműködők", showarrow=False,
+                       xref="paper", yref="paper", x=0.01, y=0.02,
+                       font=dict(size=9, color="#475569"), bgcolor="rgba(255,255,255,0.7)")
+    return fig
+
+
+def add_vector_layers_to_fig(fig, bm, z=None):
+    """Utca- és vasútvonalak + állomásjelölők (vektoros alaptérkép / offline tartalék)."""
+    import plotly.graph_objects as _go
+    for seg in bm.get("streets", []):
+        kw = dict(x=[a for a, _ in seg], y=[b for _, b in seg], mode="lines",
+                  line=dict(color="#9ca3af", width=1.0), hoverinfo="skip",
+                  showlegend=False, meta="utcak")
+        if z is not None:
+            kw.update(z=[z] * len(seg))
+        fig.add_trace(_go.Scatter(**kw))
+    for seg in bm.get("rails", []):
+        kw = dict(x=[a for a, _ in seg], y=[b for _, b in seg], mode="lines",
+                  line=dict(color="#475569", width=2.4), hoverinfo="skip",
+                  showlegend=False, meta="vasut")
+        if z is not None:
+            kw.update(z=[z] * len(seg))
+        fig.add_trace(_go.Scatter(**kw))
+    if bm.get("stations"):
+        kw = dict(x=[a for a, _ in bm["stations"]], y=[b for _, b in bm["stations"]],
+                  mode="markers", marker=dict(symbol="square", size=7, color="#dc2626",
+                                              line=dict(width=1, color="white")),
+                  name="Vasútállomás", meta="allomas", hovertemplate="Vasútállomás<extra></extra>")
+        if z is not None:
+            kw.update(z=[z] * len(bm["stations"]))
+        fig.add_trace(_go.Scatter(**kw))
+
+
 # === Kanonikus hedonikus specifikáció (F8: egységes számok 04/07/15 között) ===
 
 CANON_PHYSICAL = [

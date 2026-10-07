@@ -325,6 +325,62 @@ EPITES_EVE_LABELS = [
 POI_BINS = [0.0, 375.0, 750.0, 1125.0]
 POI_LABELS = ["5p (0-375 m)", "10p (375-750 m)", "15p (750-1125 m)"]
 
+# === Kanonikus sáv-dummy építők (robusztus, üres kategória-biztos) ===
+
+
+def build_immission_dummies(df, min_ref_n=20):
+    """Immissziós sáv-dummyk a kanonikus 0-150-300-500-1000-2000 m sávokból.
+
+    - Az ÜRES kategóriákat eldobja (különben a dummy-mátrix degenerált lesz).
+    - Referencia: a legtávolabbi sáv, amelyben legalább min_ref_n megfigyelés van;
+      ha ilyen nincs, a legtávolabbi nemüres sáv.
+
+    Visszatér: (dummies DataFrame, referencia sáv neve).
+    """
+    z = df["vasut_zona"].astype(str)
+    counts = z.value_counts()
+    ordered = [lbl for lbl in VASUT_IMMISSZIO_LABELS if lbl in counts.index and counts[lbl] > 0]
+    if not ordered:
+        raise ValueError("Nincs nemüres immissziós sáv a mintában.")
+    ref = None
+    for lbl in reversed(ordered):
+        if counts[lbl] >= min_ref_n:
+            ref = lbl
+            break
+    if ref is None:
+        ref = ordered[-1]
+    dummies = pd.get_dummies(z)
+    keep = [lbl for lbl in ordered if lbl != ref]
+    return dummies[keep], ref
+
+
+def build_tod_dummies(df, prefix="vasut", min_ref_n=20):
+    """Diszjunkt TOD (gyalogos izokrón) dummyk: 0-375 / 375-750 / 750-1125 m,
+    referencia: >1125 m (a *_seta oszlopok kumulatívak, ezért diszjunkt dummykat
+    képzünk belőlük). Visszatér: (dummies DataFrame, referencia neve)."""
+    c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"
+    d = pd.DataFrame(index=df.index)
+    d[f"{prefix}_0_375"] = df[c5].astype(int)
+    d[f"{prefix}_375_750"] = (df[c10] - df[c5]).clip(lower=0).astype(int)
+    d[f"{prefix}_750_1125"] = (df[c15] - df[c10]).clip(lower=0).astype(int)
+    # ha az egyik sáv üres, ejtsük (degenerált dummy elkerülése)
+    for col in list(d.columns):
+        if d[col].sum() == 0:
+            d = d.drop(columns=col)
+    ref = ">1125 m (kívül)"
+    return d, ref
+
+
+def drop_constant_columns(X):
+    """Konstans oszlopok eldobása (pl. Bécsben is_panel ≡ 0) — különben a
+    design-mátrix ranghiányos, az együtthatók nem azonosíthatók."""
+    keep = [c for c in X.columns if X[c].nunique(dropna=False) > 1]
+    dropped = [c for c in X.columns if c not in keep]
+    if dropped:
+        print(f"[modell] konstans oszlopok eldobva (ranghiány elkerülése): {dropped}")
+    return X[keep]
+
+
 # === Városrészek és stílusok ===
 
 VAROSRESZEK_KOBANYA = [

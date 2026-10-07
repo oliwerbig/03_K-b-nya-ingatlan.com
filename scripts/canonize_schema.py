@@ -41,7 +41,23 @@ def derive_core(df):
                 df["szobaszam_osszes"], bins=[0, 1.5, 2.5, 3.5, 99],
                 labels=["1 szoba", "2 szoba", "3 szoba", "4+ szoba"],
             ).astype("object")
-    if "epulet_kora_ev" in df.columns:
+    # ŐSZINTE korszaklevezetés (a crawl-évi 2025+ értékek új építésű hirdetések):
+    # - epites_eve >= 2025 -> "Új építésű (2025+)" és epulet_kora_ev = 0
+    # - epites_eve <= 2024 -> életkor-sávok
+    # - hiányzó év        -> "Ismeretlen" és epulet_kora_ev = NaN (NEM 1980/0!)
+    if "epites_eve" in df.columns:
+        year = df["epites_eve"]
+        df["epulet_kora_ev"] = np.where(year.isna(), np.nan,
+                                        np.where(year >= 2025, 0.0,
+                                                 np.maximum(0, 2026 - year))).astype(float)
+        df["epites_eve_kategoria"] = np.where(
+            year.isna(), "Ismeretlen",
+            np.where(year >= 2025, "Új építésű (2025+)",
+                     pd.cut(2026 - year, bins=[-0.1, 10, 30, 60, np.inf],
+                            labels=["0-10 év", "10-30 év (rendszerváltás utáni)",
+                                    "30-60 év (panel-korszak)", "60+ év (háború előtti)"]
+                            ).astype("object")))
+    elif "epulet_kora_ev" in df.columns:
         df["epites_eve_kategoria"] = pd.cut(
             df["epulet_kora_ev"], bins=[-0.1, 10, 30, 60, np.inf],
             labels=["0-10 év (új)", "10-30 év (rendszerváltás utáni)",
@@ -102,7 +118,11 @@ def coerce(df, req, opt):
         if c not in df.columns:
             continue
         if t == "int64":
-            df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0).astype("int64")
+            # az epulet_kora_ev NEM tölthető 0-val (a hiányzó építési év őszintén NaN marad)
+            if c == "epulet_kora_ev":
+                df[c] = pd.to_numeric(df[c], errors="coerce").astype("float64")
+            else:
+                df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0).astype("int64")
         elif t == "float64":
             df[c] = pd.to_numeric(df[c], errors="coerce").astype("float64")
         else:

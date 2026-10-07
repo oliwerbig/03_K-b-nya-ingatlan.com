@@ -132,21 +132,57 @@ def _coef_table(m):
 
 def canonical_hedonic(area=None, force=False):
     def fn():
+        import statsmodels.api as sm
+        from statsmodels.stats.outliers_influence import variance_inflation_factor
         p = pontos_elado(area)
         r = fit_canonical_hedonic(p)
+        # VIF a főmodell design-mátrixán (a sáv–TOD kollinearitás dokumentálása)
+        try:
+            Xv = r["X"]
+            vif = pd.DataFrame({
+                "valtozo": Xv.columns[1:],
+                "VIF": [round(float(variance_inflation_factor(Xv.values, i)), 2)
+                        for i in range(1, Xv.shape[1])],
+            }).sort_values("VIF", ascending=False).reset_index(drop=True)
+        except Exception:
+            vif = pd.DataFrame({"valtozo": [], "VIF": []})
         return {
             "teljes": _coef_table(r["model"]),
             "zaj": _coef_table(r["model_zones"]),
+            "kp": _coef_table(r["model_kp"]),
+            "vif": vif,
             "meta": pd.DataFrame({
                 "n": [r["n"]],
                 "r2_teljes": [round(float(r["model"].rsquared), 4)],
                 "r2_zaj": [round(float(r["model_zones"].rsquared), 4)],
+                "r2_kp": [round(float(r["model_kp"].rsquared), 4)],
                 "ref_zona": [r["ref_zone"]],
                 "tod_cols": [",".join(r["tod_cols"])],
+                "kp_cols": [",".join(r["kp_cols"])],
                 "zone_cols": [",".join(r["zone_cols"])],
             }),
         }
     return cached_compute(area, "canonical_hedonic", fn, force=force)
+
+
+def price_surface(area=None, force=False):
+    """Ár/reziduum-pontfelhő a 02-es értékdomborzathoz (pontos eladó, fizikai kontrollok utáni reziduummal)."""
+    def fn():
+        import statsmodels.api as sm
+        from ._utils import drop_constant_columns
+        p = pontos_elado(area).copy()
+        phys = [c for c in CANON_PHYSICAL if c in p.columns and p[c].nunique() > 1]
+        d = p.dropna(subset=["log_nm_ar", "nm_ar_huf", "geokodolt_lat", "geokodolt_lon"] + phys).copy()
+        phys2 = [c for c in phys if d[c].nunique() > 1]
+        m = sm.OLS(d["log_nm_ar"], drop_constant_columns(sm.add_constant(d[phys2].astype(float)))).fit()
+        return pd.DataFrame({
+            "geokodolt_lat": d["geokodolt_lat"].values,
+            "geokodolt_lon": d["geokodolt_lon"].values,
+            "nm_ar_huf": d["nm_ar_huf"].values,
+            "log_nm_ar": d["log_nm_ar"].values,
+            "resid": m.resid.values,
+        })
+    return cached_compute(area, "price_surface", fn, force=force)
 
 
 def immission_gradient(area=None, force=False):
@@ -353,7 +389,7 @@ def gwr_analysis(area=None, force=False):
         tmp["lon_r"] = tmp["geokodolt_lon"].round(5)
         tmp["lat_r"] = tmp["geokodolt_lat"].round(5)
         agg = tmp.groupby(["lon_r", "lat_r"])[feats + ["log_nm_ar"]].mean().reset_index()
-        if len(agg) >= 80:
+        if len(agg) >= 40:
             df_agg = agg.rename(columns={"lon_r": "geokodolt_lon", "lat_r": "geokodolt_lat"})
             modszer = f"epuletszintu (N={len(df_agg)})"
         else:
@@ -418,8 +454,9 @@ from ._utils import (CANON_PHYSICAL, cached_compute, build_immission_dummies,
 
 ML_FEATURES = ["korrigalt_alapterulet_nm", "szobaszam_osszes", "is_panel", "has_lift",
                "has_erkely", "allapot_kod", "emelet_szam", "epulet_kora_ev",
-               "tavolsag_metro_halozati_m", "tavolsag_vasut_m", "kotottpalya_15p_seta",
-               "is_vasut_immisszio_150m", "poi_15p_count"]
+               "tavolsag_metro_halozati_m", "tavolsag_vasut_m",
+               "tavolsag_vasut_halozati_m", "vasut_15p_seta",
+               "kotottpalya_15p_seta", "is_vasut_immisszio_150m", "poi_15p_count"]
 
 
 def ml_analysis(area=None, force=False):
@@ -537,10 +574,12 @@ def rent_gap_analysis(area=None, force=False):
 def monte_carlo_risk(area=None, force=False, n_sim=2000):
     def fn():
         import statsmodels.api as sm
+        from ._utils import drop_constant_columns
         p = pontos_elado(area).copy()
         phys = [c for c in CANON_PHYSICAL if p[c].nunique() > 1]
         d = p.dropna(subset=["log_nm_ar"] + phys).copy()
-        m = sm.OLS(d["log_nm_ar"], sm.add_constant(d[phys].astype(float))).fit()
+        phys = [c for c in phys if d[c].nunique() > 1]
+        m = sm.OLS(d["log_nm_ar"], drop_constant_columns(sm.add_constant(d[phys].astype(float)))).fit()
         resid_sd = float(m.resid.std())
         rng = np.random.default_rng(42)
         shocks = rng.normal(0, resid_sd, size=(n_sim, len(d)))

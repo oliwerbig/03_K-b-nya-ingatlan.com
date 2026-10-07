@@ -455,7 +455,11 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     # 6. Épület kora 2026-ban
     if "epites_eve" in df.columns:
         df["epites_eve"] = pd.to_numeric(df["epites_eve"], errors="coerce")
-        df["epulet_kora_ev"] = np.maximum(0, 2026 - df["epites_eve"].fillna(1980)).astype(int)
+        # ŐSZINTE korszakadatok: a hiányzó év NEM kap 1980-at; az év>=2025 (új építésű
+        # hirdetések éve) 0 korral szerepel, a hiányzó év kora NaN marad.
+        df["epulet_kora_ev"] = np.where(
+            df["epites_eve"].isna(), np.nan,
+            np.maximum(0, 2026 - df["epites_eve"])).astype(float)
     else:
         df["epites_eve"] = np.nan
         df["epulet_kora_ev"] = 45  # Medián épületkor becslés

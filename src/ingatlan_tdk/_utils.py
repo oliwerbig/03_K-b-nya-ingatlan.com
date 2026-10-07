@@ -500,28 +500,38 @@ def fit_canonical_hedonic(df):
     Visszatér: dict(model, phys, tod_cols, kp_cols, zone_cols, ref_zone, X, y, n).
     """
     import statsmodels.api as sm
+    # Épületkor-imputáció ELŐSZÖR: a hiányzó építési évű sorok (Ismeretlen korszak)
+    # kora a minta mediánjával pótlódik — dokumentált közelítés, a minta megtartása miatt.
+    if 'epulet_kora_ev' in df.columns and df['epulet_kora_ev'].isna().any():
+        df = df.copy()
+        df['epulet_kora_ev'] = df['epulet_kora_ev'].fillna(df['epulet_kora_ev'].median())
     _need = ['log_nm_ar', 'tavolsag_vasut_halozati_m', 'tavolsag_kotottpalya_halozati_m'] + \
         [c for c in CANON_PHYSICAL if c in df.columns]
     d = df.dropna(subset=_need).copy()
     phys = [c for c in CANON_PHYSICAL if c in d.columns and d[c].nunique(dropna=False) > 1]
     rail = canonical_rail_dummies(d)
     zones, ref_zone = build_immission_dummies(d)
-    # TELJES modell: fizikai + kötöttpálya TOD-dummyk + immissziós sávok
-    # (a vasúti TOD-dummyk kihagyva: az állomások a vágányoknál vannak, így a
-    # vasút-specifikus TOD és a zajsáv kollineáris — lásd nb07 robusztusság).
-    kp_cols = [c for c in rail.columns if c.startswith('kp')]
-    X = sm.add_constant(pd.concat([d[phys], rail[kp_cols], zones], axis=1).astype(float))
+    # FŐ MODELL: fizikai + VASÚTÁLLOMÁS TOD-dummyk + immissziós sávok EGYÜTT
+    # (a sáv–TOD kollinearitás mérsékelt: max VIF ~3,6 — a kettős hatás
+    # egyetlen modellben azonosítható; ez a kutatás központi specifikációja).
+    tod_cols = [c for c in rail.columns if c.startswith('tod')]
+    X = sm.add_constant(pd.concat([d[phys], rail[tod_cols], zones], axis=1).astype(float))
     y = d['log_nm_ar']
     model = sm.OLS(y, X).fit(cov_type='HC1')
-    # ZAJ-FÓKUSZÚ modell: fizikai + sávok (a zajdiszkont fejléce ebből születik)
+    # ROBUSZTUSSÁG A: fizikai + sávok (TOD nélkül)
     Xz = sm.add_constant(pd.concat([d[phys], zones], axis=1).astype(float))
     model_zones = sm.OLS(y, Xz).fit(cov_type='HC1')
+    # ROBUSZTUSSÁG B: fizikai + kötöttpálya-dummyk + sávok
+    kp_cols = [c for c in rail.columns if c.startswith('kp')]
+    Xk = sm.add_constant(pd.concat([d[phys], rail[kp_cols], zones], axis=1).astype(float))
+    model_kp = sm.OLS(y, Xk).fit(cov_type='HC1')
     return {
         'model': model,
         'model_zones': model_zones,
+        'model_kp': model_kp,
         'phys': phys,
-        'tod_cols': kp_cols,   # a TOD-fejléc a KÖTÖTTPÁLYA-dummyk (5/10/15p)
-        'kp_cols': kp_cols,
+        'tod_cols': tod_cols,   # vasútállomás TOD (5/10/15p sávok)
+        'kp_cols': kp_cols,     # kötöttpálya (robusztusság)
         'zone_cols': list(zones.columns),
         'ref_zone': ref_zone,
         'X': X, 'y': y, 'n': int(model.nobs),

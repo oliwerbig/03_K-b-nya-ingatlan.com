@@ -382,6 +382,85 @@ def drop_constant_columns(X):
     return X[keep]
 
 
+# === Számítási cache: minden elemzés pontosan egyszer fut ===
+
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))), "data", "derived", "results")
+
+
+def data_fingerprint(area):
+    """A master-parquet SHA256-ujjlenyomata — a cache érvényességének alapja."""
+    import hashlib
+    base_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)))), "data", "processed")
+    f = None
+    for cand in [f"{area}_szamitott_master.parquet",
+                 f"{area}_ingatlan_szamitott_master.parquet"]:
+        if os.path.exists(os.path.join(base_dir, cand)):
+            f = os.path.join(base_dir, cand)
+            break
+    if f is None:
+        return "nincs-adat"
+    with open(f, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()[:16]
+
+
+def cached_compute(area, key, fn, force=False):
+    """Számítás EGYSZER: dict -> base/<kulcs>.parquet; DataFrame -> base.parquet.
+    A cache a data-ujjlenyomat + függvényverzió alapján érvénytelenítődik."""
+    import hashlib
+    import json as _json
+    area = area or os.environ.get("TDK_ACTIVE_AREA", "kobanya")
+    os.makedirs(os.path.join(RESULTS_DIR, area), exist_ok=True)
+    fp = data_fingerprint(area)
+    fn_version = hashlib.sha256(fn.__code__.co_code).hexdigest()[:8] if hasattr(fn, '__code__') else '0'
+    base = os.path.join(RESULTS_DIR, area, key)
+    meta_p = base + ".meta.json"
+
+    def _valid():
+        if not os.path.exists(meta_p):
+            return False
+        try:
+            meta = _json.load(open(meta_p, encoding='utf-8'))
+            return meta.get('fp') == fp and meta.get('fn') == fn_version
+        except Exception:
+            return False
+
+    def _save_meta():
+        with open(meta_p, 'w', encoding='utf-8') as fh:
+            _json.dump({'fp': fp, 'fn': fn_version}, fh)
+
+    if not force and _valid():
+        if os.path.isdir(base):
+            out = {}
+            for f in sorted(os.listdir(base)):
+                if f.endswith('.parquet'):
+                    out[f[:-len('.parquet')]] = pd.read_parquet(os.path.join(base, f))
+            if out:
+                return out
+        elif os.path.exists(base + '.parquet'):
+            return pd.read_parquet(base + '.parquet')
+
+    res = fn()
+    if isinstance(res, dict):
+        os.makedirs(base, exist_ok=True)
+        for k, v in res.items():
+            p2 = os.path.join(base, k + '.parquet')
+            if isinstance(v, pd.DataFrame):
+                v.to_parquet(p2)
+            elif isinstance(v, pd.Series):
+                v.to_frame('ertek').to_parquet(p2)
+            elif isinstance(v, (int, float, str, bool)) or v is None:
+                pd.DataFrame({'ertek': [v]}).to_parquet(p2)
+        _save_meta()
+        return res
+    if isinstance(res, pd.DataFrame):
+        res.to_parquet(base + '.parquet')
+        _save_meta()
+        return res
+    return res
+
+
 # === Kanonikus hedonikus specifikáció (F8: egységes számok 04/07/15 között) ===
 
 CANON_PHYSICAL = [

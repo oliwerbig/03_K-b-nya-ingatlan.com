@@ -43,3 +43,5 @@ desktop.ini
 
 # General riport kimenet (a CI allitja elo)
 html_reports/
+
+data/derived/

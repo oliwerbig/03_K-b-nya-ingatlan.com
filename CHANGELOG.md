@@ -24,11 +24,29 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - `README.md` — Konvenciók szekció és frissített hivatkozások.
 
 ### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
+### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
   CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
 - A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
   épülő) ábrákat tartalmaz a GitHub Pages-hez.
+### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
 ### Javítva
 - `report_engine/full_narrative.py` — 5 fejezetépítő hiányzó mértékegység-definíciója
   javítva (nb02, nb04, nb06, nb12, nb14; ezek `NameError`-rel elszálltak volna friss
@@ -39,11 +57,29 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   az `E402` a szándékos útvonal-bootstrap mintánál engedélyezve (dokumentálva).
 
 ### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
+### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
   CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
 - A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
   épülő) ábrákat tartalmaz a GitHub Pages-hez.
+### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
 ### Javítva
 - `ingatlan_tdk.verify` — a szöveges adatfájlok (.json/.csv) hash-számítása mostantól
   CRLF->LF normalizálással történik, így a Windows és Linux (CI) checkout ugyanazt a
@@ -67,11 +103,29 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - `Makefile`, `ci.yml`, `deploy-pages.yml`: a csomagparancsokra állítva.
 
 ### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
+### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
   CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
 - A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
   épülő) ábrákat tartalmaz a GitHub Pages-hez.
+### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
 ### Javítva
 - **GitHub Actions hiba:** `requirements.txt` — a `pywinpty` Windows-only csomag
   platform-markerrel (`sys_platform == "win32"`), így a Linux CI telepítés már nem száll el.
@@ -114,11 +168,29 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
 - `html_reports/` többterületes portál, `notebooks/16_komparativ_harom_terulet_elemzes.ipynb`.
 
 ### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
+### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
   CI-holtpontok ellen; a Pages build-job `timeout-minutes: 180`.
 - A Plotly renderer `notebook`-ra állítva: az exportált HTML önálló (CDN plotly.js-re
   épülő) ábrákat tartalmaz a GitHub Pages-hez.
+### Javítva
+- **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
+  (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
+  való hivatkozások védettek — hiányzó oszlopnál a notebook leszármaztatja vagy kihagyja;
+  a POI-betöltés területfüggő (`poi_{area}_buffered.geojson`) + `geopandas` import;
+  a GWR együttható-kinyerés és a Random Forest szcenárió-mátrix a tényleges oszlopokhoz igazodik.
+- `tdk-report`: a notebookok **returncode-ja valóban hibának számít** (korábban a
+  sikertelen notebookok is „hibás notebook: 0"-ként jelentek meg) — a CI mostantól
+  hangosan elhasal hiányos riport esetén.
 ### Javítva
 - `notebooks/_utils.py` — `area=None` alapértelmezések (a notebookok újra futtathatók).
 - `requirements.txt` — `spreg`, `mgwr`, `markdown` pótlása (SAR/SEM és GWR reprodukálható).

@@ -60,9 +60,12 @@ def report_main() -> int:
             "--ExecutePreprocessor.kernel_name=python3",
         ]
         try:
-            subprocess.run(cmd, env=local, timeout=1200, check=False)
+            r = subprocess.run(cmd, env=local, timeout=1200, check=False)
         except subprocess.TimeoutExpired:
             print(f"  [!] IDŐTÚLLÉPÉS: {os.path.basename(nb)} (>1200 s)", flush=True)
+            return False
+        if r.returncode != 0:
+            print(f"  [!] HIBA: {os.path.basename(nb)} (exit {r.returncode})", flush=True)
             return False
         return True
 

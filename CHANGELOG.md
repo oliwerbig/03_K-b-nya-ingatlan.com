@@ -38,6 +38,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -62,6 +90,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
@@ -83,6 +139,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -107,6 +191,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - `report_engine/full_narrative.py` — 5 fejezetépítő hiányzó mértékegység-definíciója
   javítva (nb02, nb04, nb06, nb12, nb14; ezek `NameError`-rel elszálltak volna friss
@@ -131,6 +243,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -155,6 +295,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
@@ -176,6 +344,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -200,6 +396,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - `ingatlan_tdk.verify` — a szöveges adatfájlok (.json/.csv) hash-számítása mostantól
   CRLF->LF normalizálással történik, így a Windows és Linux (CI) checkout ugyanazt a
@@ -237,6 +461,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -261,6 +513,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
@@ -282,6 +562,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -306,6 +614,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **GitHub Actions hiba:** `requirements.txt` — a `pywinpty` Windows-only csomag
   platform-markerrel (`sys_platform == "win32"`), így a Linux CI telepítés már nem száll el.
@@ -362,6 +698,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -386,6 +750,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - `tdk-report` időtúllépés-védelem: notebookonként `--ExecutePreprocessor.timeout` és
   szubprocessz-timeout, plusz BLAS-thread limit (`OMP/OPENBLAS/MKL_NUM_THREADS=1`) a
@@ -407,6 +799,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - **Notebookok terület-univerzálissá tétele:** a kőbánya-specifikus oszlopokra
   (`tavolsag_mazsa_halozati_m`, `tavolsag_belvaros_halozati_m`, `szobaszam_kategoria`)
@@ -431,6 +851,34 @@ Formátum: [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/).
   bécsi úthálózat + tranzit letöltve.
 - Új szkriptek: `scripts/fetch_network_layers.py`, `scripts/network_metrics.py`,
   `scripts/canonize_schema.py`.
+### Hozzáadva / Megváltoztatva (módszertani felülvizsgálat)
+- **A 17 notebook teljes módszertani felülvizsgálata:** a fókusz (Mázsa/belváros)
+  referenciák teljes eltávolítása; hardkódolt eredmény-számok megszüntetése (minden
+  KPI a futtatott modellekből); doc–code konzisztencia; seed minden véletlenhez;
+  a kanonikus sávok mindenhol a `_utils` konstansokból.
+- **nb04:** Mann–Whitney U + Dunn post-hoc (Bonferroni), kontrollált zóna-diszkont
+  (HC1), diszjunkt sáv-dummyk, immissziós dózis-válasz görbe bootstrap CI-vel,
+  a 150 m-es küszöb placebo-vizsgálata, Chow-töréspont-teszt.
+- **nb05:** a POI-sávok a kanonikus HÁLÓZATI `poi_5p/10p/15p_count` oszlopokból
+  (a Web Mercator-légvonalas számítás törölve); POI-modellek F-teszttel, HC1-gyel.
+- **nb07:** HC1 SE-k, helyes implicit-hatás értelmezés (dummy/log/folytonos),
+  Breusch–Pagan + RESET, a JS-kalkulátor a TÉNYLEGES becsült együtthatókból.
+- **nb09:** valódi SEM (ML_Error), SAR GM_Lag, Anselin LM-tesztek, permutációs
+  Moran p-értékek, vetületi KNN.
+- **nb10:** a szintetikus GWR-fallback törölve; 07/09-cel azonos kontrollok;
+  t-szűrt (|t|≥1.96) β-térképek; VIF-diagnosztika; jitter az egybeeső pontokra.
+- **nb11:** ismételt + TÉRBELI blokk-CV, out-of-sample arbitrázs, permutációs
+  fontosság, kvantilis GB predikciós intervallumok, a fókusz-változó kivétele.
+- **nb12:** hedonikusan párosított hozam, cap-rate érzékenység, térbeli rent gap
+  (immissziós sáv × állapot), javított JS-kalkulátor.
+- **nb13:** a volatilitások/korreláció a hedonikus reziduumokból kalibrálva;
+  a tornado a szimulációból számolva; MC-SE jelentése.
+- **nb14:** becslés-alapú felértékelődési potenciál (kontrollált sávdiszkontok),
+  a Mázsa-szcenárió átnevezése, dinamikus medián a JS-presetekben.
+- **nb15:** minden KPI a futtatott modellekből (hedonikus, SAR, rent gap, RF CV);
+  a hatásgörbe a becsült együtthatókból.
+- **nb16:** pooled hedonikus regresszió terület×immissziós sáv interakciókkal,
+  EUR-normalizálás, CI-sávok, elemszám-küszöbök (N≥5/10).
 ### Javítva
 - `notebooks/_utils.py` — `area=None` alapértelmezések (a notebookok újra futtathatók).
 - `requirements.txt` — `spreg`, `mgwr`, `markdown` pótlása (SAR/SEM és GWR reprodukálható).

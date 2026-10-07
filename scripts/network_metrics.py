@@ -16,7 +16,8 @@ import pandas as pd
 from scipy.spatial import cKDTree
 
 WALK_M_PER_MIN = 75.0          # 1.25 m/s
-MAX_NET = 1125.0               # legnagyobb izokrón (15p)
+MAX_NET = 2000.0               # Dijkstra-cutoff: a folytonos távolságokhoz
+# (a POI/izokrón SÁVOK ettől függetlenül 375/750/1125 m — lásd POI_BANDS)
 MAX_SNAP = 120.0               # max. csatlakoztatási távolság az úthálózathoz
 RAIL_EPS = 0.1                 # m
 

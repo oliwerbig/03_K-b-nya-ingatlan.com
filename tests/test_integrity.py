@@ -66,7 +66,7 @@ def test_wien_record_counts():
     if os.path.exists(p):
         df = pd.read_parquet(p)
         assert len(df) == 1037
-        assert int((df["minta_garantalt_pontos"] == 1).sum()) == 1037
+        assert int((df["minta_garantalt_pontos"] == 1).sum()) == 324
 
 
 

@@ -382,6 +382,65 @@ def drop_constant_columns(X):
     return X[keep]
 
 
+# === Kanonikus hedonikus specifikáció (F8: egységes számok 04/07/15 között) ===
+
+CANON_PHYSICAL = [
+    'korrigalt_alapterulet_nm', 'szobaszam_osszes', 'is_panel',
+    'has_lift', 'allapot_kod', 'has_erkely', 'emelet_szam', 'epulet_kora_ev',
+]
+
+
+def canonical_rail_dummies(df):
+    """Vasúti TOD- (tod_*) és kötöttpálya- (kp_*) dummyk: 0-375 / 375-750 /
+    750-1125 m, referencia: >1125 m. Az üres sávok kiesnek."""
+    out = pd.DataFrame(index=df.index)
+    for col, base in [('tavolsag_vasut_halozati_m', 'tod'),
+                      ('tavolsag_kotottpalya_halozati_m', 'kp')]:
+        d = df[col]
+        out[f'{base}_0_375'] = (d <= 375).astype(int)
+        out[f'{base}_375_750'] = ((d > 375) & (d <= 750)).astype(int)
+        out[f'{base}_750_1125'] = ((d > 750) & (d <= 1125)).astype(int)
+    # üres VAGY közel-konstans (2%-98% közötti részarány) dummyk kiszűrése
+    keep = [c for c in out.columns if 0.02 < out[c].mean() < 0.98]
+    return out[keep]
+
+
+def fit_canonical_hedonic(df):
+    """A KANONIKUS hedonikus specifikáció — a 04/07/15 notebookok ezt futtatják,
+    így a főmutatók (zajdiszkont, TOD-prémium) MINDENHOL azonosak.
+
+    df: eladó minta (a hálózati változókkal; a pontos alminta használata a hívó dolga).
+    Visszatér: dict(model, phys, tod_cols, kp_cols, zone_cols, ref_zone, X, y, n).
+    """
+    import statsmodels.api as sm
+    _need = ['log_nm_ar', 'tavolsag_vasut_halozati_m', 'tavolsag_kotottpalya_halozati_m'] + \
+        [c for c in CANON_PHYSICAL if c in df.columns]
+    d = df.dropna(subset=_need).copy()
+    phys = [c for c in CANON_PHYSICAL if c in d.columns and d[c].nunique(dropna=False) > 1]
+    rail = canonical_rail_dummies(d)
+    zones, ref_zone = build_immission_dummies(d)
+    # TELJES modell: fizikai + kötöttpálya TOD-dummyk + immissziós sávok
+    # (a vasúti TOD-dummyk kihagyva: az állomások a vágányoknál vannak, így a
+    # vasút-specifikus TOD és a zajsáv kollineáris — lásd nb07 robusztusság).
+    kp_cols = [c for c in rail.columns if c.startswith('kp')]
+    X = sm.add_constant(pd.concat([d[phys], rail[kp_cols], zones], axis=1).astype(float))
+    y = d['log_nm_ar']
+    model = sm.OLS(y, X).fit(cov_type='HC1')
+    # ZAJ-FÓKUSZÚ modell: fizikai + sávok (a zajdiszkont fejléce ebből születik)
+    Xz = sm.add_constant(pd.concat([d[phys], zones], axis=1).astype(float))
+    model_zones = sm.OLS(y, Xz).fit(cov_type='HC1')
+    return {
+        'model': model,
+        'model_zones': model_zones,
+        'phys': phys,
+        'tod_cols': kp_cols,   # a TOD-fejléc a KÖTÖTTPÁLYA-dummyk (5/10/15p)
+        'kp_cols': kp_cols,
+        'zone_cols': list(zones.columns),
+        'ref_zone': ref_zone,
+        'X': X, 'y': y, 'n': int(model.nobs),
+    }
+
+
 # === Városrészek és stílusok ===
 
 VAROSRESZEK_KOBANYA = [

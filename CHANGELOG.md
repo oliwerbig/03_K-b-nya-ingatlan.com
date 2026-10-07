@@ -1,3 +1,9 @@
+## [Unreleased]
+- fix: bécsi koordináta-precizitás (egyedi koordinátapár = pontos), panel-proxy (1945-1990 korszak)
+- feat: kanonikus hedonikus specifikáció (_utils.fit_canonical_hedonic) — a 04/07/15 azonos számokat ad
+- feat: párhuzamos riportépítés (tdk-report --parallel), GWR interval-keresés, karcsúsított CV
+- fix: kötöttpálya-index dummyk a folytonos metrótáv helyett a főmodellekben
+
 # Changelog
 
 Minden érdemi változás itt van rögzítve, emberi nyelven, dátumozva.

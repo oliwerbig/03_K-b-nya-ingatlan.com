@@ -156,8 +156,13 @@ def verify_structure():
     if os.path.exists(wien_path):
         w = pd.read_parquet(wien_path)
         check("wien összes rekord == 1037", len(w) == 1037)
+        # A bécsi „pontos" kritérium az EGYEDI koordinátapár (a willhaben szórja a
+        # koordinátákat — a megosztott pontok körzeti szintűek, lásd ADATKONYV).
         check(
-            "wien garantált pontos == 1037", int((w["minta_garantalt_pontos"] == 1).sum()) == 1037
+            "wien garantált pontos == 324", int((w["minta_garantalt_pontos"] == 1).sum()) == 324
+        )
+        check(
+            "wien panel-proxy == 68", int((w["is_panel"] == 1).sum()) == 68
         )
         for prefix in ("vasut", "metro", "villamos", "busz", "kotottpalya"):
             c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"

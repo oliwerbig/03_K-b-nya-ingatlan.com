@@ -42,50 +42,10 @@ areas:
   # ----------------------------------------------------------------------------
   # 1. KONTROLL TERÜLET: pl. Ferencváros / Közvágóhíd (Déli folyosó)
   # ----------------------------------------------------------------------------
-  kontroll_1:
-    id: "kontroll_1"
-    name: "1. Kontroll Terület (pl. Ferencváros / Közvágóhíd)"
-    short_name: "Kontroll 1"
-    role: "control"
-    is_active: false                    # Aktiválandó az adathalmaz beérkezésekor
-    data:
-      raw_file: "data/raw/kontroll_1.xlsx"
-      master_parquet: "data/processed/kontroll_1_szamitott_master.parquet"
-      pontos_geojson: "data/processed/kontroll_1_pontos.geojson"
-    spatial:
-      center_lat: 47.468
-      center_lon: 19.078
-      main_station: "Közvágóhíd megállóhely"
-      buffers:
-        rail_buffer_m: 2000      # immissziós sávok teljessége (a legnagyobb sávhatár)
-        poi_buffer_m: 1125       # hálózati POI-sávok teljessége (legnagyobb izokrón)
-        network_buffer_m: 1250   # úthálózat: 1125 m + útvonal-margin
-    metadata:
-      description: "Déli vasúti tengely: dinamikusan fejlődő rozsdaövezeti tranzit-folyosó"
 
   # ----------------------------------------------------------------------------
   # 2. KONTROLL TERÜLET: pl. Zugló / Rákosrendező (Északi folyosó)
   # ----------------------------------------------------------------------------
-  kontroll_2:
-    id: "kontroll_2"
-    name: "2. Kontroll Terület (pl. Zugló / Rákosrendező)"
-    short_name: "Kontroll 2"
-    role: "control"
-    is_active: false                    # Aktiválandó az adathalmaz beérkezésekor
-    data:
-      raw_file: "data/raw/kontroll_2.xlsx"
-      master_parquet: "data/processed/kontroll_2_szamitott_master.parquet"
-      pontos_geojson: "data/processed/kontroll_2_pontos.geojson"
-    spatial:
-      center_lat: 47.525
-      center_lon: 19.102
-      main_station: "Rákosrendező vasútállomás"
-      buffers:
-        rail_buffer_m: 2000      # immissziós sávok teljessége (a legnagyobb sávhatár)
-        poi_buffer_m: 1125       # hálózati POI-sávok teljessége (legnagyobb izokrón)
-        network_buffer_m: 1250   # úthálózat: 1125 m + útvonal-margin
-    metadata:
-      description: "Északi vasúti tengely: nagy léptékű kötöttpályás barnamező és TOD potenciál"
 
   # ----------------------------------------------------------------------------
   # NEMZETKÖZI BENCHMARK: Bécs 2. kerület (Leopoldstadt / Nordbahnhof)

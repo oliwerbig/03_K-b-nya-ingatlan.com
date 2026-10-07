@@ -169,6 +169,23 @@ def main():
     w = pd.read_parquet(os.path.join(PROC, "wien_nordbahnhof_szamitott_master.parquet"))
     w = w.rename(columns=RENAME)
     w = w.loc[:, ~w.columns.duplicated()]
+    # --- BÉCSI ADAT-ŐSZINTESÉG ---
+    # (1) A willhaben a magánszféra miatt SZÓRJA a koordinátákat: a garantált pontosság
+    #     kritériuma az EGYEDI koordinátapár (a megosztott pontok körzeti szintűek).
+    _pair = (w["geokodolt_lat"].round(6).astype(str) + "_" + w["geokodolt_lon"].round(6).astype(str))
+    _pair_cnt = _pair.map(_pair.value_counts())
+    w["minta_garantalt_pontos"] = (_pair_cnt == 1).astype("int64")
+    w["geokodolas_modszere"] = "willhaben_korlatos"
+    w["geokodolas_pontossag"] = np.where(w["minta_garantalt_pontos"] == 1,
+                                         "A_egyedi_koordinata", "B_megosztott_koordinata")
+    print(f"[wien] egyedi koordinátájú (pontos) hirdetés: {int(w['minta_garantalt_pontos'].sum())} / {len(w)}")
+    # (2) Panel-proxy: a bécsi Plattenbau-korszak az 'ingatlan_altipus == 1945-1990'
+    #     (iparosított technológia — dokumentált közelítés, nem épületszintű azonosítás).
+    if "ingatlan_altipus" in w.columns:
+        w["is_panel"] = (w["ingatlan_altipus"] == "1945-1990").astype("int64")
+        w["is_tegla"] = (w["ingatlan_altipus"].isin(["Altbau (<1945)", "Neubau (>2000)",
+                                                     "1991-2000"])).astype("int64")
+        print(f"[wien] panel-proxy (1945-1990 korszak): {int(w['is_panel'].sum())} db")
     w = derive_core(w)
     w = apply_network(
         w, "wien_nordbahnhof",

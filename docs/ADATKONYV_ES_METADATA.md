@@ -269,3 +269,25 @@ A bécsi mester adathalmaz (`data/processed/wien_nordbahnhof_szamitott_master.pa
 kanonikus sémát követi, mint Kőbánya. A teljes elemzési csővezetéket a
 `report_engine/` csomag futtatja (`python generate_area_report.py --all`), a kimeneti
 többterületes portál pedig a `html_reports/index.html`.
+
+## Adatrétegezési szabály (nyers vs. származtatott)
+
+- `data/raw/` — KIZÁRÓLAG a scrape-elt nyers adat, változtatás nélkül.
+- `data/processed/` — a **kanonikus séma** (`data/schema.yaml`): azonosítók, árak,
+  fizikai jellemzők + a pipeline által DEFINÍCIÓ SZERINT számolt származtatott
+  változók (térbeli távolságok, hálózati mutatók, izokrón-dummyk, log-árak,
+  kategóriák). Minden képlet itt és a `scripts/`-ben dokumentált; a processed
+  fájlokat tilos kézzel szerkeszteni.
+- A notebookok kizárólag elemzés-specifikus átalakításokat számolnak
+  (pl. interakciók, modell-dummyk), és SOHA nem írnak vissza a processed-be.
+
+## Bécsi adat-őszinteség (2026-10-07 óta)
+
+- **Koordináta-precizitás:** a willhaben a magánszféra miatt szórja a
+  koordinátákat (1037 hirdetésből 324 egyedi koordinátapár). A
+  `minta_garantalt_pontos` bécsi kritériuma: **egyedi koordinátapár** (1) vs.
+  megosztott, körzeti szintű pont (0); `geokodolas_pontossag`:
+  `A_egyedi_koordinata` / `B_megosztott_koordinata`.
+- **Panel-proxy:** bécsi `is_panel = 1` az `ingatlan_altipus == '1945-1990'`
+  korszak esetén (az iparosított technológiájú korszak közelítése — NEM
+  épületszintű azonosítás, hanem dokumentált proxy; 68 hirdetés).

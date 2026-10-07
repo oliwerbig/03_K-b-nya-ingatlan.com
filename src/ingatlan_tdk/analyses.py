@@ -274,22 +274,37 @@ def sar_sem(area=None, force=False):
         w = KNN.from_array(xy, k=8)
         w.transform = "R"
         out = {}
-        # OLS + LM-tesztek
+        # OLS + LM-tesztek (zárt alakú, Burridge/Anselin — a spreg e verziója
+        # nem tartalmaz LM-diagnosztikát, ezért kézzel számoljuk)
         Xc = sm.add_constant(X)
         ols = sm.OLS(d["log_nm_ar"], Xc).fit()
         out["ols"] = pd.DataFrame({"valtozo": ols.params.index, "coef": ols.params.values,
                                    "p": ols.pvalues.values, "r2": ols.rsquared})
         try:
-            from spreg.diagnostics import lm_ratios
-            lm = lm_ratios(ols, w)
+            from scipy.stats import chi2 as _chi2
+            W = w.sparse.todense()
+            n = len(d)
+            e = ols.resid.values
+            sig2 = float(e @ e / n)
+            We = np.asarray(W @ e).ravel()
+            Wy = np.asarray(W @ d["log_nm_ar"].values).ravel()
+            T1 = float(np.trace((W + W.T) @ W))
+            lm_err = (float(e @ We) / sig2) ** 2 / T1
+            p_err = float(1 - _chi2.cdf(lm_err, 1))
+            Xb = ols.fittedvalues.values
+            M = np.eye(n) - Xc.values @ np.linalg.pinv(Xc.values.T @ Xc.values) @ Xc.values.T
+            WXb = np.asarray(W @ Xb).ravel()
+            D_lag = float(WXb @ M @ WXb) / sig2 + T1
+            lm_lag = (float(e @ Wy) / sig2) ** 2 / D_lag
+            p_lag = float(1 - _chi2.cdf(lm_lag, 1))
             out["lm"] = pd.DataFrame({
-                "teszt": ["LM_lag", "LM_error", "RLM_lag", "RLM_error"],
-                "stat": [float(lm[0]), float(lm[1]), float(lm[2]), float(lm[3])],
-                "p": [float(lm[4]), float(lm[5]), float(lm[6]), float(lm[7])],
+                "teszt": ["LM_lag", "LM_error"],
+                "stat": [round(lm_lag, 3), round(lm_err, 3)],
+                "p": [round(p_lag, 4), round(p_err, 4)],
             })
         except Exception:
-            out["lm"] = pd.DataFrame({"teszt": ["LM_lag", "LM_error", "RLM_lag", "RLM_error"],
-                                      "stat": [np.nan] * 4, "p": [np.nan] * 4})
+            out["lm"] = pd.DataFrame({"teszt": ["LM_lag", "LM_error"],
+                                      "stat": [np.nan] * 2, "p": [np.nan] * 2})
         from scipy import stats as _st
 
         def _tab(res, names, extra=None):
@@ -377,7 +392,7 @@ def gwr_analysis(area=None, force=False):
                 tvals["geokodolt_lat"] = df_agg["geokodolt_lat"].values
                 out["params"] = params
                 out["tvals"] = tvals
-                out["meta_gwr"] = pd.DataFrame({"bw": [int(gwr_results.bw)], "r2": [float(gwr_results.R2)],
+                out["meta_gwr"] = pd.DataFrame({"bw": [int(bw)], "r2": [float(gwr_results.R2)],
                                                 "adj_r2": [float(gwr_results.adj_R2)], "aicc": [float(gwr_results.aicc)]})
                 zcol = "log_vasut_m" if "log_vasut_m" in feats else feats[0]
                 sig_n = int((tvals[zcol].abs() >= 1.96).sum())

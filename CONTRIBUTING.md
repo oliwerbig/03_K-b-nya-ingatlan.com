@@ -5,7 +5,7 @@
 
 ## 1. Projektcél (röviden)
 
-**Notebook-alapú, kanonizált riportpipeline.** A `notebooks/00–16.ipynb` notebookok
+**Notebook-alapú, kanonizált riportpipeline.** A `notebooks/01–06.ipynb` notebookok
 tartalmazzák az ÖSSZES számítást és a módszertani dokumentációt, **területfüggetlenül**
 (bármely regisztrált adathalmazra futtathatók). A `tdk-report` parancs a kiválasztott
 területre lefuttatja a notebookokat, és „baked" HTML-riportokat exportál — ezek a
@@ -25,7 +25,7 @@ gyökér/
 │   ├── data_io.py         # séma-validáló betöltő (új adathalmazokhoz)
 │   ├── verify.py          # adatintegritás (hash + invariánsok)
 │   └── cli.py             # tdk-report / tdk-verify parancsok
-├── notebooks/              # 00–16.ipynb — MINDEN számítás + dokumentáció (a gerinc)
+├── notebooks/              # 01–06.ipynb — 6 narratív fejezet (számítások: src/ingatlan_tdk/analyses.py)
 ├── scripts/                # adatbeszerző/eszköz szkriptek (fetch_*, enrich_*, preprocess_*)
 ├── tests/                  # pytest tesztek
 ├── docs/                   # ADATKONYV + decisions/ (ADR-ek)
@@ -53,7 +53,7 @@ gyökér/
 ## 4. Elnevezési konvenciók
 
 - Fájlok/mappák: `snake_case`; kivételek a rögzített konvenciónevek (README.md, LICENSE, …).
-- Notebookok: `NN_tema_nev.ipynb` (NN kétszámjegyű, 00–16). A számozás a fejezetek
+- Notebookok: `NN_tema_nev.ipynb` (NN kétszámjegyű, 01–06). A számozás a fejezetek
   logikai sorrendje — átszámozás tilos tartalmi indok nélkül.
 - Scriptek: igei prefix (`fetch_`, `enrich_`, `preprocess_`).
 - Oszlopnevek: a `data/schema.yaml`-ban rögzítettek; boolean dummy-k `is_*`/`has_*`.
@@ -72,7 +72,7 @@ gyökér/
    (`from ingatlan_tdk._utils import *`); az adatbetöltés `load_szamitott_master()`
    argumentum nélkül — a területet a `TDK_ACTIVE_AREA` környezeti változó (vagy az
    `areas.yaml` `active_area`) határozza meg.
-2. **Minden számítás és dokumentáció a notebookokban él.** Új módszertan = új/бővített
+2. **Minden számítás az `ingatlan_tdk.analyses` modulban él, pontosan egyszer** (a notebookok a `cached_compute` cache-elt eredményeit jelenítik meg — párhuzamos modelkód tilos). Új módszertan = új függvény az analyses.py-ban + új/bővített
    notebook-fejezet (markdown + kód együtt), nincs külön „motor".
 3. A véletlent használó számításoknak **determinisztikusnak** kell lenniük
    (`random_state`/seed rögzítve), hogy a riportok reprodukálhatók legyenek.

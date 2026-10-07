@@ -87,3 +87,21 @@ A projekt teljes strukturális, elnevezési és munkafolyamat-szabályzata egy h
 - Döntésnapló: [`docs/decisions/`](docs/decisions/) — Architecture Decision Records (ADR).
 - Licenc: [`LICENSE`](LICENSE) (MIT, a kódra).
 - A szabályok betartatása: a `.github/workflows/ci.yml` (verify + pytest) és a `deploy-pages.yml` (verify → riport → Pages).
+
+
+## Kutatási szerkezet (2026-10 óta): 6 fejezet, egyetlen számítási réteg
+
+A kutatás 6 notebook-fejezetből álló logikai láncot követ, minden számítás
+**pontosan egyszer** fut (az `src/ingatlan_tdk/analyses.py` modulban definiálva,
+a `data/derived/results/` cache-ből töltve — a notebookokban nincs párhuzamos
+modelkód):
+
+1. `01_adatok_es_leiro` — adatőszinteség (bécsi koordináta-precizitás, panel-proxy), leíró statisztikák, klaszterek
+2. `02_terbeli_meresek` — immissziós sávok, izokrónok, POI, térképek (medián-rács, IDW)
+3. `03_vasuti_arhatas` — nyers gradiens → kanonikus hedonikus modell → Moran → SAR/SEM → GWR
+4. `04_robusztussag_es_kovetkezmenyek` — ML-CV, rent gap, Monte Carlo, LVC
+5. `05_osszefoglalo_dashboard` — KPI-k, hatásmátrix, hatásgörbék, diagramgaléria
+6. `06_teruletek_osszevetese` — pooled regresszió terület×sáv interakciókkal
+
+A cache a master-adat SHA256-ujjlenyomata + függvényverzió alapján
+érvénytelenítődik; `data/derived/` gitignore-olt (újragenerálható).

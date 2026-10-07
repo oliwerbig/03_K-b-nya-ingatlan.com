@@ -90,13 +90,11 @@ def report_main() -> int:
         out = os.path.join(args.output_dir, area)
         os.makedirs(out, exist_ok=True)
         print(f"=== RIPORT: [{area}] -> {out} (párhuzamos: {args.parallel}) ===", flush=True)
-        for i in range(16):
-            matches = sorted(glob.glob(os.path.join(notebooks_dir, f"{i:02d}_*.ipynb")))
-            if matches:
-                jobs.append((matches[0], out, area))
+        for nb in sorted(glob.glob(os.path.join(notebooks_dir, "0[1-5]_*.ipynb"))):
+            jobs.append((nb, out, area))
 
-    # 16. komparatív notebook: egyszer, területfüggetlenül (legvégén)
-    cmp = sorted(glob.glob(os.path.join(notebooks_dir, "16_*.ipynb")))
+    # 06. komparatív notebook: egyszer, területfüggetlenül (legvégén)
+    cmp = sorted(glob.glob(os.path.join(notebooks_dir, "06_*.ipynb")))
 
     if jobs:
         with ThreadPoolExecutor(max_workers=args.parallel) as pool:
@@ -156,8 +154,16 @@ ul.chapters li{{margin:.25rem 0}} a{{color:#2563eb;text-decoration:none}} a:hove
 </style></head>
 <body>
 <h1>🏘️ IFK-TDK 2026 — Területi ingatlanpiaci riportok</h1>
-<p>A riportok a kutatási notebookok (00–16) futtatott exportjai, területenként. A vasúti infrastruktúra
-ingatlanpiaci hatásának vizsgálatához készült elemzések.</p>
+<p>A riportok a kutatás <b>6 fejezetből álló logikai láncát</b> követik — minden számítás egyszer,
+egy közös elemző modulban készül, a fejezetek egymásra épülnek:</p>
+<ol style="color:#334155;line-height:1.7">
+<li><b>Adatok és leíró statisztika</b> — megbízható-e az adat, és mit tudunk róla?</li>
+<li><b>Térbeli mérések</b> — hogyan mérjük a vasutat (immissziós sávok, izokrónok, POI)?</li>
+<li><b>Vasúti árhatás</b> — mekkora és hol a hatás (nyers → kontrollált → térbeli modellek)?</li>
+<li><b>Robusztusság és következmények</b> — ML-ellenőrzés, rent gap, kockázat, felértékelődés.</li>
+<li><b>Összefoglaló dashboard</b> — a számok egy helyen, interaktív galériával.</li>
+<li><b>Területek összevetése</b> — pooled regresszió terület×sáv interakciókkal.</li>
+</ol>
 {cmp}
 {"".join(cards)}
 </body></html>"""

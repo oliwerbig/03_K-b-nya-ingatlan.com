@@ -1,4 +1,7 @@
 ## [Unreleased]
+- feat: unified analyses module + cached_compute cache layer — every computation defined once
+- refactor: 17 notebooks restructured into 6 narrative chapters (01 data, 02 spatial, 03 rail effect, 04 robustness, 05 dashboard, 06 comparison)
+
 - fix: bécsi koordináta-precizitás (egyedi koordinátapár = pontos), panel-proxy (1945-1990 korszak)
 - feat: kanonikus hedonikus specifikáció (_utils.fit_canonical_hedonic) — a 04/07/15 azonos számokat ad
 - feat: párhuzamos riportépítés (tdk-report --parallel), GWR interval-keresés, karcsúsított CV

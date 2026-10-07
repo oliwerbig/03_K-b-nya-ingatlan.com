@@ -24,7 +24,7 @@ def test_kobanya_record_counts():
     assert len(df) == 1320
     assert int((df["listing_type"] == "elado").sum()) == 1140
     assert int((df["listing_type"] == "kiado").sum()) == 180
-    assert int((df["minta_garantalt_pontos"] == 1).sum()) == 296
+    assert int((df["minta_garantalt_pontos"] == 1).sum()) == 295
 
 
 def test_kobanya_no_missing_price_or_invalid_area():

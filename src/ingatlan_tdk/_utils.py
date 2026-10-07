@@ -443,17 +443,25 @@ def cached_compute(area, key, fn, force=False):
 
     res = fn()
     if isinstance(res, dict):
-        os.makedirs(base, exist_ok=True)
+        # NORMALIZÁLÁS: a skalárokat MINDIG DataFrame{'ertek'}-be csomagoljuk,
+        # hogy az első számítás és a cache-betöltés AZONOS szerkezetet adjon.
+        norm = {}
         for k, v in res.items():
+            if isinstance(v, pd.DataFrame):
+                norm[k] = v
+            elif isinstance(v, pd.Series):
+                norm[k] = v.to_frame('ertek')
+            elif isinstance(v, (int, float, str, bool)) or v is None:
+                norm[k] = pd.DataFrame({'ertek': [v]})
+            else:
+                norm[k] = v
+        os.makedirs(base, exist_ok=True)
+        for k, v in norm.items():
             p2 = os.path.join(base, k + '.parquet')
             if isinstance(v, pd.DataFrame):
                 v.to_parquet(p2)
-            elif isinstance(v, pd.Series):
-                v.to_frame('ertek').to_parquet(p2)
-            elif isinstance(v, (int, float, str, bool)) or v is None:
-                pd.DataFrame({'ertek': [v]}).to_parquet(p2)
         _save_meta()
-        return res
+        return norm
     if isinstance(res, pd.DataFrame):
         res.to_parquet(base + '.parquet')
         _save_meta()

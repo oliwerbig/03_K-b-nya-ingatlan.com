@@ -382,6 +382,47 @@ def drop_constant_columns(X):
     return X[keep]
 
 
+# === API-kulcsok (env-ből; SOHA nem kerülnek a repóba) ===
+
+
+def _load_dotenv():
+    """Helyi .env betöltése (gitignore-olt) — a környezeti változók elsőbbségével."""
+    import os as _os
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    p = _os.path.join(root, ".env")
+    if not _os.path.exists(p):
+        return
+    try:
+        for line in open(p, encoding="utf-8"):
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            _os.environ.setdefault(k.strip(), v.strip())
+    except Exception:
+        pass
+
+
+def carto_key():
+    """Carto API-kulcs az env-ből (CARTO_API_KEY); üres string, ha nincs beállítva."""
+    _load_dotenv()
+    return os.environ.get("CARTO_API_KEY", "").strip()
+
+
+def carto_tile_url(style="voyager", z="{z}", x="{x}", y="{y}"):
+    """Ingyenes Carto csempe-URL; ha van API-kulcs, hozzáfűzi (magasabb limit)."""
+    base = f"https://a.basemaps.cartocdn.com/rastertiles/{style}/{z}/{x}/{y}.png"
+    k = carto_key()
+    return base + (f"?api_key={k}" if k else "")
+
+
+def carto_style_url(style="positron"):
+    """Carto vektoros stílus-URL a plotly mapbox/maplibre alaptérképhez (kulccsal, ha van)."""
+    base = f"https://basemaps.cartocdn.com/gl/{style}-gl-style/style.json"
+    k = carto_key()
+    return base + (f"?api_key={k}" if k else "")
+
+
 # === Számítási cache: minden elemzés pontosan egyszer fut ===
 
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(

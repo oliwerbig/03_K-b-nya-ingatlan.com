@@ -37,6 +37,8 @@ jobs:
         run: python -m ingatlan_tdk verify
 
       - name: Build area reports
+        env:
+          CARTO_API_KEY: ${{ secrets.CARTO_API_KEY }}
         run: python -m ingatlan_tdk report --all
 
       - name: Setup Pages

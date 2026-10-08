@@ -28,4 +28,6 @@ jobs:
         run: python -m ingatlan_tdk verify
 
       - name: Tests
+        env:
+          CARTO_API_KEY: ${{ secrets.CARTO_API_KEY }}
         run: pytest tests/ -q

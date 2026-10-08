@@ -81,8 +81,6 @@ def list_available_areas() -> list:
     for f in os.listdir(DATA_DIR_PROCESSED):
         if f.endswith("_szamitott_master.parquet"):
             clean_name = f.replace("_szamitott_master.parquet", "")
-            if clean_name.startswith("kobanya"):
-                clean_name = "kobanya"
             areas.append(clean_name)
     cfg = load_areas_config()
     for aid in cfg.get("areas", {}).keys():
@@ -324,6 +322,23 @@ EPITES_EVE_LABELS = [
 # POI-sávok (hálózati elérhetőség)
 POI_BINS = [0.0, 375.0, 750.0, 1125.0]
 POI_LABELS = ["5p (0-375 m)", "10p (375-750 m)", "15p (750-1125 m)"]
+
+# === A sávhatárok EGYETLEN forrása a data/schema.yaml (importkor felülírja a fentieket) ===
+try:
+    import yaml as _yaml
+
+    _sc = _yaml.safe_load(open(os.path.join(_PROJECT_ROOT, "data", "schema.yaml"), encoding="utf-8"))
+    VASUT_IMMISSZIO_BINS = [float(b) for b in _sc["immission_bands"]["bins"]] + [np.inf]
+    VASUT_IMMISSZIO_LABELS = list(_sc["immission_bands"]["labels"])
+    IZOKRON_BINS = [float(b) for b in _sc["isochrone_bands"]["bins"]]
+    IZOKRON_LABELS = list(_sc["isochrone_bands"]["labels"])
+    POI_BINS = [float(b) for b in _sc["poi_bands"]["bins"]]
+    if "labels" in _sc.get("poi_bands", {}):
+        POI_LABELS = list(_sc["poi_bands"]["labels"])
+    EPITES_EVE_BINS = [float(b) for b in _sc["era_bands"]["bins"]] + [np.inf]
+    EPITES_EVE_LABELS = list(_sc["era_bands"]["labels"])
+except Exception:
+    pass
 
 # === Kanonikus sáv-dummy építők (robusztus, üres kategória-biztos) ===
 

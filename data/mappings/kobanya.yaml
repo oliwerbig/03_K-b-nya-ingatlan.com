@@ -1,0 +1,73 @@
+# data/mappings/kobanya.yaml — ingatlan.com -> kanonikus séma (név + típus-transzformáció)
+schema_version: 2
+source: ingatlan.com
+
+vocab:
+  panel_re: "panel"
+  tegla_re: "tegla"
+  garazs_re: "garázs|garazs|beálló|beallo"
+  futes_categories:
+    tavfutes: "távfűtés|tavfutes"
+    gaz: "gázkazán|gazkazan|gázcirkó|gazcirko"
+    elektromos: "villany|hőszivattyú|hoszivattyu"
+    kozponti: "központi|kozponti"
+
+columns:
+  listing_id: {from: listing_id, to: string}
+  url: {from: url, to: string}
+  title: {from: title, to: string}
+  cim_teljes: {from: cim_teljes, to: string}
+  iranyitoszam: {from: iranyitoszam, to: string}
+  varos: {from: varos, to: string}
+  utca: {from: utca, to: string}
+  hazszam: {from: hazszam, to: string}
+  cim_forras: {from: cim_minoseg, to: string}
+  gyujtes_datuma: {from: crawl_datuma, to: string}
+  ingatlan_tipus: {from: url, to: string, regex_replace: ["^https://ingatlan\\.com/[^/]+/(elado|kiado)\\+([a-z-]+)/.*$", "\\2"]}
+  price_huf: {from: ar, to: float}
+  alapterulet_nm: {from: alapterulet_nm, to: float}
+  szobaszam_osszes: {from: szobak_szama, to: float}
+  epites_eve: {from: epites_eve, to: float}
+  epites_eve_szoveg: {from: param_Epites_eve, to: string}
+  allapot: {from: param_Ingatlan_allapota, to: string}
+  allapot_kod:
+    {from: param_Ingatlan_allapota, to: ordinal_map,
+     map: {"felújítandó": 1, "felújításra szorul": 1, "közepes állapotú": 2, "jó állapotú": 3,
+           "felújított": 4, "újszerű": 5, "új építésű": 6}}
+  has_lift: {from: param_Lift, to: bool, map: {"van": 1, "nincs": 0}}
+  has_klima: {from: param_Legkondicionalo, to: bool, map: {"van": 1, "nincs": 0}}
+  emelet: {from: param_Emelet, to: string}
+  emelet_szam: {from: param_Emelet, to: float}
+  epulet_szintjei_szam: {from: param_Epulet_szintjei, to: float}
+  erkely_nm: {from: param_Erkely_merete, to: float}
+  futes: {from: param_Futes, to: string}
+  energetikai_tanusitvany: {from: param_Energetikai_tanusitvany, to: string}
+  szigeteles: {from: param_Szigeteles, to: string}
+  tetoter: {from: param_Tetoter, to: string}
+  panelprogram: {from: param_Panelprogram, to: string}
+  kertkapcsolatos: {from: param_Kertkapcsolatos, to: string}
+  parkolas: {from: param_Parkolas, to: string}
+  parkolohely_ara: {from: param_Parkolohely_ara, to: float}
+  parkolohelyek_szama: {from: param_Parkolohelyek_szama, to: float}
+  pince: {from: param_Pince, to: string}
+  napelem: {from: param_Napelem, to: string}
+  komfort: {from: param_Komfort, to: string}
+  belmagassag_raw: {from: param_Belmagassag, to: string}
+  akadalymentesitett: {from: param_Akadalymentesitett, to: string}
+  furdo_wc: {from: param_Furdo_es_wc, to: string}
+  tajolas: {from: param_Tajolas, to: string}
+  kilatas: {from: param_Kilatas, to: string}
+  kozos_koltseg_huf: {from: param_Kozos_koltseg, to: float}
+  rezsikoltseg_huf: {from: param_Rezsikoltseg, to: float}
+  atlag_gazfogyasztas: {from: param_Atlag_gazfogyasztas, to: string}
+  atlag_aramfogyasztas: {from: param_Atlag_aramfogyasztas, to: string}
+  butorozott: {from: param_Butorozott, to: string}
+  koltozheto: {from: param_Koltozheto, to: string}
+  min_berleti_ido: {from: param_Min._berleti_ido, to: string}
+  gepesitett: {from: param_Gepesitett, to: string}
+  kisallat: {from: param_Kisallat, to: string}
+  dohanyzas: {from: param_Dohanyzas, to: string}
+  leiras: {from: leiras, to: string}
+  fenykepek_szama: {from: fenykepek_szama, to: float}
+  lat_portal: {from: lat_jsonld, to: float}
+  lon_portal: {from: lon_jsonld, to: float}

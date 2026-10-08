@@ -171,18 +171,102 @@ egy közös elemző modulban készül, a fejezetek egymásra épülnek:</p>
         f.write(html)
 
 
+def pipeline_main() -> int:
+    """A 3-rétegű adatfolyam vezérlése: extract -> geocode -> canonize -> verify -> report.
+
+    Determinizmus: rögzített fázissorrend, rendezett feldolgozás; a geokódolás
+    a permanens cache-ből dolgozik (új címeket csak egyszer kérdez le).
+    """
+    import argparse
+    import subprocess
+
+    import yaml
+
+    ap = argparse.ArgumentParser(description="3-rétegű adatfolyam (extract→geocode→canonize→verify→report)")
+    ap.add_argument("--dataset", help="Csak egy adathalmaz")
+    ap.add_argument("--all", action="store_true", help="Az összes regisztrált adathalmaz")
+    ap.add_argument("--stage", nargs="+", choices=["extract", "geocode", "canonize", "verify", "report"],
+                    default=["extract", "geocode", "canonize", "verify"],
+                    help="Fázisok (alap: extract geocode canonize verify)")
+    ap.add_argument("--skip-report", action="store_true", help="A riportgenerálás kihagyása")
+    args = ap.parse_args()
+
+    with open(os.path.join(ROOT, "data", "areas.yaml"), encoding="utf-8") as f:
+        areas = yaml.safe_load(f)
+    ids = list(areas["areas"].keys()) if args.all else ([args.dataset] if args.dataset else [areas.get("active_area", "kobanya")])
+    if args.dataset:
+        ids = [i for i in ids if i == args.dataset]
+    if not ids:
+        print("Nincs feldolgozandó adathalmaz.")
+        return 2
+
+    py = sys.executable
+    scripts = os.path.join(ROOT, "scripts")
+    geo_cfg = areas.get("geocoding", {})
+
+    def run(cmd_list):
+        print("  ->", " ".join(cmd_list))
+        return subprocess.run(cmd_list, cwd=ROOT).returncode
+
+    rc = 0
+    for aid in ids:
+        cfg = areas["areas"][aid]
+        print(f"=== ADATHALMAZ: {aid} ({cfg['source']}) ===")
+        if "extract" in args.stage:
+            ext = os.path.join(scripts, f"{cfg['extractor']}.py")
+            rc |= run([py, ext,
+                       "--raw-dir", os.path.join(ROOT, cfg["data"]["raw_dir"]),
+                       "--out-xlsx", os.path.join(ROOT, cfg["data"]["extracted_xlsx"]),
+                       "--out-log", os.path.join(ROOT, cfg["data"]["extract_log"]),
+                       "--out-inventory", os.path.join(ROOT, cfg["data"]["inventory"])])
+        if "geocode" in args.stage:
+            rc |= run([py, os.path.join(scripts, "geocode_addresses.py"),
+                       "--extracted-xlsx", os.path.join(ROOT, cfg["data"]["extracted_xlsx"]),
+                       "--cache-json", os.path.join(ROOT, geo_cfg["cache_dir"], f"{aid}_geocode_cache.json"),
+                       "--user-agent", geo_cfg["user_agent"],
+                       "--rate-limit-s", str(geo_cfg.get("rate_limit_s", 1.1))])
+        if "canonize" in args.stage:
+            rc |= run([py, "-m", "ingatlan_tdk", "canonize", "--dataset", aid])
+        if "verify" in args.stage:
+            rc |= run([py, "-m", "ingatlan_tdk", "verify", "--gen-sums"])
+    if "report" in args.stage and not args.skip_report:
+        rc |= run([py, "-m", "ingatlan_tdk", "report", "--all"])
+    return rc
+
+
+def canonize_main() -> int:
+    """python -m ingatlan_tdk canonize --dataset X | --all — a 3. réteg generálása."""
+    import argparse
+    import subprocess
+
+    ap = argparse.ArgumentParser(description="Kánonizálás (mapping + levezetések + export)")
+    ap.add_argument("--dataset", help="Csak egy adathalmaz")
+    ap.add_argument("--all", action="store_true")
+    a = ap.parse_args()
+    cmd = [sys.executable, os.path.join(ROOT, "scripts", "canonize_schema.py")]
+    if a.all:
+        cmd.append("--all")
+    elif a.dataset:
+        cmd += ["--dataset", a.dataset]
+    return subprocess.run(cmd, cwd=ROOT).returncode
+
+
 def main() -> int:
     a = sys.argv[1:]
     if not a or a[0] in ("-h", "--help"):
-        print("Használat: python -m ingatlan_tdk {report|verify} [opciók]")
+        print("Használat: python -m ingatlan_tdk {pipeline|report|verify|canonize} [opciók]")
         return 0 if a else 2
     cmd, rest = a[0], a[1:]
     if cmd == "report":
         fn = report_main
     elif cmd == "verify":
         fn = verify_main
+    elif cmd == "pipeline":
+        fn = pipeline_main
+    elif cmd == "canonize":
+        fn = canonize_main
     else:
-        print(f"Ismeretlen parancs: {cmd} (report|verify)")
+        print(f"Ismeretlen parancs: {cmd} (pipeline|report|verify|canonize)")
         return 2
     sys.argv = [sys.argv[0]] + rest
     return fn() or 0

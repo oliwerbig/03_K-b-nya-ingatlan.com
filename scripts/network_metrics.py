@@ -28,21 +28,18 @@ CATEGORIES = [
 # POI-count sávok: az ÖSSZES szolgáltatás-pont (POI geojson minden eleme)
 POI_BANDS = [375.0, 750.0, 1125.0]
 
-KNOWN_STATIONS = {
-    "kobanya": [
-        ("Kőbánya felső vasútállomás", 47.4936, 19.1278),
-        ("Kőbánya alsó vasútállomás", 47.4851, 19.1309),
-        ("Kőbánya-Kispest vasútállomás", 47.4644, 19.1492),
-        ("Rákos vasútállomás", 47.4997, 19.1678),
-    ],
-    "wien_nordbahnhof": [
-        ("Wien Praterstern (Nordbahnhof)", 48.2188, 16.3924),
-        ("Wien Traisengasse", 48.2325, 16.3881),
-        ("Wien Handelskai", 48.2422, 16.3850),
-        ("Wien Franz-Josefs-Bahnhof", 48.2267, 16.3611),
-        ("Wien Mitte", 48.2056, 16.3842),
-    ],
-}
+def _known_stations(area_id):
+    """Fallback-állomások az areas.yaml-ből (a kódban SEMMILYEN területnév nincs)."""
+    import os as _os
+    import yaml as _yaml
+    cfg_path = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "data", "areas.yaml")
+    try:
+        with open(cfg_path, encoding="utf-8") as f:
+            cfg = _yaml.safe_load(f)
+        st = ((cfg.get("areas") or {}).get(area_id) or {}).get("spatial", {}).get("fallback_stations", []) or []
+        return [tuple(x) for x in st]
+    except Exception:
+        return []
 
 
 def _proj(lat, lon, mid_lat):
@@ -191,7 +188,7 @@ def compute_area(area_id, df, street_file, transit_file, poi_geojson_path):
     # Fallback ismert állomások
     found_vasut = any(c == "vasut" for _, c, _, _, _ in targets)
     if not found_vasut:
-        for name, lat, lon in KNOWN_STATIONS.get(area_id, []):
+        for name, lat, lon in _known_stations(area_id):
             targets.append((f"st_{name}", "vasut", lat, lon, name))
 
     # Csatlakoztatás

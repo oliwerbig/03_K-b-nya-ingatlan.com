@@ -48,3 +48,6 @@ data/derived/
 
 # Excel lock fajlok
 ~$*
+
+# Nyers HTML-ek (a scraper-output nem kerül a repóba; az index.csv-k igen)
+data/raw/**/*.html

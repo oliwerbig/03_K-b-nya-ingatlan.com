@@ -1,16 +1,17 @@
 # ==============================================================================
-# IFK-TDK 2026 Kutatási Adatséma (Data Schema Specification) — KANONIKUS VÁLTOZAT
+# IFK-TDK 2026 Kutatási Adatséma (Data Schema Specification) — KANONIKUS VÁLTOZAT v2
 # ==============================================================================
-# A vasúti ingatlanpiaci kutatás egyetlen, kanonikus adatsémája.
-# Minden feldolgozott (számított) terület adathalmazának ehhez kell illeszkednie.
-# A sávhatárok és címkék EGYETLEN forrása ez a fájl (a _utils konstansai innen származnak).
+# Az EGYETLEN, adatforrás-agnosztikus kanonikus adatséma. A processed réteg
+# (data/processed/<dataset>/) minden adathalmaza ehhez illeszkedik.
+# A sávhatárok, címkék, pufferek és típusok EGYETLEN forrása ez a fájl.
+
+version: 2
 
 # ==============================================================================
 # Szigorúan rögzített kutatási sávrendszerek (Canon Bins)
 # ==============================================================================
 immission_bands:
-  # Sáv 1: Vasúti immisszió — EUKLIDÉSZI távolság a legközelebbi vágánytól
-  metric: "euklideszi"
+  metric: "euklideszi"             # légvonali távolság a legközelebbi vágánytól
   bins: [0, 150, 300, 500, 1000, 2000]
   labels:
     - "<150 m"
@@ -22,9 +23,8 @@ immission_bands:
   reference: ">2000 m (referencia)"
 
 isochrone_bands:
-  # Sáv 2: Gyalogos izokrónok — HÁLÓZATI sétatávolság, 1.25 m/s
-  metric: "halozati"
-  speed_ms: 1.25                 # gyalogsebesség: 1.25 m/s = 4.5 km/h
+  metric: "halozati"               # hálózati sétatávolság, 1.25 m/s
+  speed_ms: 1.25
   speed_m_per_min: 75.0
   bins: [0, 375, 750, 1125]
   labels:
@@ -34,22 +34,12 @@ isochrone_bands:
   reference: ">1125 m (kívül)"
 
 poi_bands:
-  # POI-sávok: az izokrón sávokkal azonos határok, HÁLÓZATI elérhetőség szerint
   metric: "halozati"
   bins: [0, 375, 750, 1125]
   columns: ["poi_5p_count", "poi_10p_count", "poi_15p_count"]
 
-size_bands:
-  # Leíró méretkategóriák — adatalapú (kvantilis) határok, CSAK ábrákhoz.
-  # A modellekben a méret folytonos log-alakban szerepel.
-  source: "kvantilis (Q25/median/Q75 a kőbányai eladó mintán: 44/53/68 m2)"
-  bins: [0, 44, 53, 68]
-  labels: ["<44 m2", "44-53 m2", "53-68 m2", ">=68 m2"]
-
 era_bands:
-  # Építési korszakok az epulet_kora_ev (épületkor, év) alapján — adatalapú
-  # határok, egybeesnek a magyar technológia-rezsim váltásokkal.
-  source: "epulet_kora_ev"
+  source: "epulet_kora_ev"         # épületkor (év), a crawl-évből levezetve
   bins: [0, 10, 30, 60]
   labels:
     - "0-10 év (új)"
@@ -58,86 +48,94 @@ era_bands:
     - "60+ év (háború előtti)"
 
 # ==============================================================================
-# Letöltési pufferek (adatgyűjtési rétegenként, a vizsgálati sugárból levezetve)
+# Letöltési pufferek — MINDEN OSM/POI letöltés legalább 2000 m pufferrel!
 # ==============================================================================
 buffers:
-  rail_buffer_m: 2000      # a legnagyobb immissziós sávhatár; a vágánygeometriát
-                           # a terület + 2000 m pufferrel kell letölteni (teljesség)
-  poi_buffer_m: 1125       # a legnagyobb izokrón; a hálózati >= légvonali
-                           # egyenlőtlenség miatt a 1125 m légvonali puffer
-                           # teljességet garantál a hálózati POI-sávokhoz
-  network_buffer_m: 1250   # úthálózat: 1125 m + útvonal-számítási margin
+  rail_buffer_m: 2000
+  poi_buffer_m: 2000
+  network_buffer_m: 2000
+  min_buffer_m: 2000               # globális minimum-szabály
 
 # ==============================================================================
-# Kötelező mezők (Required Columns)
+# Kötelező mezők (Required Columns) — minden processed masterben létezniük kell
 # ==============================================================================
 required:
-  # Alapazonosítók és cím
+  # Alapazonosítók és cím (a cím az ELSŐDLEGES helymeghatározó!)
   listing_id: "object"
-  listing_type: "object"         # "elado" vagy "kiado"
+  listing_type: "object"           # "elado" | "kiado"
+  ingatlan_tipus: "object"         # lakas | haz | ipari | ... (a kutatási mintaszűrés kulcsa)
   cim_teljes: "object"
-  varosresz: "object"
+  iranyitoszam: "object"
+  varos: "object"
+  utca: "object"
+  hazszam: "object"
+  cim_forras: "object"             # strukturált | szöveges | hiányzik
+  url: "object"
+  gyujtes_datuma: "object"         # crawl-dátum (index.csv / manifest)
 
   # Pénzügyi és ármutatók
   price_huf: "float64"
   ar_millio_ft: "float64"
-  ar_ezer_ft_ho: "float64"
   nm_ar_huf: "float64"
-  log_ar: "float64"              # ln(price_huf)
-  log_nm_ar: "float64"           # ln(nm_ar_huf)
-  is_ar_outlier: "int64"         # 0 vagy 1
+  log_ar: "float64"
+  log_nm_ar: "float64"
+  is_ar_outlier: "int64"
 
   # Ingatlanfizikai paraméterek
   alapterulet_nm: "float64"
-  korrigalt_alapterulet_nm: "float64" # alapterulet + 0.5 * erkely_nm
+  korrigalt_alapterulet_nm: "float64"
   szobaszam_osszes: "float64"
-  allapot_kod: "int64"           # 1..6 skála: 1=felújítandó, 2=közepes, 3=jó, 4=felújított, 5=újszerű, 6=új építésű
-  is_felujitando: "int64"        # 1 ha allapot_kod <= 2
-  is_ujszeru_vagy_uj: "int64"    # 1 ha allapot_kod >= 5
-  is_panel: "int64"              # 0 vagy 1
-  is_tegla: "int64"              # 0 vagy 1
-  has_lift: "int64"              # 0 vagy 1
-  has_klima: "int64"             # 0 vagy 1
-  has_erkely: "int64"            # 0 vagy 1 (korábbi név: van_erkely)
-  is_foldszint: "int64"          # 0 vagy 1
-  is_zaroszint: "int64"          # 0 vagy 1
-  epulet_kora_ev: "int64"        # épületkor évben (az epites_eve nyers mező megbízhatatlan!)
+  szobaszam_kategoria: "object"    # 1 szoba | 2 szoba | 3 szoba | 4+ szoba
+  allapot_kod: "int64"             # 1..6: 1=felújítandó, 2=közepes, 3=jó, 4=felújított, 5=újszerű, 6=új építésű
+  is_felujitando: "int64"
+  is_ujszeru_vagy_uj: "int64"
+  is_panel: "int64"
+  is_tegla: "int64"
+  has_lift: "int64"
+  has_klima: "int64"
+  has_erkely: "int64"
+  is_foldszint: "int64"
+  is_zaroszint: "int64"
+  is_tetoter: "int64"
+  epulet_kora_ev: "float64"        # NaN-honest: hiányzó építési év -> NaN (SOHA 0)
 
-  # Geokódolás és pontosság
+  # Geokódolás — KIZÁRÓLAG cím-alapú (a portál-koordináták soha nem pontosak)
   geokodolt_lat: "float64"
   geokodolt_lon: "float64"
-  minta_garantalt_pontos: "int64" # 1 ha tetőpont/pontos házszám, 0 ha tágabb
+  geokodolas_modszere: "object"    # "cim_nominatim"
+  geokodolas_pontossag: "object"   # hazszam | utca | korzet | nincs
+  minta_garantalt_pontos: "int64"  # 1 ⇔ hazszam-szintű címgeokódolás
 
-  # Sáv 1: Vasúti immissziós sávok (vágánytól mért EUKLIDÉSZI távolság)
+  # Sáv 1: Vasúti immissziós sávok (légvonali távolság a vágánytól)
   tavolsag_vasut_m: "float64"
-  vasut_zona: "object"           # 6 kategória a 0-150-300-500-1000-2000 m sávok szerint
-  is_vasut_immisszio_150m: "int64" # 1 ha tavolsag_vasut_m < 150
+  vasut_zona: "object"
+  is_vasut_immisszio_150m: "int64"
 
-  # Sáv 2: Vasúti gyalogos izokrón sávok (állomástól mért HÁLÓZATI távolság, 1.25 m/s)
+  # Sáv 2: Vasúti gyalogos izokrónok (állomástól mért HÁLÓZATI távolság)
   tavolsag_vasut_halozati_m: "float64"
   menetido_vasut_gyalog_perc: "float64"
-  vasut_5p_seta: "int64"         # 1 ha <= 375 m hálózaton
-  vasut_10p_seta: "int64"        # 1 ha <= 750 m hálózaton
-  vasut_15p_seta: "int64"        # 1 ha <= 1125 m hálózaton
+  vasut_5p_seta: "int64"
+  vasut_10p_seta: "int64"
+  vasut_15p_seta: "int64"
+
+  # Adatminőség
+  is_duplikalt_gyanus: "int64"     # azonos cím+terület+ár duplikátum-jelölő
 
 # ==============================================================================
-# Opcionális mezők (Optional Columns - ha rendelkezésre áll)
+# Opcionális mezők (Optional Columns - ha az adatforrás szolgáltatja)
 # ==============================================================================
 optional:
-  url: "object"
-  title: "object"
-  postal_code: "object"
-  varos: "object"
-  utca: "object"
-  hazszam_vegleges: "object"
-  allapot: "object"
+  varosresz: "object"
+  title: "object"                 # a hirdetés portál-címe (nem minden forrásnál értelmes)
+  allapot: "object"                # nyers állapot-szöveg
   ingatlan_altipus: "object"
   epites_eve: "float64"
   epites_eve_kategoria: "object"
+  epites_eve_szoveg: "object"      # a portál szöveges korszak-mezője (pl. "1950 előtt")
+  epites_eve_becsult: "float64"
   erkely_nm: "float64"
   szobaszam_egesz: "float64"
   szobaszam_fel: "float64"
-  szobaszam_kategoria: "object"
   atlagos_szobameret_nm: "float64"
   emelet: "object"
   emelet_szam: "float64"
@@ -156,42 +154,74 @@ optional:
   kertkapcsolatos: "object"
   kozos_koltseg_huf: "float64"
   rezsikoltseg_huf: "float64"
+  kaucio_huf: "float64"
   hirdeto_tipus: "object"
   iroda_neve: "object"
+  leiras: "object"                 # a hirdetés teljes szövege (nyers)
   leiras_hossz: "float64"
   fenykepek_szama: "float64"
-  geokodolas_modszere: "object"
-  geokodolas_pontossag: "object"
 
-  # Valuta (EUR-os területekhez)
+  # A portál-koordináták CSAK nyers mellékinformációként (soha nem pontosak!)
+  lat_portal: "float64"
+  lon_portal: "float64"
+  portal_pozicio_sugar_m: "float64"
+
+  # Valuta (EUR-os területek)
   price_eur: "float64"
   nm_ar_eur: "float64"
   kozos_koltseg_eur: "float64"
   rezsikoltseg_eur: "float64"
   kaucio_eur: "float64"
 
-  # Városi tömegközlekedési izokrónok (ha van a területen)
+  # Budapest-specifikus nyers mezők
+  parkolas: "object"
+  parkolohely_ara: "float64"
+  parkolohelyek_szama: "float64"
+  pince: "object"
+  napelem: "object"
+  komfort: "object"
+  belmagassag_raw: "object"
+  akadalymentesitett: "object"
+  furdo_wc: "object"
+  tajolas: "object"
+  kilatas: "object"
+  szigeteles: "object"
+  tetoter: "object"
+  panelprogram: "object"
+  gepesitett: "object"
+  kisallat: "object"
+  dohanyzas: "object"
+  atlag_gazfogyasztas: "object"
+  atlag_aramfogyasztas: "object"
+
+  # Városi tömegközlekedési izokrónok
   tavolsag_metro_halozati_m: "float64"
+  menetido_metro_gyalog_perc: "float64"
   metro_5p_seta: "int64"
   metro_10p_seta: "int64"
   metro_15p_seta: "int64"
   tavolsag_villamos_halozati_m: "float64"
+  menetido_villamos_gyalog_perc: "float64"
   villamos_5p_seta: "int64"
   villamos_10p_seta: "int64"
   villamos_15p_seta: "int64"
   tavolsag_busz_halozati_m: "float64"
+  menetido_busz_gyalog_perc: "float64"
   busz_5p_seta: "int64"
   busz_10p_seta: "int64"
+  busz_15p_seta: "int64"
   tavolsag_kotottpalya_halozati_m: "float64"
+  menetido_kotottpalya_gyalog_perc: "float64"
   kotottpalya_5p_seta: "int64"
   kotottpalya_10p_seta: "int64"
   kotottpalya_15p_seta: "int64"
   tavolsag_park_halozati_m: "float64"
+  menetido_park_gyalog_perc: "float64"
   park_5p_seta: "int64"
   park_10p_seta: "int64"
   park_15p_seta: "int64"
 
-  # POI-sávok: HÁLÓZATI elérhetőség a 0-375-750-1125 m sávokban
+  # POI-sávok (hálózati elérhetőség)
   poi_5p_count: "float64"
   poi_10p_count: "float64"
   poi_15p_count: "float64"
@@ -227,31 +257,6 @@ optional:
   legkozelebbi_kotottpalya_tipus: "object"
 
 # ==============================================================================
-# TILOS (nem-kanonikus) mezők — a számított masterből kikerülnek
-# (a nyers rétegben megmaradhatnak)
+# Szabály: a forrás-rétegben maradó, nem mappelt oszlopok SOHA nem kerülnek
+# a processed rétegbe (a canonizer csak a séma oszlopait írja ki).
 # ==============================================================================
-dropped:
-  - "tavolsag_mazsa_m"               # fókuszterület — kikerült a kánonból
-  - "tavolsag_mazsa_halozati_m"
-  - "kerulo_faktor_mazsa"
-  - "menetido_mazsa_gyalog_perc"
-  - "mazsa_5p_seta"
-  - "mazsa_10p_seta"
-  - "mazsa_15p_seta"
-  - "log_tavolsag_mazsa_m"
-  - "log_tavolsag_mazsa_halozati_m"
-  - "log_menetido_mazsa_perc"
-  - "tavolsag_belvaros_m"            # CBD — kikerült a kánonból
-  - "tavolsag_belvaros_halozati_m"
-  - "kerulo_faktor_belvaros"
-  - "menetido_belvaros_gyalog_perc"
-  - "log_tavolsag_belvaros_m"
-  - "log_tavolsag_belvaros_halozati_m"
-  - "log_menetido_belvaros_perc"
-  - "poi_375m_count"                 # → poi_5p_count
-  - "poi_750m_count"                 # → poi_10p_count
-  - "poi_1125m_count"                # → poi_15p_count
-  - "poi_15p_osszes_count"           # → poi_15p_count
-  - "price_million_huf"              # → ar_millio_ft
-  - "city"                           # → varos
-  - "_recovered_from_card"

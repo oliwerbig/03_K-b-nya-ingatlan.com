@@ -1,0 +1,53 @@
+# data/mappings/leopoldstadt.yaml — willhaben.at -> kanonikus séma
+schema_version: 2
+source: willhaben.at
+
+vocab:
+  panel_re: "plattenbau"
+  tegla_re: "altbau|neubau"
+  garazs_re: "garage|garagen|einstellplatz|tiefgarage"
+  futes_categories:
+    tavfutes: "fernwärme|fernwaerme"
+    gaz: "gas"
+    elektromos: "strom|wärmepumpe|waermepumpe|luftwärmepumpe"
+    kozponti: "zentral"
+  megujulo_re: "wärmepumpe|waermepumpe|solar|photovoltaik"
+
+columns:
+  listing_id: {from: listing_id, to: string}
+  url: {from: url, to: string}
+  title: {from: seo_title, to: string}
+  cim_teljes: {from: cim_teljes, to: string}
+  iranyitoszam: {from: iranyitoszam, to: string}
+  varos: {from: varos, to: string}
+  utca: {from: utca, to: string}
+  hazszam: {from: hazszam, to: string}
+  cim_forras: {from: cim_minoseg, to: string}
+  gyujtes_datuma: {from: crawl_datuma, to: string}
+  ingatlan_tipus: {from: PROPERTY_TYPE, to: string}
+  price_eur: {from: PRICE, to: float, decimal_comma: true}
+  nm_ar_eur: {from: PRICE/SQUARE_METER, to: float, decimal_comma: true}
+  alapterulet_nm: {from: ESTATE_SIZE/LIVING_AREA, to: float, decimal_comma: true}
+  szobaszam_osszes: {from: NO_OF_ROOMS, to: float, decimal_comma: true}
+  epites_eve: {from: CONSTRUCTION_YEAR, to: float}
+  allapot: {from: BUILDING_CONDITION, to: string}
+  allapot_kod:
+    {from: BUILDING_CONDITION, to: ordinal_map,
+     map: {"erstbezug": 6, "neuwertig": 5, "sehr gut/gut": 4, "gut": 3,
+           "renovierungsbedürftig": 1, "sanierungsbedürftig": 1, "projekt": 6}}
+  ingatlan_altipus: {from: BUILDING_TYPE, to: string}
+  emelet_szam: {from: FLOOR, to: float, decimal_comma: true}
+  futes: {from: HEATING, to: string}
+  energetikai_tanusitvany: {from: ENERGY_HWB_CLASS, to: string}
+  erkely_nm: {from: FREE_AREA/FREE_AREA_AREA, to: float, decimal_comma: true}
+  kozos_koltseg_eur: {from: ESTATE_PRICE/MONTHCOSTS_GROSS, to: float, decimal_comma: true}
+  kaucio_eur: {from: ADDITIONAL_COST/DEPOSIT, to: float, decimal_comma: true}
+  min_berleti_ido: {from: DURATION/HASTERMLIMIT, to: string}
+  koltozheto: {from: AVAILABLE_NOW, to: string}
+  iroda_neve: {from: CONTACT/COMPANYNAME, to: string}
+  hirdeto_tipus: {from: ISPRIVATE, to: string, map: {"1": "maganszemely", "0": "iroda"}}
+  lat_portal: {from: COORDINATES, to: float, split_take: 0}
+  lon_portal: {from: COORDINATES, to: float, split_take: 1}
+  portal_pozicio_sugar_m: {from: POSITION_RADIUS_METERS, to: float, decimal_comma: true}
+  leiras: {from: leiras, to: string}
+  fenykepek_szama: {from: fenykepek_szama, to: float}

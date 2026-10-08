@@ -1,51 +1,51 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""verify_master_data.py — IFK-TDK 2026 adatintegritás-ellenőrző.
+"""verify_master_data.py — IFK-TDK 2026 adatintegritás-ellenőrző (v2, invariáns-alapú).
 
-Két üzemmód:
-  python -m ingatlan_tdk verify            # ellenőrzés (SHA-256 + szerkezeti invariánsok)
-  python -m ingatlan_tdk verify --gen-sums # SHA256SUMS.txt (újra)generálása
-
-A SHA256SUMS.txt rögzíti a „frozen baseline" mester adatfájljainak
-kriptográfiai ellenőrző összegét (sha256sum formátum). Az ellenőrzés a
-hash-egyezés mellett a számított mester adathalmaz szerkezeti invariánsait
-is vizsgálja — a docs/ADATKONYV_ES_METADATA.md 5. szakaszának megfelelően.
+Nincs beégetett darabszám és nincs beégetett területnév — minden ellenőrzés
+a data/schema.yaml és a data/areas.yaml alapján, a friss processed kimenetekre.
+A SHA256SUMS.txt a frozen baseline hash-manifest (--gen-sums-szal újragenerálható).
 """
 
-import os
-import sys
 import argparse
 import hashlib
+import os
+
+import yaml
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SUMS_PATH = os.path.join(ROOT, "SHA256SUMS.txt")
+TEXT_EXTS = {".json", ".csv", ".geojson"}
 
-# A frozen baseline kanonikus mester fájljai (perjellel elválasztott relatív utak).
-FILES = [
-    "data/raw/kobanya_parsed_raw_corpus.json",
-    "data/raw/kobanya_ingatlan_nyers_master.db",
-    "data/raw/kobanya_ingatlan_nyers_alap_1320db.xlsx",
-    "data/raw/kobanya_elado_nyers.csv",
-    "data/raw/kobanya_kiado_nyers.csv",
-    "data/raw/wien_nordbahnhof_ingatlan_adatbazis.xlsx",
-    "data/processed/kobanya_ingatlan_szamitott_master.parquet",
-    "data/processed/kobanya_ingatlan_szamitott_master.db",
-    "data/processed/kobanya_ingatlan_szamitott_pontos.geojson",
-    "data/processed/kobanya_elado_szamitott.csv",
-    "data/processed/kobanya_kiado_szamitott.csv",
-    "data/processed/kobanya_ingatlan_szamitott_modellezes_1320db.xlsx",
-    "data/processed/wien_nordbahnhof_szamitott_master.parquet",
-    "data/processed/wien_nordbahnhof_pontos.geojson",
-]
+
+def load_cfg():
+    with open(os.path.join(ROOT, "data", "areas.yaml"), encoding="utf-8") as f:
+        areas = yaml.safe_load(f)
+    with open(os.path.join(ROOT, "data", "schema.yaml"), encoding="utf-8") as f:
+        schema = yaml.safe_load(f)
+    return areas, schema
+
+
+def tracked_files():
+    """A verifikálandó fájlok az areas.yaml-ből (dinamikusan, semmi beégetés)."""
+    areas, _ = load_cfg()
+    files = []
+    for aid, cfg in (areas.get("areas") or {}).items():
+        for key in ("extracted_xlsx", "extract_log", "inventory",
+                    "master_parquet", "human_xlsx", "pontos_geojson"):
+            rel = (cfg.get("data") or {}).get(key)
+            if rel:
+                files.append(rel)
+                if key == "pontos_geojson":
+                    base, ext = os.path.splitext(rel)
+                    files += [f"{base}_elado{ext}", f"{base}_kiado{ext}"]
+    files.append("data/schema.yaml")
+    files.append("data/areas.yaml")
+    return sorted(set(files))
 
 
 def _abs(rel):
     return os.path.join(ROOT, rel.replace("/", os.sep))
-
-
-# Szöveges fájlok, amelyeknél a hash-számítás CRLF->LF normalizálással történik.
-# (Windows checkouton CRLF, Linux CI-n LF van — így a hash platformfüggetlen.)
-TEXT_EXTS = {".json", ".csv"}
 
 
 def sha256(path):
@@ -64,7 +64,7 @@ def sha256(path):
 
 def generate_sums():
     lines = []
-    for rel in FILES:
+    for rel in tracked_files():
         p = _abs(rel)
         if not os.path.exists(p):
             print(f"[!] HIÁNYZÓ fájl, kihagyva: {rel}")
@@ -77,7 +77,7 @@ def generate_sums():
 
 def verify_sums():
     if not os.path.exists(SUMS_PATH):
-        return False, f"HIÁNYZÓ manifest: {SUMS_PATH} (futtasd: --gen-sums)"
+        return False, "HIÁNYZÓ manifest (futtasd: --gen-sums)"
     ok = True
     checked = 0
     with open(SUMS_PATH, "r", encoding="utf-8") as f:
@@ -92,128 +92,112 @@ def verify_sums():
                 print(f"[FAIL] hiányzó fájl: {rel}")
                 ok = False
                 continue
-            actual = sha256(p)
-            if actual != expected:
+            if sha256(p) != expected:
                 print(f"[FAIL] hash-eltérés: {rel}")
                 ok = False
     return ok, f"{checked} fájl ellenőrizve"
 
 
 def verify_structure():
+    import numpy as np
     import pandas as pd
 
+    areas, schema = load_cfg()
     results = []
-    warnings = []
-    kob = pd.read_parquet(_abs("data/processed/kobanya_ingatlan_szamitott_master.parquet"))
 
     def check(name, cond):
         results.append((name, bool(cond)))
 
-    # 1. Rekordszám és típusarány (frozen baseline)
-    check("kobanya összes rekord == 1320", len(kob) == 1320)
-    vc = kob["listing_type"].value_counts()
-    check("kobanya eladó == 1140", vc.get("elado", 0) == 1140)
-    check("kobanya kiadó == 180", vc.get("kiado", 0) == 180)
-    check("kobanya garantált pontos == 295", int((kob["minta_garantalt_pontos"] == 1).sum()) == 295)
+    for aid, cfg in (areas.get("areas") or {}).items():
+        parquet = _abs(cfg["data"]["master_parquet"])
+        if not os.path.exists(parquet):
+            results.append((f"{aid}: master parquet létezik", False))
+            continue
+        df = pd.read_parquet(parquet)
+        tag = aid
 
-    # 2. Ár/alapterület integritás
-    check("kobanya nincs hiányzó ár", int(kob["price_huf"].isna().sum()) == 0)
-    check("kobanya nincs érvénytelen alapterület", int((kob["alapterulet_nm"] <= 0).sum()) == 0)
+        # séma-követés
+        check(f"{tag}: minden required oszlop létezik", set(schema["required"]) <= set(df.columns))
+        check(f"{tag}: nincs duplikált listing_id",
+              int(df["listing_id"].duplicated().sum()) == 0)
+        check(f"{tag}: listing_type ⊆ {elado, kiado}",
+              set(df["listing_type"].dropna().unique()) <= {"elado", "kiado"})
+        check(f"{tag}: nincs hiányzó ár", int(df["price_huf"].isna().sum()) == 0)
+        check(f"{tag}: nincs érvénytelen (<=0) ár/alapterület",
+              int(((df["price_huf"] <= 0) | (df["alapterulet_nm"] <= 0)).sum()) == 0)
+        check(f"{tag}: korrigált >= nettó alapterület",
+              int((df["korrigalt_alapterulet_nm"] < df["alapterulet_nm"]).sum()) == 0)
+        check(f"{tag}: negatív épületkor == 0",
+              int((df["epulet_kora_ev"] < 0).sum()) == 0)
+        check(f"{tag}: minta_garantalt_pontos ∈ {0,1}",
+              set(df["minta_garantalt_pontos"].dropna().unique()) <= {0, 1})
+        check(f"{tag}: pontos ⇔ hazszam-szintű geokódolás",
+              int(((df["minta_garantalt_pontos"] == 1) & (df["geokodolas_pontossag"] != "hazszam")).sum()) == 0)
 
-    # 3. Fizikai útvonal-integritás: kötöttpálya = min(metró, vasút, villamos)
-    kp_cols = ["tavolsag_kotottpalya_halozati_m", "tavolsag_metro_halozati_m",
-               "tavolsag_vasut_halozati_m", "tavolsag_villamos_halozati_m"]
-    if set(kp_cols).issubset(kob.columns):
-        m = kob.dropna(subset=kp_cols)
-        min3 = m[["tavolsag_metro_halozati_m", "tavolsag_vasut_halozati_m",
-                  "tavolsag_villamos_halozati_m"]].min(axis=1)
-        bad = int(((m["tavolsag_kotottpalya_halozati_m"] - min3).abs() > 1.0).sum())
-        check("kobanya kötöttpálya == min(metró, vasút, villamos)", bad == 0)
-    # A hálózati sétatávolságok 0-tól indulnak és 1125 m felett is lehetnek
-    if "tavolsag_vasut_halozati_m" in kob.columns:
-        m = kob.dropna(subset=["tavolsag_vasut_halozati_m"])
-        check("kobanya nincs negatív hálózati távolság", int((m["tavolsag_vasut_halozati_m"] < 0).sum()) == 0)
+        # dummy-k binárisak
+        for c in df.columns:
+            if c.startswith(("is_", "has_")) or c.endswith("_seta"):
+                vals = df[c].dropna().unique()
+                check(f"{tag}: {c} ∈ {{0,1}}", set(vals) <= {0, 1})
 
-    # 4. Hedonikus logikai konzisztencia
-    if {"korrigalt_alapterulet_nm", "alapterulet_nm"}.issubset(kob.columns):
-        m = kob.dropna(subset=["korrigalt_alapterulet_nm", "alapterulet_nm"])
-        bad = int((m["korrigalt_alapterulet_nm"] < m["alapterulet_nm"]).sum())
-        check("kobanya korrigált < nettó alapterület == 0", bad == 0)
-    if "epulet_kora_ev" in kob.columns:
-        check("kobanya negatív épületkor == 0", int((kob["epulet_kora_ev"] < 0).sum()) == 0)
-
-    # 5. Izokrón-hierarchia: 5p <= 10p <= 15p (a kánon szerint tranzitív dummyk)
-    for prefix in ("vasut", "metro", "villamos", "busz", "park", "kotottpalya",
-                   "iskola", "ovoda", "bolt", "gyogyszertar", "orvos"):
-        c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"
-        if {c5, c10, c15}.issubset(kob.columns):
-            m = kob.dropna(subset=[c5, c10, c15])
-            bad = int(((m[c5] > m[c10]) | (m[c10] > m[c15])).sum())
-            check(f"kobanya {prefix} izokrón-hierarchia == 0 hiba", bad == 0)
-
-    # 6. Bécsi benchmark
-    wien_path = _abs("data/processed/wien_nordbahnhof_szamitott_master.parquet")
-    if os.path.exists(wien_path):
-        w = pd.read_parquet(wien_path)
-        check("wien összes rekord == 1037", len(w) == 1037)
-        # A bécsi „pontos" kritérium az EGYEDI koordinátapár (a willhaben szórja a
-        # koordinátákat — a megosztott pontok körzeti szintűek, lásd ADATKONYV).
-        check(
-            "wien garantált pontos == 324", int((w["minta_garantalt_pontos"] == 1).sum()) == 324
-        )
-        check(
-            "wien panel-proxy == 68", int((w["is_panel"] == 1).sum()) == 68
-        )
-        for prefix in ("vasut", "metro", "villamos", "busz", "kotottpalya"):
+        # izokrón-hierarchia (5p <= 10p <= 15p)
+        for prefix in ("vasut", "metro", "villamos", "busz", "park", "kotottpalya",
+                       "iskola", "ovoda", "bolt", "gyogyszertar", "orvos"):
             c5, c10, c15 = f"{prefix}_5p_seta", f"{prefix}_10p_seta", f"{prefix}_15p_seta"
-            if {c5, c10, c15}.issubset(w.columns):
-                m = w.dropna(subset=[c5, c10, c15])
+            if {c5, c10, c15}.issubset(df.columns):
+                m = df.dropna(subset=[c5, c10, c15])
                 bad = int(((m[c5] > m[c10]) | (m[c10] > m[c15])).sum())
-                check(f"wien {prefix} izokrón-hierarchia == 0 hiba", bad == 0)
+                check(f"{tag}: {prefix} izokrón-hierarchia == 0 hiba", bad == 0)
 
-    return results, warnings
+        # kötöttpálya = min(metró, vasút, villamos)
+        kp_cols = ["tavolsag_kotottpalya_halozati_m", "tavolsag_metro_halozati_m",
+                   "tavolsag_vasut_halozati_m", "tavolsag_villamos_halozati_m"]
+        if set(kp_cols).issubset(df.columns):
+            m = df.dropna(subset=kp_cols)
+            min3 = m[["tavolsag_metro_halozati_m", "tavolsag_vasut_halozati_m",
+                      "tavolsag_villamos_halozati_m"]].min(axis=1)
+            bad = int(((m["tavolsag_kotottpalya_halozati_m"] - min3).abs() > 1.0).sum())
+            check(f"{tag}: kötöttpálya == min(3 mód)", bad == 0)
+        if "tavolsag_vasut_halozati_m" in df.columns:
+            check(f"{tag}: nincs negatív hálózati távolság",
+                  int((df["tavolsag_vasut_halozati_m"].dropna() < 0).sum()) == 0)
+
+        # statisztikai riport (a friss N-ek — nem ellenőrzés, csak kimutatás)
+        print(f"  [{tag}] N={len(df)}, eladó={int((df['listing_type']=='elado').sum())}, "
+              f"kiadó={int((df['listing_type']=='kiado').sum())}, "
+              f"pontos={int((df['minta_garantalt_pontos']==1).sum())}")
+    return results
 
 
 def main():
-    ap = argparse.ArgumentParser(description="IFK-TDK 2026 mester adat ellenőrző")
+    ap = argparse.ArgumentParser(description="Adatintegritás-ellenőrző (invariáns-alapú)")
     ap.add_argument("--gen-sums", action="store_true", help="SHA256SUMS.txt (újra)generálása")
     args = ap.parse_args()
-
     if args.gen_sums:
         generate_sums()
-        return
+        return 0
 
     print("=" * 60)
-    print("ADATINTEGRITÁS-ELLENŐRZÉS (frozen baseline)")
+    print("ADATINTEGRITÁS-ELLENŐRZÉS (sémavezérelt invariánsok)")
     print("=" * 60)
-
     ok_sums, msg_sums = verify_sums()
     print(f"[hash] {msg_sums}")
-
     print("-" * 60)
     failed = 0
     try:
-        results, warnings = verify_structure()
+        results = verify_structure()
         for name, passed in results:
-            mark = "PASS" if passed else "FAIL"
             if not passed:
                 failed += 1
-            print(f"[{mark}] {name}")
-        for w in warnings:
-            print(f"[WARN] {w}")
+            print(f"[{'PASS' if passed else 'FAIL'}] {name}")
     except Exception as e:
         print(f"[ERROR] szerkezeti ellenőrzés sikertelen: {e}")
         failed += 1
-
     print("=" * 60)
-    total_failed = failed + (0 if ok_sums else 1)
-    if total_failed == 0:
-        print("EREDMÉNY: MINDEN ELLENŐRZÉS SIKERES.")
-        return 0
-    else:
-        print(f"EREDMÉNY: {total_failed} ellenőrzés NEM sikerült.")
-        return 1
+    total = failed + (0 if ok_sums else 1)
+    print("EREDMÉNY: MINDEN ELLENŐRZÉS SIKERES." if total == 0 else f"EREDMÉNY: {total} ellenőrzés NEM sikerült.")
+    return 1 if total else 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

@@ -511,6 +511,166 @@ def cached_compute(area, key, fn, force=False):
     return res
 
 
+# === Valódi MapLibre-térkép a statikus HTML-exportokhoz ===
+
+MAPLIBRE_V3_CSS = "https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+MAPLIBRE_V3_JS = "https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"
+
+_VIRIDIS_STOPS = [[0.267004, 0.004874, 0.329415], [0.127568, 0.566949, 0.550556],
+                  [0.369214, 0.788888, 0.382914], [0.993248, 0.906157, 0.143936]]
+_RDBU_STOPS = [[0.019608, 0.188235, 0.380392], [0.968627, 0.968627, 0.968627],
+               [0.705882, 0.015686, 0.149020]]
+
+
+def maplibre_map(points, color=None, size=None, popup=None, overlay_img=None,
+                 overlay_bounds=None, selector=None, center=None, zoom=12, height=560,
+                 title="Térkép", divergent=False, opacity=0.62, div_id=None):
+    """Valódi MapLibre GL JS (v3.6.2 — egyetlen fájl, NINCS worker/chunk-probléma a
+    statikus exportban) térkép Carto pozitron vektor-stílussal. A pontok kör-rétegként,
+    az IDW-felület (ha megadott) georeferált kép-rétegként jelenik meg; a `selector`
+    {érték: (címke, dataURL)} a felületet cseréli.
+
+    points: DataFrame ('geokodolt_lat', 'geokodolt_lon' + opcionális oszlopok)
+    color: oszlopnév a folytonos pontszínezéshez; divergent: RdBu skála
+    overlay_bounds: [[south, west], [north, east]] (lat/lng)
+    """
+    import json as _json
+    import random as _rnd
+    div_id = div_id or ("ml_map_" + _rnd.choice("abcdefgh"))
+    sel_id = div_id + "_sel"
+    feats = []
+    for _, r in points.iterrows():
+        props = {}
+        if color and color in points.columns and pd.notna(r[color]):
+            props["c"] = float(r[color])
+        if size and size in points.columns and pd.notna(r[size]):
+            props["s"] = float(r[size])
+        if popup is not None:
+            if isinstance(popup, str) and popup in points.columns:
+                props["popup"] = str(r[popup])
+            elif not isinstance(popup, str):
+                props["popup"] = str(popup.get(r.name, ""))
+            else:
+                props["popup"] = ""
+        else:
+            props["popup"] = ""
+        feats.append({"type": "Feature",
+                      "geometry": {"type": "Point",
+                                   "coordinates": [float(r["geokodolt_lon"]), float(r["geokodolt_lat"])]},
+                      "properties": props})
+    geojson = _json.dumps({"type": "FeatureCollection", "features": feats}, ensure_ascii=False)
+
+    stops_js = "[]"
+    if color:
+        vals = points[color].dropna()
+        if len(vals) >= 5:
+            lo, hi = float(vals.quantile(0.02)), float(vals.quantile(0.98))
+            pal = _RDBU_STOPS if divergent else _VIRIDIS_STOPS
+            parts = []
+            n = len(pal)
+            for i, c in enumerate(pal):
+                t = i / (n - 1)
+                v = lo + t * (hi - lo)
+                parts.append(f"{v:.3f}, ['rgb', {round(c[0] * 255)}, {round(c[1] * 255)}, {round(c[2] * 255)}]")
+            stops_js = "['interpolate', ['linear'], ['get', 'c'], " + ", ".join(parts) + "]"
+
+    style = carto_style_url("positron")
+    _c0, _c1 = center if center else (float(points["geokodolt_lon"].mean()), float(points["geokodolt_lat"].mean()))
+
+    overlay_js = "null"
+    if overlay_img and overlay_bounds:
+        overlay_js = _json.dumps({"url": overlay_img,
+                                  "bounds": [[overlay_bounds[0][0], overlay_bounds[0][1]],
+                                             [overlay_bounds[1][0], overlay_bounds[1][1]]]})
+    sel_js = "null"
+    opts = ""
+    sel_ctrl = ""
+    if selector:
+        opts = "".join('<option value="' + k + '">' + lbl + '</option>' for k, (lbl, _u) in selector.items())
+        sel_js = _json.dumps({k: u for k, (_l, u) in selector.items()})
+        sel_ctrl = ('<div style="margin-bottom:10px;"><label>Felszín-mutató: '
+                    '<select id="' + sel_id + '" style="padding:6px;">' + opts + '</select></label></div>')
+
+    circle_color = stops_js if stops_js != "[]" else "'#2563eb'"
+    circle_radius = "['interpolate', ['linear'], ['get', 's'], 20, 3, 150, 9]" if size else "5"
+
+    _TPL = ('''<link rel="stylesheet" href="__CSS__">
+<script src="__JS__"></script>
+<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:16px;margin:16px 0;">
+<h3>__TITLE__</h3>
+__SELECTOR__
+<div id="__DIV__" style="width:100%;height:__H__px;border-radius:8px;"></div>
+<p style="color:#64748b;font-size:12px;margin-top:6px;">Interaktív térkép (MapLibre + Carto). &copy; OpenStreetMap &amp; &copy; CARTO.</p>
+</div>
+<script type="application/json" id="__DIV___data">__GEOJSON__</script>
+<script type="application/json" id="__DIV___overlay">__OVERLAY__</script>
+<script type="application/json" id="__DIV___sel">__SELECTORJSON__</script>
+<script>
+(function(){
+  function go(){
+    if (typeof maplibregl === 'undefined') { setTimeout(go, 200); return; }
+    var geojson = JSON.parse(document.getElementById('__DIV___data').textContent);
+    var overlay = JSON.parse(document.getElementById('__DIV___overlay').textContent);
+    var sel = JSON.parse(document.getElementById('__DIV___sel').textContent);
+    var map = new maplibregl.Map({
+      container: '__DIV__',
+      style: '__STYLE__',
+      center: [__C0__, __C1__],
+      zoom: __Z__
+    });
+    map.addControl(new maplibregl.NavigationControl());
+    function ovCoords(ob){
+      return [ [ob[0][1], ob[1][0]], [ob[1][1], ob[1][0]], [ob[1][1], ob[0][0]], [ob[0][1], ob[0][0]] ];
+    }
+    map.on('load', function(){
+      if (overlay) {
+        map.addSource('surface', { type: 'image', url: overlay.url, coordinates: ovCoords(overlay.bounds) });
+        map.addLayer({ id: 'surface', type: 'raster', source: 'surface', paint: { 'raster-opacity': __OPACITY__, 'raster-fade-duration': 0 } });
+      }
+      map.addSource('pts', { type: 'geojson', data: geojson });
+      map.addLayer({ id: 'pts', type: 'circle', source: 'pts', paint: {
+        'circle-radius': __RADIUS__,
+        'circle-color': __COLOR__,
+        'circle-opacity': 0.85, 'circle-stroke-width': 1, 'circle-stroke-color': '#ffffff'
+      }});
+      var popup = new maplibregl.Popup({ closeButton: false, closeOnClick: true });
+      map.on('click', 'pts', function(e){
+        var p = e.features[0].properties;
+        var t = p.popup || '';
+        if (!t && typeof p.c !== 'undefined') t = 'Érték: ' + Math.round(p.c).toLocaleString('hu-HU');
+        if (t) popup.setLngLat(e.lngLat).setHTML(t).addTo(map);
+      });
+      map.on('mouseenter', 'pts', function(){ map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'pts', function(){ map.getCanvas().style.cursor = ''; });
+    });
+    if (sel) {
+      document.getElementById('__SELID__').addEventListener('change', function(e){
+        var src = map.getSource('surface');
+        if (src && overlay) { src.updateImage({ url: sel[e.target.value], coordinates: ovCoords(overlay.bounds) }); }
+      });
+    }
+  }
+  go();
+})();
+</script>''')
+
+    html = (_TPL
+        .replace('__CSS__', MAPLIBRE_V3_CSS).replace('__JS__', MAPLIBRE_V3_JS)
+        .replace('__TITLE__', title)
+        .replace('__SELECTOR__', sel_ctrl)
+        .replace('__DIV__', div_id).replace('__SELID__', sel_id)
+        .replace('__H__', str(height))
+        .replace('__GEOJSON__', geojson)
+        .replace('__OVERLAY__', overlay_js or 'null')
+        .replace('__SELECTORJSON__', sel_js or 'null')
+        .replace('__STYLE__', style)
+        .replace('__C0__', str(_c0)).replace('__C1__', str(_c1)).replace('__Z__', str(zoom))
+        .replace('__OPACITY__', str(opacity))
+        .replace('__COLOR__', circle_color)
+        .replace('__RADIUS__', circle_radius))
+    return html
+
+
 # === Kanonikus hedonikus specifikáció (F8: egységes számok 04/07/15 között) ===
 
 CANON_PHYSICAL = [

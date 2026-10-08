@@ -90,6 +90,44 @@ def fetch(query, bbox, out_path, kind):
     raise SystemExit(f"[FAIL] {kind}")
 
 
+POI_CAT_MAP = [
+    ("amenity", "school", "iskola"), ("amenity", "kindergarten", "ovoda"),
+    ("shop", "supermarket", "elelmiszer_bolt"), ("shop", "convenience", "elelmiszer_bolt"),
+    ("shop", "bakery", "elelmiszer_bolt"),
+    ("amenity", "pharmacy", "gyogyszertar"),
+    ("amenity", "doctors", "orvos_egeszsegugy"), ("amenity", "clinic", "orvos_egeszsegugy"),
+    ("leisure", "park", "park_zoldterulet"), ("leisure", "garden", "park_zoldterulet"),
+    ("leisure", "playground", "park_zoldterulet"),
+    ("railway", "station", "vasutallomas"), ("railway", "halt", "vasutallomas"),
+    ("station", "subway", "metroallomas"),
+]
+
+
+def pois_to_geojson(data):
+    """Overpass-elemek -> GeoJSON (a network_metrics elvárt category/name sémája)."""
+    feats = []
+    for e in data.get("elements", []):
+        tags = e.get("tags") or {}
+        cat = None
+        for key, val, c in POI_CAT_MAP:
+            if tags.get(key) == val:
+                cat = c
+                break
+        if cat is None:
+            continue
+        if e.get("type") == "node":
+            lat, lon = e.get("lat"), e.get("lon")
+        else:
+            ctr = e.get("center") or {}
+            lat, lon = ctr.get("lat"), ctr.get("lon")
+        if lat is None or lon is None:
+            continue
+        feats.append({"type": "Feature",
+                      "geometry": {"type": "Point", "coordinates": [lon, lat]},
+                      "properties": {"category": cat, "name": tags.get("name", "")}})
+    return {"type": "FeatureCollection", "features": feats}
+
+
 def main():
     with open(os.path.join(ROOT, "data", "areas.yaml"), encoding="utf-8") as f:
         areas = yaml.safe_load(f)
@@ -108,9 +146,28 @@ def main():
         fetch(TRANSIT_QUERY, bbox_for(clat, clon, buffers.get("rail_buffer_m", MIN_BUFFER_M)),
               os.path.join(ROOT, data["transit_file"]), "vasút+tranzit")
         time.sleep(8)
-        # 3) POI-k
-        fetch(POI_QUERY, bbox_for(clat, clon, buffers.get("poi_buffer_m", MIN_BUFFER_M)),
-              os.path.join(ROOT, data["poi_file"]), "POI")
+        # 3) POI-k (GeoJSON-lá konvertálva)
+        _poi_path = os.path.join(ROOT, data["poi_file"])
+        _s, _w, _n, _e = bbox_for(clat, clon, buffers.get("poi_buffer_m", MIN_BUFFER_M))
+        _q = POI_QUERY.replace("{bbox}", f"{_s:.4f},{_w:.4f},{_n:.4f},{_e:.4f}")
+        _raw = None
+        for _attempt in range(1, 6):
+            _ep = ENDPOINTS[(_attempt - 1) % len(ENDPOINTS)]
+            try:
+                _req = urllib.request.Request(_ep + "?data=" + urllib.parse.quote(_q), headers={"User-Agent": UA})
+                with urllib.request.urlopen(_req, timeout=240) as _res:
+                    _raw = json.loads(_res.read().decode("utf-8"))
+                break
+            except Exception as _ex:
+                print(f"[RETRY {_attempt}] POI: {_ex}", flush=True)
+                time.sleep(20 * _attempt)
+        if _raw is None:
+            raise SystemExit("[FAIL] POI")
+        os.makedirs(os.path.dirname(_poi_path), exist_ok=True)
+        _gj = pois_to_geojson(_raw)
+        with open(_poi_path, "w", encoding="utf-8") as _f:
+            json.dump(_gj, _f, ensure_ascii=False)
+        print(f"[OK] POI -> {os.path.relpath(_poi_path, ROOT)}: {len(_gj['features'])} pont", flush=True)
         time.sleep(8)
     print("MINDEN OSM/POI RÉTEG LETÖLTVE")
 

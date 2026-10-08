@@ -70,7 +70,11 @@ def _resolve_area(area=None):
     if env_area:
         return env_area
     cfg = load_areas_config()
-    return cfg.get("active_area", "kobanya")
+    active = cfg.get("active_area")
+    if active:
+        return active
+    areas = list((cfg.get("areas") or {}).keys())
+    return areas[0] if areas else "ismeretlen_terulet"
 
 
 def list_available_areas() -> list:
@@ -108,7 +112,7 @@ def load_all_areas_comparison(areas: list = None) -> pd.DataFrame:
             meta = get_area_metadata(a)
             df["area_id"] = a
             df["area_name"] = meta.get("name", a)
-            df["area_role"] = meta.get("role", "control" if a != "kobanya" else "primary")
+            df["area_role"] = meta.get("role", "control")
             frames.append(df)
         except Exception as e:
             warnings.warn(f"Nem sikerült betölteni a(z) '{a}' területet: {e}")
@@ -198,27 +202,19 @@ def load_szamitott_master(area: str = None):
 
 
 def load_nyers_master(area: str = None):
-    """A nyers (kapart) master adathalmaz."""
+    """A 2. rétegű (extracted) nyers adathalmaz betöltése az areas.yaml-ből."""
     target_area = _resolve_area(area)
-    if target_area == "kobanya":
-        path = os.path.join(DATA_DIR_RAW, "kobanya_ingatlan_nyers_master.db")
-        import sqlite3
-
-        conn = sqlite3.connect(path)
-        df = pd.read_sql("SELECT * FROM listings", conn)
-        conn.close()
-        return df
-    # Új területeknél nyers excel/csv keresése
-    for cand in [
-        f"{target_area}_nyers.xlsx",
-        f"{target_area}_nyers.csv",
-        f"{target_area}.xlsx",
-        f"{target_area}.csv",
-    ]:
+    cfg = load_areas_config()
+    rel = (cfg.get("areas", {}).get(target_area, {}).get("data", {}).get("extracted_xlsx"))
+    if rel:
+        cp = os.path.join(_PROJECT_ROOT, rel)
+        if os.path.exists(cp):
+            return pd.read_excel(cp)
+    for cand in [f"{target_area}_nyers.xlsx", f"{target_area}_nyers.csv"]:
         cp = os.path.join(DATA_DIR_RAW, cand)
         if os.path.exists(cp):
             return pd.read_excel(cp) if cp.endswith(".xlsx") else pd.read_csv(cp)
-    raise FileNotFoundError(f"Nyers adathalmaz nem található ehhez: '{target_area}'")
+    raise FileNotFoundError(f"Extracted adathalmaz nem található ehhez: '{target_area}'")
 
 
 def load_elado(area: str = None, szamitott=True):
@@ -242,17 +238,14 @@ def load_pontos_geojson(area: str = None, tipus="mind"):
     import geopandas as gpd
 
     target_area = _resolve_area(area)
-    if target_area == "kobanya":
-        if tipus == "elado":
-            fn = "kobanya_elado_pontos.geojson"
-        elif tipus == "kiado":
-            fn = "kobanya_kiado_pontos.geojson"
-        else:
-            fn = "kobanya_ingatlan_szamitott_pontos.geojson"
-    else:
-        fn = f"{target_area}_pontos.geojson"
-
-    path = os.path.join(DATA_DIR_PROCESSED, fn)
+    base = f"{target_area}_szamitott_pontos.geojson"
+    fn = f"{target_area}_szamitott_pontos_{tipus}.geojson" if tipus in ("elado", "kiado") else base
+    cfg = load_areas_config()
+    cfg_rel = (cfg.get("areas", {}).get(target_area, {}).get("data", {}).get("pontos_geojson"))
+    path = os.path.join(_PROJECT_ROOT, cfg_rel) if cfg_rel and tipus == "mind" else os.path.join(DATA_DIR_PROCESSED, fn)
+    if tipus in ("elado", "kiado") and cfg_rel:
+        _b, _e = os.path.splitext(cfg_rel)
+        path = os.path.join(_PROJECT_ROOT, f"{_b}_{tipus}{_e}")
     if not os.path.exists(path):
         path = os.path.join(ADATHALMAZ_DIR, fn)
     if not os.path.exists(path):
@@ -287,6 +280,27 @@ def filter_df(df, listing_type="mind", pontos_only=False, varosreszek=None):
     if varosreszek and len(varosreszek) > 0 and "varosresz" in result.columns:
         result = result[result["varosresz"].isin(varosreszek)]
     return result
+
+
+# === Lakóingatlan-szűrés (a scrape vegyes: lakás/ház/ipari/telek is lehet) ===
+
+_RESIDENTIAL_RE = "lakas|wohnung|dachgeschoss|haus|csaladi"
+_NON_RESIDENTIAL_RE = "irodahaz|iroda|telephely|ipari|garazs|garage|telek|grundst|geschäft|geschaft|laden|büro|buero|parkolo|tiefgarage"
+
+
+def is_residential_tipus(tipus):
+    """Igaz, ha az ingatlan_tipus lakóingatlant jelöl (a scrape vegyes típusú).
+
+    Ismeretlen/üres típusnál igazat adunk (nem zárjuk ki néma szűréssel) —
+    az őszinte adatkezelés elve szerint a bizonytalant nem dobjuk el csendben."""
+    import re as _re
+
+    t = str(tipus or "").strip().lower()
+    if not t or t == "nan":
+        return True
+    if _re.search(_NON_RESIDENTIAL_RE, t):
+        return False
+    return bool(_re.search(_RESIDENTIAL_RE, t))
 
 
 # === Szigorúan rögzített kutatási sávrendszerek konstansai ===
@@ -467,7 +481,7 @@ def cached_compute(area, key, fn, force=False):
     A cache a data-ujjlenyomat + függvényverzió alapján érvénytelenítődik."""
     import hashlib
     import json as _json
-    area = area or os.environ.get("TDK_ACTIVE_AREA", "kobanya")
+    area = area or os.environ.get("TDK_ACTIVE_AREA")
     os.makedirs(os.path.join(RESULTS_DIR, area), exist_ok=True)
     fp = data_fingerprint(area)
     fn_version = hashlib.sha256(fn.__code__.co_code).hexdigest()[:8] if hasattr(fn, '__code__') else '0'

@@ -16,13 +16,17 @@ from ._utils import (CANON_PHYSICAL, VASUT_IMMISSZIO_LABELS, build_immission_dum
 
 
 def _master(area=None):
-    area = area or os.environ.get("TDK_ACTIVE_AREA", "kobanya")
-    return load_szamitott_master()
+    area = area or os.environ.get("TDK_ACTIVE_AREA")
+    return load_szamitott_master(area)
 
 
 def pontos_elado(area=None):
     df = _master(area)
-    return df[(df["minta_garantalt_pontos"] == 1) & (df["listing_type"] == "elado")].copy()
+    out = df[(df["minta_garantalt_pontos"] == 1) & (df["listing_type"] == "elado")].copy()
+    if "ingatlan_tipus" in out.columns:
+        from ._utils import is_residential_tipus
+        out = out[out["ingatlan_tipus"].map(is_residential_tipus)]
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -622,18 +626,21 @@ def pooled_comparison(force=False):
         import statsmodels.api as sm
         from ._utils import load_areas_config
         name_to_id = {v["name"]: k for k, v in load_areas_config()["areas"].items()}
+        from ._utils import is_residential_tipus, load_areas_config as _lac, _PROJECT_ROOT
         frames = []
-        for area in sorted(os.listdir(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-                os.path.abspath(__file__)))), "data", "processed"))):
-            if not area.endswith("_szamitott_master.parquet"):
+        areas_cfg = _lac()
+        for a_id, acfg in sorted((areas_cfg.get("areas") or {}).items()):
+            mp_path = os.path.join(_PROJECT_ROOT, acfg.get("data", {}).get("master_parquet", ""))
+            if not (mp_path and os.path.exists(mp_path)):
                 continue
-            a_id = area[: -len("_szamitott_master.parquet")].replace("_ingatlan", "")
-            os.environ["TDK_ACTIVE_AREA"] = a_id
-            df = __import__("ingatlan_tdk._utils", fromlist=["load_szamitott_master"]).load_szamitott_master()
+            df = pd.read_parquet(mp_path)
             e = df[(df["listing_type"] == "elado") & (df["minta_garantalt_pontos"] == 1)].copy()
+            if "ingatlan_tipus" in e.columns:
+                e = e[e["ingatlan_tipus"].map(is_residential_tipus)]
             e["area_id"] = a_id
-            e["nm_ar_eur"] = np.where(a_id == "wien_nordbahnhof", e["nm_ar_eur"], e["nm_ar_huf"] / 400.0)
-            e["log_nm_ar_eur"] = np.log(e["nm_ar_eur"])
+            # összehasonlítás HUF-alapon (a kánon minden területet HUF-ban is hordoz,
+            # a rögzített, dokumentált crawl-napi árfolyamon)
+            e["log_nm_ar_eur"] = e["log_nm_ar"]
             frames.append(e)
         mp = pd.concat(frames, ignore_index=True)
         d = mp.dropna(subset=["log_nm_ar_eur", "tavolsag_kotottpalya_halozati_m"] +
@@ -645,9 +652,11 @@ def pooled_comparison(force=False):
         d = pd.concat([d, zones], axis=1)
         X = pd.concat([d[phys], rail[kp], zones,
                        pd.get_dummies(d["area_id"], drop_first=True)], axis=1).astype(float)
+        roles = {k: v.get("role", "control") for k, v in (areas_cfg.get("areas") or {}).items()}
+        primary = next((k for k, r in roles.items() if r == "primary"), sorted(d["area_id"].unique())[0])
         inter = []
         for area in d["area_id"].unique():
-            if area == "kobanya":
+            if area == primary:
                 continue
             for z in [c for c in zones.columns]:
                 n_cell = int(((d["area_id"] == area) & (d[z] == 1)).sum())

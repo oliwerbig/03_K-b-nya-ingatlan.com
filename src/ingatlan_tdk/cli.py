@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ingatlan_tdk.cli — konzolos belépési pontok.
 
-  python -m ingatlan_tdk report --area kobanya | --all
+  python -m ingatlan_tdk report --area <azonosito> | --all
   python -m ingatlan_tdk verify [--gen-sums]
 """
 import os
@@ -29,7 +29,7 @@ def report_main() -> int:
     from ._utils import list_available_areas
 
     ap = argparse.ArgumentParser(description="Notebook-alapú területi riportgenerálás")
-    ap.add_argument("--area", help="Csak egy terület (pl. 'kobanya', 'wien_nordbahnhof')")
+    ap.add_argument("--area", help="Csak egy terület (a data/areas.yaml-ben regisztrált azonosító)")
     ap.add_argument("--all", action="store_true", help="Az összes elérhető terület")
     ap.add_argument("--output-dir", default="html_reports", help="Kimeneti könyvtár")
     ap.add_argument("--parallel", type=int, default=0,
@@ -193,7 +193,7 @@ def pipeline_main() -> int:
 
     with open(os.path.join(ROOT, "data", "areas.yaml"), encoding="utf-8") as f:
         areas = yaml.safe_load(f)
-    ids = list(areas["areas"].keys()) if args.all else ([args.dataset] if args.dataset else [areas.get("active_area", "kobanya")])
+    ids = list(areas["areas"].keys()) if args.all else ([args.dataset] if args.dataset else [areas.get("active_area") or next(iter(areas["areas"]))])
     if args.dataset:
         ids = [i for i in ids if i == args.dataset]
     if not ids:

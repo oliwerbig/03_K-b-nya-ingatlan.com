@@ -45,3 +45,6 @@ desktop.ini
 html_reports/
 
 data/derived/
+
+# Excel lock fajlok
+~$*

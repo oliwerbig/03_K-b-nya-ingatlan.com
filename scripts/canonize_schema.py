@@ -90,7 +90,9 @@ def _map_value(value, rules):
     if rules.get("regex_replace"):
         v = re.sub(rules["regex_replace"][0], rules["regex_replace"][1], str(v))
     if rules.get("split_take") is not None:
-        v = str(v).split(rules.get("split_sep", ","))[rules["split_take"]]
+        _parts = str(v).split(rules.get("split_sep", ","))
+        _idx = rules["split_take"]
+        v = _parts[_idx] if _idx < len(_parts) else np.nan
     to = rules.get("to", "string")
     if to in ("float", "int"):
         v = parse_number(v, decimal_comma=bool(rules.get("decimal_comma")))
@@ -135,10 +137,20 @@ def apply_mapping(df_src, mapping):
         src = spec.get("from")
         if src is None:
             continue
-        if src not in df_src.columns:
-            out[canon] = np.nan
-            continue
-        out[canon] = df_src[src].map(lambda x: _map_value(x, spec))
+        if isinstance(src, list):
+            present = [c for c in src if c in df_src.columns]
+            if not present:
+                out[canon] = np.nan
+                continue
+            series = df_src[present[0]]
+            for c in present[1:]:
+                series = series.combine_first(df_src[c])
+        else:
+            if src not in df_src.columns:
+                out[canon] = np.nan
+                continue
+            series = df_src[src]
+        out[canon] = series.map(lambda x: _map_value(x, spec))
     out["listing_type"] = df_src["listing_type"].map(
         lambda x: "elado" if str(x).lower() in ("elado", "kauf") else ("kiado" if str(x).lower() in ("kiado", "miete") else str(x))
     )
@@ -179,6 +191,7 @@ def derive_core(df, area_cfg, mapping):
             d["nm_ar_huf"] = d["price_huf"] / d["alapterulet_nm"].replace(0, np.nan)
 
     d["ar_millio_ft"] = d["price_huf"] / 1e6
+    d["ar_ezer_ft_ho"] = np.where(d["listing_type"] == "kiado", d["price_huf"] / 1000.0, np.nan)
     d["log_ar"] = np.log(d["price_huf"].replace(0, np.nan))
     d["log_nm_ar"] = np.log(d["nm_ar_huf"].replace(0, np.nan))
 

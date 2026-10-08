@@ -125,7 +125,8 @@ def parse_address_at(description, postal_name="", post_code=""):
     city = "Wien"
     # konzervatív minta: <Utca-név> <házszám> (pl. "Alliiertenstraße 13", "Am Tabor 4-6")
     pat = re.compile(
-        r"\b((?:[A-ZÄÖÜ][a-zäöüß]+(?:[-]?(?:straße|strasse|gasse|platz|weg|allee|ring|kai|promenade|steig))\b[^.]{0,30}?)\s+(\d{1,4}[a-z]?(?:\s*[/-]\s*\d{1,4})?))",
+        r"\b([A-ZÄÖÜ][\wäöüß]*(?:straße|strasse|gasse|platz|weg|allee|ring|kai|promenade|steig))"
+        r"\s+(\d{1,4}[a-z]?(?:\s*[/-]\s*\d{1,4})?)",
         re.I,
     )
     m = pat.search(text)

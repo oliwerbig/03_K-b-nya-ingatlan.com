@@ -1,0 +1,513 @@
+{
+ "23 Donaustraße, 1020 Wien": {
+  "lat": 48.2231925,
+  "lon": 16.3710362,
+  "precision": "hazszam",
+  "query": "23 Donaustraße, 1020 Wien",
+  "display": "23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Bécs, 1020, Ausztria"
+ },
+ "Wien, Wien": {
+  "lat": 44.9019561,
+  "lon": -90.0250311,
+  "precision": "korzet",
+  "query": "Wien, Wien",
+  "display": "Wien, Town of Wien, Marathon County, Wisconsin, 54426, Egyesült Államok"
+ },
+ "Wien, 02. Bezirk, Leopoldstadt, Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "Wien, 02. Bezirk, Leopoldstadt, Wien",
+  "display": null
+ },
+ "19 Donaustraße, 1020 Wien": {
+  "lat": 48.2894131,
+  "lon": 16.3445499,
+  "precision": "hazszam",
+  "query": "19 Donaustraße, 1020 Wien",
+  "display": "19, Donaustraße, Kuchelau, Katastralgemeinde Kahlenbergerdorf, Döbling, Bécs, 1190, Ausztria"
+ },
+ "26 Darwingasse, 1020 Wien": {
+  "lat": 48.2217406,
+  "lon": 16.3870048,
+  "precision": "hazszam",
+  "query": "26 Darwingasse, 1020 Wien",
+  "display": "26, Darwingasse, Volkertviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Bécs, 1020, Ausztria"
+ },
+ "29 Ausstellungsstraße, 1020 Wien": {
+  "lat": 48.2182972,
+  "lon": 16.4019573,
+  "precision": "hazszam",
+  "query": "29 Ausstellungsstraße, 1020 Wien",
+  "display": "29, Ausstellungsstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Bécs, 1020, Ausztria"
+ },
+ "60 Stuwerstraße, 1020 Wien": {
+  "lat": 48.2186578,
+  "lon": 16.406672,
+  "precision": "hazszam",
+  "query": "60 Stuwerstraße, 1020 Wien",
+  "display": "60, Stuwerstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Bécs, 1020, Ausztria"
+ },
+ "38 Praterstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "38 Praterstraße, 1020 Wien",
+  "display": null
+ },
+ "199 Vorgartenstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "199 Vorgartenstraße, 1020 Wien",
+  "display": null
+ },
+ "16-18 Rotenturmstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "16-18 Rotenturmstraße, 1020 Wien",
+  "display": null
+ },
+ "4 Dammhaufengasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "4 Dammhaufengasse, 1020 Wien",
+  "display": null
+ },
+ "16 Schottenring, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "16 Schottenring, 1020 Wien",
+  "display": null
+ },
+ "2A Fichtegasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "2A Fichtegasse, 1020 Wien",
+  "display": null
+ },
+ "39 Ausstellungsstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "39 Ausstellungsstraße, 1020 Wien",
+  "display": null
+ },
+ "19 Schreygasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "19 Schreygasse, 1020 Wien",
+  "display": null
+ },
+ "1-3 Mumbgasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1-3 Mumbgasse, 1020 Wien",
+  "display": null
+ },
+ "7 Stoffellagasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "7 Stoffellagasse, 1020 Wien",
+  "display": null
+ },
+ "1020 Lessinggasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1020 Lessinggasse, 1020 Wien",
+  "display": null
+ },
+ "229 Engerthstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "229 Engerthstraße, 1020 Wien",
+  "display": null
+ },
+ "18 Lilienbrunngasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "18 Lilienbrunngasse, 1020 Wien",
+  "display": null
+ },
+ "15 Donaustraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "15 Donaustraße, 1020 Wien",
+  "display": null
+ },
+ "13 Alliiertenstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "13 Alliiertenstraße, 1020 Wien",
+  "display": null
+ },
+ "25 Böcklinstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "25 Böcklinstraße, 1020 Wien",
+  "display": null
+ },
+ "225 ENGERTHSTRASSE, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "225 ENGERTHSTRASSE, 1020 Wien",
+  "display": null
+ },
+ "16 Bartensteingasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "16 Bartensteingasse, 1020 Wien",
+  "display": null
+ },
+ "5 Czerninplatz, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "5 Czerninplatz, 1020 Wien",
+  "display": null
+ },
+ "1020 Novaragasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1020 Novaragasse, 1020 Wien",
+  "display": null
+ },
+ "166 Leystraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "166 Leystraße, 1020 Wien",
+  "display": null
+ },
+ "2 Haussteinstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "2 Haussteinstraße, 1020 Wien",
+  "display": null
+ },
+ "7a Czerningasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "7a Czerningasse, 1020 Wien",
+  "display": null
+ },
+ "6 Novaragasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "6 Novaragasse, 1020 Wien",
+  "display": null
+ },
+ "14 MEIERSTRASSE, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "14 MEIERSTRASSE, 1020 Wien",
+  "display": null
+ },
+ "11 Hollandstraße,  Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "11 Hollandstraße,  Wien",
+  "display": null
+ },
+ "149 Engerthstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "149 Engerthstraße, 1020 Wien",
+  "display": null
+ },
+ "213 Engerthstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "213 Engerthstraße, 1020 Wien",
+  "display": null
+ },
+ "7 Lassallestraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "7 Lassallestraße, 1020 Wien",
+  "display": null
+ },
+ "1 Praterstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1 Praterstraße, 1020 Wien",
+  "display": null
+ },
+ "81 Donaustraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "81 Donaustraße, 1020 Wien",
+  "display": null
+ },
+ "1 Lassallestraße,  Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1 Lassallestraße,  Wien",
+  "display": null
+ },
+ "11 Lilienbrunngasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "11 Lilienbrunngasse, 1020 Wien",
+  "display": null
+ },
+ "14 Meiereistraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "14 Meiereistraße, 1020 Wien",
+  "display": null
+ },
+ "1 Walcherstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1 Walcherstraße, 1020 Wien",
+  "display": null
+ },
+ "1 Lassallstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1 Lassallstraße, 1020 Wien",
+  "display": null
+ },
+ "117 Taborstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "117 Taborstraße, 1020 Wien",
+  "display": null
+ },
+ "47 Stuwerstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "47 Stuwerstraße, 1020 Wien",
+  "display": null
+ },
+ "36 Nordbahnstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "36 Nordbahnstraße, 1020 Wien",
+  "display": null
+ },
+ "17 Radingerstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "17 Radingerstraße, 1020 Wien",
+  "display": null
+ },
+ "7 Lassallestraße,  Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "7 Lassallestraße,  Wien",
+  "display": null
+ },
+ "23-27 Donaustraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "23-27 Donaustraße, 1020 Wien",
+  "display": null
+ },
+ "137 Engerthstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "137 Engerthstraße, 1020 Wien",
+  "display": null
+ },
+ "63 Taborstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "63 Taborstraße, 1020 Wien",
+  "display": null
+ },
+ "2 Augartenstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "2 Augartenstraße, 1020 Wien",
+  "display": null
+ },
+ "52 Weicherstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "52 Weicherstraße, 1020 Wien",
+  "display": null
+ },
+ "60/1 Aßmayergasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "60/1 Aßmayergasse, 1020 Wien",
+  "display": null
+ },
+ "56 Praterstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "56 Praterstraße, 1020 Wien",
+  "display": null
+ },
+ "41 Nordbahnstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "41 Nordbahnstraße, 1020 Wien",
+  "display": null
+ },
+ "7B Lassallestraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "7B Lassallestraße, 1020 Wien",
+  "display": null
+ },
+ "29 Nordwestbahnstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "29 Nordwestbahnstraße, 1020 Wien",
+  "display": null
+ },
+ "9 Stadtgutgasse,  Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "9 Stadtgutgasse,  Wien",
+  "display": null
+ },
+ "3 Böcklinsstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "3 Böcklinsstraße, 1020 Wien",
+  "display": null
+ },
+ "1 Rothschildplatz, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1 Rothschildplatz, 1020 Wien",
+  "display": null
+ },
+ "123 Taborstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "123 Taborstraße, 1020 Wien",
+  "display": null
+ },
+ "500 Vorgartenstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "500 Vorgartenstraße, 1020 Wien",
+  "display": null
+ },
+ "2 Kurzbauergasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "2 Kurzbauergasse, 1020 Wien",
+  "display": null
+ },
+ "169 Engerthstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "169 Engerthstraße, 1020 Wien",
+  "display": null
+ },
+ "15 Pfarrgasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "15 Pfarrgasse, 1020 Wien",
+  "display": null
+ },
+ "24 Schweidlgasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "24 Schweidlgasse, 1020 Wien",
+  "display": null
+ },
+ "5 Flossgasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "5 Flossgasse, 1020 Wien",
+  "display": null
+ },
+ "10 Schottenring, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "10 Schottenring, 1020 Wien",
+  "display": null
+ },
+ "1 Mumbgasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "1 Mumbgasse, 1020 Wien",
+  "display": null
+ },
+ "55m Taborstrasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "55m Taborstrasse, 1020 Wien",
+  "display": null
+ },
+ "3 Karmelitergasse, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "3 Karmelitergasse, 1020 Wien",
+  "display": null
+ },
+ "230 Engerthstraße, 1020 Wien": {
+  "lat": null,
+  "lon": null,
+  "precision": "nincs",
+  "query": "230 Engerthstraße, 1020 Wien",
+  "display": null
+ }
+}

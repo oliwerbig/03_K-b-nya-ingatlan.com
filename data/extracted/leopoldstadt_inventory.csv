@@ -2,11 +2,11 @@ oszlop,tipus,kitoltott,kitoltottseg_pct,peldaertekek
 listing_id,str,2065,100.0,1000416310 | 1001691575 | 1002628896
 listing_type,str,2065,100.0,elado | kiado
 url,str,799,38.7,https://www.willhaben.at/iad/immobilien/d/sonstige/sonstige/investieren-profitieren-langfristig-absichern-1000416310/ | https://www.willhaben.at/iad/immobilien/d/gewerbeimmobilien-kaufen/wien/wien-102
-cim_teljes,str,778,37.7,"Donaustraße 23 23, 1020 Wien | Wien, 02. Bezirk, Leopoldstadt | Taborstraße, Nähr Prater Im 2 2, 1020 Wien"
+cim_teljes,str,2065,100.0,"Donaustraße 23, 1020 Wien | Wien | Wien, 02. Bezirk, Leopoldstadt"
 iranyitoszam,str,767,37.1,1020
 varos,str,2065,100.0,Wien
-utca,str,455,22.0,"Donaustraße 23 | Taborstraße, Nähr Prater Im 2 | Tiefgaragenstellplatz verfügbar (+ EUR 35"
-hazszam,str,455,22.0,23 | 2 | 35
+utca,str,295,14.3,Donaustraße | Darwingasse | Ausstellungsstraße
+hazszam,str,295,14.3,23 | 19 | 26
 cim_minoseg,str,2065,100.0,szoveges | korzet
 leiras,str,799,38.7,"Investieren, profitieren, langfristig absichern LeopoldQuartier - Kapitalanlage in einer der gefragtesten Lagen Wiens Das LeopoldQuartier verbindet höchste Bauqualität mit einem Standort, der sowohl f"
 fenykepek_szama,float64,793,38.4,29.0 | 3.0 | 36.0
@@ -15,6 +15,7 @@ forras_fajl,str,2065,100.0,1000416310.html | 1001691575.html | 1002628896.html
 seo_title,str,799,38.7,"Investieren, profitieren, langfristig absichern, € 501.000,-, (1020 Wien) - willhaben | 2 Marktstände am Karmelitermarkt -- 48m² Nutzfläche, 48 m², € 155.000,-, (1020 Wien) - willhaben | Erstbezug, 2."
 published_date,str,799,38.7,2026-10-05T13:52:00+0200 | 2026-09-09T13:40:59+0200 | 2026-10-04T02:43:00+0200
 title,str,2065,100.0,"Investieren, profitieren, langfristig absichern1020 Wien, 02. Bezirk, Leopoldstadt, Obere DonaustraßeEHL Immobilien GmbH€ 10.891,31/m²€ 501.000 | Willhaben Ad 1001691575 | 2 Marktstände am Karmeliterm"
+oldal_allapot,str,2065,100.0,hirdetes | 404 | egyeb
 GENERAL_TEXT_ADVERT/Ausstattung,str,647,31.3,"<ul><li>Balkonanzahl:1</li><li>Loggiaanzahl: 1</li><li>Abstellraum Anzahl: 1</li><li>Balkonfläche:3,36 m²</li><li>Loggiafläche: 4,68 m2</li><li>Bad mit Dusche</li><li>Boden: Fliesenboden</li><li>Boden"
 GENERAL_TEXT_ADVERT/Lage,str,763,36.9,<strong>Region:</strong> Augarten<br><br><br><strong>Infrastruktur / Entfernungen</strong><br><br><strong>Gesundheit</strong><br>Arzt <500m<br>Apotheke <500m<br>Klinik <500m<br>Krankenhaus <1250m<br><
 DESCRIPTION,str,798,38.6,"<p><strong>LeopoldQuartier - Kapitalanlage in einer der gefragtesten Lagen Wiens</strong></p><br><p>Das LeopoldQuartier verbindet höchste Bauqualität mit einem Standort, der sowohl für Investoren als "

@@ -47,6 +47,12 @@ def extract_one(path, folder, manifest):
 
     with io.open(path, encoding="utf-8", errors="replace") as f:
         raw = f.read()
+    if "Seite wurde nicht gefunden" in raw:
+        out["oldal_allapot"] = "404"
+    elif "advertDetails" in raw:
+        out["oldal_allapot"] = "hirdetes"
+    else:
+        out["oldal_allapot"] = "egyeb"
 
     # --- 1) __NEXT_DATA__ ---
     ad = {}
@@ -69,9 +75,12 @@ def extract_one(path, folder, manifest):
 
     addr = ad.get("advertAddressDetails") or {}
     lines = ((addr.get("addressLines") or {}).get("value") or []) if isinstance(addr.get("addressLines"), dict) else []
-    postal_name = (addr.get("postalName") or "").strip() or (lines[0] if lines else "")
     post_code = str(addr.get("postCode") or "").strip()
     city = (addr.get("municipality") or "Wien").strip()
+    postal_name = ((addr.get("postalName") or "").strip()
+                   or (lines[0] if lines else "")
+                   or (attrs.get("LOCATION/ADDRESS_2") or "").strip()
+                   or f"{post_code} Wien")
 
     # --- 2) Product JSON-LD ---
     pld = {}

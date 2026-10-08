@@ -54,6 +54,7 @@ def extract_one(path, folder, manifest):
 
     with io.open(path, encoding="utf-8", errors="replace") as f:
         raw = f.read()
+    out["oldal_allapot"] = "hirdetes" if "RealEstateListing" in raw else "404"
 
     # --- 1) JSON-LD RealEstateListing ---
     jsonld = {}
@@ -93,8 +94,10 @@ def extract_one(path, folder, manifest):
         "szobak_szama": me.get("numberOfRooms"),
         "alapterulet_nm": size.get("value") if isinstance(size, dict) else None,
         "epites_eve": me.get("yearBuilt"),
-        "ar": offers.get("price") if isinstance(offers, dict) else None,
-        "penznem": offers.get("priceCurrency") if isinstance(offers, dict) else None,
+        "ar": (offers.get("price")
+               or (offers.get("priceSpecification") or {}).get("price")) if isinstance(offers, dict) else None,
+        "penznem": (offers.get("priceCurrency")
+                    or (offers.get("priceSpecification") or {}).get("priceCurrency")) if isinstance(offers, dict) else None,
     })
     if not out["listing_id"]:
         out["listing_id"] = os.path.splitext(fname)[0]

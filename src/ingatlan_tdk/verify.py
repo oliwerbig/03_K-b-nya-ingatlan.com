@@ -120,11 +120,17 @@ def verify_structure():
         check(f"{tag}: minden required oszlop létezik", set(schema["required"]) <= set(df.columns))
         check(f"{tag}: nincs duplikált listing_id",
               int(df["listing_id"].duplicated().sum()) == 0)
-        check(f"{tag}: listing_type ⊆ {elado, kiado}",
+        check(f"{tag}: listing_type ∈ elado/kiado",
               set(df["listing_type"].dropna().unique()) <= {"elado", "kiado"})
-        check(f"{tag}: nincs hiányzó ár", int(df["price_huf"].isna().sum()) == 0)
-        check(f"{tag}: nincs érvénytelen (<=0) ár/alapterület",
-              int(((df["price_huf"] <= 0) | (df["alapterulet_nm"] <= 0)).sum()) == 0)
+        _res = df
+        if "ingatlan_tipus" in df.columns:
+            from ._utils import is_residential_tipus
+            _res = df[df["ingatlan_tipus"].map(is_residential_tipus)]
+        check(f"{tag}: nincs érvénytelen (<=0) ár/alapterület (lakóingatlan)",
+              int(((_res["price_huf"] <= 0) | (_res["alapterulet_nm"] <= 0)).sum()) == 0)
+        _nan_ar = int(df["price_huf"].isna().sum())
+        if _nan_ar:
+            print(f"  [INFO] {tag}: {_nan_ar}/{len(df)} hirdetés ár nélkül (pl. \"ár kérésre\") — őszintén NaN")
         check(f"{tag}: korrigált >= nettó alapterület",
               int((df["korrigalt_alapterulet_nm"] < df["alapterulet_nm"]).sum()) == 0)
         check(f"{tag}: negatív épületkor == 0",

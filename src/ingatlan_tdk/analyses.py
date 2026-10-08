@@ -227,6 +227,15 @@ def immission_gradient(area=None, force=False):
         yc = d["log_nm_ar"]
         seg = (d["tavolsag_vasut_m"] < 300)
         cols_ok = [c for c in Xc.columns if Xc[seg][c].nunique() > 1 and Xc[~seg][c].nunique() > 1]
+        if len(cols_ok) == 0:
+            # a szegmensekben minden kontroll konstans (kis minta) — a placebo-teszt őszintén kimarad
+            return {
+                "savok": zst,
+                "referencia": pd.DataFrame({"ref_zona": [ref], "N_ref": [int(counts.get(ref, 0))], "med_ref": [med_ref]}),
+                "erzekenyseg": pd.DataFrame(sens),
+                "mwu": pd.DataFrame(mwu),
+                "chow": pd.DataFrame({"megjegyzes": ["nincs varialo kontroll a <300m szegmensben"]}),
+            }
         Xc2 = Xc[cols_ok]
         m_full = sm.OLS(yc, Xc2).fit()
         m_a = sm.OLS(yc[seg], Xc2[seg]).fit()
@@ -535,8 +544,20 @@ def rent_gap_analysis(area=None, force=False):
         full = m.load_szamitott_master()
         el = full[(full["listing_type"] == "elado") & (full["minta_garantalt_pontos"] == 1)].copy()
         ki = full[(full["listing_type"] == "kiado") & (full["minta_garantalt_pontos"] == 1)].copy()
+        if "ingatlan_tipus" in full.columns:
+            from ._utils import is_residential_tipus
+            el = el[el["ingatlan_tipus"].map(is_residential_tipus)]
+            ki = ki[ki["ingatlan_tipus"].map(is_residential_tipus)]
         feats = [c for c in ["korrigalt_alapterulet_nm", "szobaszam_osszes", "allapot_kod",
                              "is_panel", "has_lift", "has_erkely"] if c in el.columns]
+        if len(el) < 5 or len(ki) < 3:
+            # túl kicsi (vagy üres) alminta — a rent-gap elemzés őszintén kimarad
+            return {
+                "hedon": pd.DataFrame(columns=["valtozo", "coef_elado", "coef_kiado"]),
+                "rent_gap_savok": pd.DataFrame(columns=["sav", "N_elado", "N_kiado", "median_hozam_pct"]),
+                "cap_szenz": pd.DataFrame(columns=["cap_rate", "atlagos_ingatlan_ertek_indeksz"]),
+                "megjegyzes": pd.DataFrame({"megjegyzes": [f"túl kicsi alminta (eladó={len(el)}, kiadó={len(ki)})"]}),
+            }
 
         def fit(sub, ycol):
             s = sub.dropna(subset=[ycol] + [c for c in feats if sub[c].nunique() > 1]).copy()

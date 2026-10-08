@@ -14,11 +14,13 @@ vocab:
 
 columns:
   listing_id: {from: listing_id, to: string}
+  oldal_allapot: {from: oldal_allapot, to: string}
   url: {from: url, to: string}
   title: {from: title, to: string}
   cim_teljes: {from: cim_teljes, to: string}
   iranyitoszam: {from: iranyitoszam, to: string}
   varos: {from: varos, to: string}
+  varosresz: {from: url, to: string, regex_replace: ["^https://ingatlan\\.com/([a-z0-9-]+)/.*$", "\\1"]}
   utca: {from: utca, to: string}
   hazszam: {from: hazszam, to: string}
   cim_forras: {from: cim_minoseg, to: string}

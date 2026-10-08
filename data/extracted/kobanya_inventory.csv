@@ -13,13 +13,14 @@ lon_jsonld,float64,492,25.5,19.169123 | 19.176984 | 19.199093
 szobak_szama,float64,1472,76.2,2.0 | 3.0 | 4.0
 alapterulet_nm,float64,1903,98.5,1246.0 | 950.0 | 1500.0
 epites_eve,float64,1298,67.2,1940.0 | 2001.0 | 1981.0
-ar,float64,1494,77.4,360000000.0 | 2600000000.0 | 850000000.0
-penznem,str,1494,77.4,HUF
+ar,int64,1931,100.0,360000000 | 2600000000 | 850000000
+penznem,str,1931,100.0,HUF
 leiras,str,1931,100.0,Eladó ipari ingatlan Budapest Maglódi utca 26/2. közvetlenül tulajdonostól. Telekméret: 5343m2 Épületek: 50% készültségű iroda és szociális épület 4 szinten 865m2 45% készültségű üzemépület 299m2 Inga
 fenykepek_szama,float64,257,13.3,4.0 | 2.0 | 3.0
 crawl_datuma,str,1931,100.0,2026-10-08
 forras_fajl,str,1931,100.0,26858550.html | 27963086.html | 30417301.html
 title,str,1931,100.0,Nincs kép | Ingatlan kép
+oldal_allapot,str,1931,100.0,hirdetes
 param_Energetikai_tanusitvany,str,1844,95.5,nincs megadva | F | C
 param_Ingatlan_allapota,str,1658,85.9,felújítandó | közepes állapotú | jó állapotú
 param_Epites_eve,str,1654,85.7,nincs megadva | 1950 előtt | 2001 és 2010 között

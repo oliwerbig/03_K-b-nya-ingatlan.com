@@ -76,6 +76,7 @@ required:
   # Pénzügyi és ármutatók
   price_huf: "float64"
   ar_millio_ft: "float64"
+  ar_ezer_ft_ho: "float64"        # kiadó havi bérleti díj ezer Ft-ban (eladónál NaN)
   nm_ar_huf: "float64"
   log_ar: "float64"
   log_nm_ar: "float64"
@@ -158,6 +159,7 @@ optional:
   hirdeto_tipus: "object"
   iroda_neve: "object"
   leiras: "object"                 # a hirdetés teljes szövege (nyers)
+  oldal_allapot: "object"          # hirdetes | 404 | egyeb (a letöltött lap állapota)
   leiras_hossz: "float64"
   fenykepek_szama: "float64"
 

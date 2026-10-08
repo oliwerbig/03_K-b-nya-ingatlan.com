@@ -32,19 +32,32 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 
 
+def _s(v):
+    """NaN-biztos string (a str(np.nan) == 'nan' csapdát kikerüli)."""
+    import numpy as _np
+    if v is None:
+        return ""
+    if isinstance(v, float) and _np.isnan(v):
+        return ""
+    t = str(v).strip()
+    return "" if t.lower() in ("nan", "none", "nincs") else t
+
+
 def build_query(row):
     """Nominatim-kérdés a címmezőkből (pontosság szerint csökkenő sorrendben)."""
-    utca = (str(row.get("utca") or "").strip())
-    hazszam = (str(row.get("hazszam") or "").strip().strip("."))
-    irsz = (str(row.get("iranyitoszam") or "").strip())
-    varos = (str(row.get("varos") or "").strip())
-    teljes = (str(row.get("cim_teljes") or "").strip())
+    utca = _s(row.get("utca")).strip(" .")
+    hazszam = _s(row.get("hazszam")).strip(" .")
+    irsz = _s(row.get("iranyitoszam")).split(".")[0]
+    varos = _s(row.get("varos"))
+    teljes = _s(row.get("cim_teljes"))
     if hazszam and utca:
-        return f"{hazszam} {utca}, {irsz} {varos}".strip(), "hazszam"
+        return f"{hazszam} {utca}, {irsz} {varos}".strip(" ,"), "hazszam"
     if utca:
-        return f"{utca}, {irsz} {varos}".strip(), "utca"
+        return f"{utca}, {irsz} {varos}".strip(" ,"), "utca"
     if teljes:
-        return teljes, "korzet"
+        # a "Budapest X. kerület, " előtagot a Nominatim nem érti
+        t = re.sub(r"^(Budapest\s+[IVXLC]+\.?\s*ker[^,]*,\s*)", "", teljes)
+        return f"{t}, {varos}".strip(" ,"), "korzet"
     return "", "nincs"
 
 
@@ -79,7 +92,7 @@ def main():
         with io.open(args.cache_json, encoding="utf-8") as f:
             cache = json.load(f)
 
-    geolocator = Nominatim(user_agent=args.user_agent, timeout=30)
+    geolocator = Nominatim(user_agent=args.user_agent, timeout=12)
     rows = []
     n_new, n_cached, n_skipped = 0, 0, 0
     for _, r in df.iterrows():
@@ -96,11 +109,6 @@ def main():
                 loc = geolocator.geocode(q, addressdetails=True, language="hu")
             except Exception:
                 loc = None
-                time.sleep(2.0)
-                try:
-                    loc = geolocator.geocode(q, addressdetails=True, language="hu")
-                except Exception:
-                    loc = None
             if loc is None:
                 rec = {"lat": None, "lon": None, "precision": "nincs", "query": q, "display": None}
             else:
@@ -122,6 +130,11 @@ def main():
             "geokodolas_pontossag": rec.get("precision"),
             "geokodolt_cim": rec.get("display"),
         })
+        if n_new and n_new % 25 == 0:
+            os.makedirs(os.path.dirname(args.cache_json), exist_ok=True)
+            with io.open(args.cache_json, "w", encoding="utf-8") as _f:
+                json.dump(cache, _f, ensure_ascii=False)
+            print(f"  ... {len(rows)} sor feldolgozva ({n_new} új lekérdezés), cache mentve", flush=True)
 
     os.makedirs(os.path.dirname(args.cache_json), exist_ok=True)
     with io.open(args.cache_json, "w", encoding="utf-8") as f:

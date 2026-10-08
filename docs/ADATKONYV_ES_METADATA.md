@@ -291,3 +291,27 @@ többterületes portál pedig a `html_reports/index.html`.
 - **Panel-proxy:** bécsi `is_panel = 1` az `ingatlan_altipus == '1945-1990'`
   korszak esetén (az iparosított technológiájú korszak közelítése — NEM
   épületszintű azonosítás, hanem dokumentált proxy; 68 hirdetés).
+
+---
+
+## 8. HÁROMRÉTEGŰ ADATFOLYAM (2026-10-08-tól)
+
+Az adatfolyam a `docs/decisions/0008-haromretegu-adatfolyam-es-schema-v2.md` döntés
+alapján három rétegre tagolódik (a fenti 1. fejezet két-rétegű leírását felváltva):
+
+1. **`data/raw/<dataset>/{elado,kiado}/`** — a scraper-output (nyers HTML + index.csv);
+   a HTML-ek nem verziózottak, az index.csv-k igen.
+2. **`data/extracted/<dataset>/`** — forrás-specifikus Excel az EREDETI változónevekkel
+   (`extract_ingatlancom_html.py` / `extract_willhaben_html.py` + oszlop-inventár + extract-log).
+3. **`data/processed/<dataset>/`** — a kanonikus séma (data/schema.yaml v2) szerinti master:
+   `*_szamitott_master.parquet`, `*_szamitott_emberi.xlsx` (Master/Adatszótár/Statisztikák),
+   `*_szamitott_pontos*.geojson`.
+
+**Kulcselvek**: a mapping (`data/mappings/<dataset>.yaml`) név- ÉS típus-transzformációt
+definiál; a levezetett mezőket a közös `canonize_schema.py` számolja; a pozíció KIZÁRÓLAG
+cím-alapú geokódolásból származik (Nominatim, verziózott cache — a portál-koordináták soha
+nem pontosak, csak nyers mellékinformációként maradnak meg: `lat_portal`, `lon_portal`,
+`portal_pozicio_sugar_m`); `minta_garantalt_pontos = 1` ⇔ hazszám-szintű címgeokódolás;
+minden OSM/POI letöltés legalább 2000 m pufferrel; a kódban nincs beégetett területnév
+(minden az `data/areas.yaml`-ből); az EUR→HUF átváltás a rögzített crawl-napi ECB-árfolyamon
+történik. A teljes lánc egy paranccsal futtatható: `python -m ingatlan_tdk pipeline --all`.

@@ -15,19 +15,21 @@ vocab:
 
 columns:
   listing_id: {from: listing_id, to: string}
+  oldal_allapot: {from: oldal_allapot, to: string}
   url: {from: url, to: string}
   title: {from: seo_title, to: string}
   cim_teljes: {from: cim_teljes, to: string}
   iranyitoszam: {from: iranyitoszam, to: string}
   varos: {from: varos, to: string}
+  varosresz: {from: LOCATION/ADDRESS_2, to: string}
   utca: {from: utca, to: string}
   hazszam: {from: hazszam, to: string}
   cim_forras: {from: cim_minoseg, to: string}
   gyujtes_datuma: {from: crawl_datuma, to: string}
   ingatlan_tipus: {from: PROPERTY_TYPE, to: string}
-  price_eur: {from: PRICE, to: float, decimal_comma: true}
+  price_eur: {from: [PRICE, ESTATE_PRICE/PRICE_SUGGESTION, PROJECT/UNIT_PRICE_FROM, RENTAL_PRICE/PER_MONTH], to: float, decimal_comma: true}
   nm_ar_eur: {from: PRICE/SQUARE_METER, to: float, decimal_comma: true}
-  alapterulet_nm: {from: ESTATE_SIZE/LIVING_AREA, to: float, decimal_comma: true}
+  alapterulet_nm: {from: [ESTATE_SIZE/LIVING_AREA, ESTATE_SIZE/USEABLE_AREA, ESTATE_SIZE], to: float, decimal_comma: true}
   szobaszam_osszes: {from: NO_OF_ROOMS, to: float, decimal_comma: true}
   epites_eve: {from: CONSTRUCTION_YEAR, to: float}
   allapot: {from: BUILDING_CONDITION, to: string}

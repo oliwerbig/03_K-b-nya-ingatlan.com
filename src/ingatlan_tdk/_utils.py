@@ -410,17 +410,18 @@ def carto_key():
 
 
 def carto_tile_url(style="voyager", z="{z}", x="{x}", y="{y}"):
-    """Ingyenes Carto csempe-URL; ha van API-kulcs, hozzáfűzi (magasabb limit)."""
+    """Carto raszter-csempe URL. A kulcsot a `key` paraméterben kell megadni
+    (a Carto NEM `api_key`-et vár — lásd docs.carto.com/faqs/carto-basemaps)."""
     base = f"https://a.basemaps.cartocdn.com/rastertiles/{style}/{z}/{x}/{y}.png"
     k = carto_key()
-    return base + (f"?api_key={k}" if k else "")
+    return base + (f"?key={k}" if k else "")
 
 
 def carto_style_url(style="positron"):
-    """Carto vektoros stílus-URL a plotly mapbox/maplibre alaptérképhez (kulccsal, ha van)."""
+    """Carto vektoros stílus-URL a plotly mapbox/maplibre alaptérképhez (a kulcs `key` paraméter)."""
     base = f"https://basemaps.cartocdn.com/gl/{style}-gl-style/style.json"
     k = carto_key()
-    return base + (f"?api_key={k}" if k else "")
+    return base + (f"?key={k}" if k else "")
 
 
 # === Számítási cache: minden elemzés pontosan egyszer fut ===

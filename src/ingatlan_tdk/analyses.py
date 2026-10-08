@@ -154,19 +154,48 @@ def canonical_hedonic(area=None, force=False):
             "teljes": _coef_table(r["model"]),
             "zaj": _coef_table(r["model_zones"]),
             "kp": _coef_table(r["model_kp"]),
+            "fe": _coef_table(r["model_fe"]) if r["model_fe"] is not None else pd.DataFrame({"valtozo": [], "coef": [], "p": []}),
             "vif": vif,
             "meta": pd.DataFrame({
                 "n": [r["n"]],
                 "r2_teljes": [round(float(r["model"].rsquared), 4)],
                 "r2_zaj": [round(float(r["model_zones"].rsquared), 4)],
                 "r2_kp": [round(float(r["model_kp"].rsquared), 4)],
+                "r2_fe": [round(float(r["model_fe"].rsquared), 4)] if r["model_fe"] is not None else [np.nan],
                 "ref_zona": [r["ref_zone"]],
                 "tod_cols": [",".join(r["tod_cols"])],
                 "kp_cols": [",".join(r["kp_cols"])],
                 "zone_cols": [",".join(r["zone_cols"])],
+                "trend": ["igen (x, y, x², y², xy)"],
+                "fe": ["igen" if r["model_fe"] is not None else "nincs variancia"],
             }),
         }
     return cached_compute(area, "canonical_hedonic", fn, force=force)
+
+
+def geokodolas_erzekenyseg(area=None, force=False):
+    """Érzékenység-vizsgálat: a kanonikus modell csak-exakt (hazszam) vs.
+    interpoláltat-is-tartalmazó (hazszam + hazszam_interpolalt) mintán —
+    a legközelebbi-házszám közelítés hatása a fő együtthatókra."""
+    def fn():
+        from ._utils import fit_canonical_hedonic
+        p = pontos_elado(area).copy()
+        rows = []
+        for cimke, sub in [("csak exakt", p[p["geokodolas_pontossag"] == "hazszam"]),
+                           ("exakt + interpolalt", p[p["geokodolas_pontossag"].isin(["hazszam", "hazszam_interpolalt"])])]:
+            if len(sub) < 20:
+                rows.append({"minta": cimke, "n": len(sub), "zaj_150m_coef": np.nan,
+                             "zaj_150m_p": np.nan, "tod15p_pct": np.nan})
+                continue
+            r = fit_canonical_hedonic(sub)
+            ct = {v: (c, pv) for v, c, pv in zip(r["model"].params.index, r["model"].params.values,
+                                                 r["model"].pvalues.values)}
+            zaj_c, zaj_p = ct.get("<150 m", (np.nan, np.nan))
+            tod_pct = (np.exp(sum(ct.get(c, (0.0, 1.0))[0] for c in r["tod_cols"])) - 1) * 100
+            rows.append({"minta": cimke, "n": r["n"], "zaj_150m_coef": float(zaj_c),
+                         "zaj_150m_p": float(zaj_p), "tod15p_pct": float(tod_pct)})
+        return pd.DataFrame(rows)
+    return cached_compute(area, "geokodolas_erzekenyseg", fn, force=force)
 
 
 def price_surface(area=None, force=False):
@@ -465,11 +494,14 @@ from ._utils import (CANON_PHYSICAL, cached_compute, build_immission_dummies,
                      canonical_rail_dummies, get_area_metadata)
 
 
+# Egy hatás = egy változó elv: a folytonos hálózati távolságok szerepelnek, a belőlük
+# képzett 15p dummyk NEM (azok duplikálnák ugyanazt az információt és megosztanák a
+# permutációs fontosságot).
 ML_FEATURES = ["korrigalt_alapterulet_nm", "szobaszam_osszes", "is_panel", "has_lift",
                "has_erkely", "allapot_kod", "emelet_szam", "epulet_kora_ev",
                "tavolsag_metro_halozati_m", "tavolsag_vasut_m",
-               "tavolsag_vasut_halozati_m", "vasut_15p_seta",
-               "kotottpalya_15p_seta", "is_vasut_immisszio_150m", "poi_15p_count"]
+               "tavolsag_vasut_halozati_m", "tavolsag_kotottpalya_halozati_m",
+               "is_vasut_immisszio_150m", "poi_15p_count"]
 
 
 def ml_analysis(area=None, force=False):

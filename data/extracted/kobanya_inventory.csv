@@ -21,6 +21,7 @@ crawl_datuma,str,1931,100.0,2026-10-08
 forras_fajl,str,1931,100.0,26858550.html | 27963086.html | 30417301.html
 title,str,1931,100.0,Nincs kép | Ingatlan kép
 oldal_allapot,str,1931,100.0,hirdetes
+altipus_url,str,1931,100.0,telephely | egyeb-uzlethelyiseg | egyeb-ipari-ingatlan
 param_Energetikai_tanusitvany,str,1844,95.5,nincs megadva | F | C
 param_Ingatlan_allapota,str,1658,85.9,felújítandó | közepes állapotú | jó állapotú
 param_Epites_eve,str,1654,85.7,nincs megadva | 1950 előtt | 2001 és 2010 között

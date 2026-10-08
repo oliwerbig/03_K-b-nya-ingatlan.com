@@ -18,7 +18,7 @@ from scipy.spatial import cKDTree
 WALK_M_PER_MIN = 75.0          # 1.25 m/s
 MAX_NET = 2000.0               # Dijkstra-cutoff: a folytonos távolságokhoz
 # (a POI/izokrón SÁVOK ettől függetlenül 375/750/1125 m — lásd POI_BANDS)
-MAX_SNAP = 120.0               # max. csatlakoztatási távolság az úthálózathoz
+MAX_SNAP = 300.0               # max. csatlakoztatási távolság az úthálózathoz (növelve a lefedettségért)
 RAIL_EPS = 0.1                 # m
 
 CATEGORIES = [
@@ -198,8 +198,8 @@ def compute_area(area_id, df, street_file, transit_file, poi_geojson_path):
         if node is not None:
             attach_map[key] = (cat, snap, nm)
 
-    # --- Ingatlanok (csak pontos minta) ---
-    idxs = df.index[df["minta_garantalt_pontos"] == 1]
+    # --- Ingatlanok: MINDEN geokódolt sor (nem csak a pontos alminta) ---
+    idxs = df.index[df["geokodolt_lat"].notna()]
     out = {c: pd.Series(np.nan, index=df.index) for c in [
         "tavolsag_vasut_halozati_m", "tavolsag_metro_halozati_m",
         "tavolsag_villamos_halozati_m", "tavolsag_busz_halozati_m",

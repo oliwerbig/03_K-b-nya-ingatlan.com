@@ -25,6 +25,7 @@ columns:
   hazszam: {from: hazszam, to: string}
   cim_forras: {from: cim_minoseg, to: string}
   gyujtes_datuma: {from: crawl_datuma, to: string}
+  ingatlan_altipus: {from: altipus_url, to: string}
   ingatlan_tipus: {from: url, to: string, regex_replace: ["^https://ingatlan\\.com/[^/]+/(elado|kiado)\\+([a-z-]+)/.*$", "\\2"]}
   price_huf: {from: ar, to: float}
   alapterulet_nm: {from: alapterulet_nm, to: float}

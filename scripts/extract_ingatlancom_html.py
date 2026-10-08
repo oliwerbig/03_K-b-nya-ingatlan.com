@@ -55,6 +55,8 @@ def extract_one(path, folder, manifest):
     with io.open(path, encoding="utf-8", errors="replace") as f:
         raw = f.read()
     out["oldal_allapot"] = "hirdetes" if "RealEstateListing" in raw else "404"
+    _am = re.search(r"/(?:elado|kiado)\+[a-z-]+/([a-z0-9-]+)/", out["url"] or "")
+    out["altipus_url"] = _am.group(1) if _am else None
 
     # --- 1) JSON-LD RealEstateListing ---
     jsonld = {}
@@ -83,6 +85,7 @@ def extract_one(path, folder, manifest):
     out.update({
         "listing_id": str(jsonld.get("url", "")).rstrip("/").split("/")[-1] if jsonld.get("url") else mrow.get("id"),
         "url": jsonld.get("url") or url,
+        "altipus_url": None,
         "cim_teljes": cim or None,
         "iranyitoszam": zipc or None,
         "varos": city or None,
@@ -101,6 +104,8 @@ def extract_one(path, folder, manifest):
     })
     if not out["listing_id"]:
         out["listing_id"] = os.path.splitext(fname)[0]
+    _am = re.search(r"/(?:elado|kiado)\+[a-z-]+/([a-z0-9-]+)/", out["url"] or "")
+    out["altipus_url"] = _am.group(1) if _am else None
     # listing_type a lap URL-jéből (a mappa csak fallback)
     lt_url = re.search(r"/(elado|kiado)", out["url"] or "")
     out["listing_type"] = lt_url.group(1) if lt_url else folder
@@ -149,7 +154,7 @@ def main():
     args = ap.parse_args()
 
     manifest = load_manifest(args.raw_dir)
-    files = list_html_files(args.raw_dir)
+    files = list_html_files(args.raw_dir, manifest)
     rows, log, skipped = [], [], 0
     for folder, path, fname in files:
         row, status = extract_one(path, folder, manifest)

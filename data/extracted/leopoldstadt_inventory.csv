@@ -1,146 +1,146 @@
 oszlop,tipus,kitoltott,kitoltottseg_pct,peldaertekek
-listing_id,str,2065,100.0,1000416310 | 1001691575 | 1002628896
-listing_type,str,2065,100.0,elado | kiado
-url,str,799,38.7,https://www.willhaben.at/iad/immobilien/d/sonstige/sonstige/investieren-profitieren-langfristig-absichern-1000416310/ | https://www.willhaben.at/iad/immobilien/d/gewerbeimmobilien-kaufen/wien/wien-102
-cim_teljes,str,2065,100.0,"Donaustraße 23, 1020 Wien | Wien | Wien, 02. Bezirk, Leopoldstadt"
-iranyitoszam,str,767,37.1,1020
-varos,str,2065,100.0,Wien
-utca,str,295,14.3,Donaustraße | Darwingasse | Ausstellungsstraße
-hazszam,str,295,14.3,23 | 19 | 26
-cim_minoseg,str,2065,100.0,szoveges | korzet
-leiras,str,799,38.7,"Investieren, profitieren, langfristig absichern LeopoldQuartier - Kapitalanlage in einer der gefragtesten Lagen Wiens Das LeopoldQuartier verbindet höchste Bauqualität mit einem Standort, der sowohl f"
-fenykepek_szama,float64,793,38.4,29.0 | 3.0 | 36.0
-crawl_datuma,str,2065,100.0,2026-10-08
-forras_fajl,str,2065,100.0,1000416310.html | 1001691575.html | 1002628896.html
-seo_title,str,799,38.7,"Investieren, profitieren, langfristig absichern, € 501.000,-, (1020 Wien) - willhaben | 2 Marktstände am Karmelitermarkt -- 48m² Nutzfläche, 48 m², € 155.000,-, (1020 Wien) - willhaben | Erstbezug, 2."
-published_date,str,799,38.7,2026-10-05T13:52:00+0200 | 2026-09-09T13:40:59+0200 | 2026-10-04T02:43:00+0200
-title,str,2065,100.0,"Investieren, profitieren, langfristig absichern1020 Wien, 02. Bezirk, Leopoldstadt, Obere DonaustraßeEHL Immobilien GmbH€ 10.891,31/m²€ 501.000 | Willhaben Ad 1001691575 | 2 Marktstände am Karmeliterm"
-oldal_allapot,str,2065,100.0,hirdetes | 404 | egyeb
-GENERAL_TEXT_ADVERT/Ausstattung,str,647,31.3,"<ul><li>Balkonanzahl:1</li><li>Loggiaanzahl: 1</li><li>Abstellraum Anzahl: 1</li><li>Balkonfläche:3,36 m²</li><li>Loggiafläche: 4,68 m2</li><li>Bad mit Dusche</li><li>Boden: Fliesenboden</li><li>Boden"
-GENERAL_TEXT_ADVERT/Lage,str,763,36.9,<strong>Region:</strong> Augarten<br><br><br><strong>Infrastruktur / Entfernungen</strong><br><br><strong>Gesundheit</strong><br>Arzt <500m<br>Apotheke <500m<br>Klinik <500m<br>Krankenhaus <1250m<br><
-DESCRIPTION,str,798,38.6,"<p><strong>LeopoldQuartier - Kapitalanlage in einer der gefragtesten Lagen Wiens</strong></p><br><p>Das LeopoldQuartier verbindet höchste Bauqualität mit einem Standort, der sowohl für Investoren als "
-GENERAL_TEXT_ADVERT/Preis - Detailinformation,str,659,31.9,"<ul><li>Heizkosten (exkl. MWSt): 34,39 Eur</li><li>monatliche Kosten (exkl. MWSt): 167,75 Eur</li><li>monatliche Kosten (inkl. MWSt): 187,32 Eur</li><li>Grunderwerbssteuer: 3.5% </li><li>Grundbucheint"
-CONTACT/COMPANYNAME,str,707,34.2,EHL Wohnen GmbH | Dual Immobilien GmbH | KeyLiving GmbH
-GENERAL_TEXT_ADVERT/Zusatzinformationen,str,669,32.4,<ul><li>Stockwerk: 5. Etage / 5. Etage</li><li>Stiege: 2</li><li>Anzahl Badezimmer: 1</li><li>Klimatisiert</li><li>Stellplatz: TIEFGARAGE</li><li>Energiepass gültig bis: 2032-12-15</li><li>Energiepass
-ENERGY_HWB,str,609,29.5,"23 | 30 | 23,9"
-ESTATE_MISC_CATEGORY,str,82,4.0,Kapitalanlagen / Rendite | Garagen / Einstellplätze | Diverse
-ADDITIONAL_COST/FEE,str,528,25.6,Provision bezahlt der Abgeber. | 3% des Kaufpreises zzgl. 20% USt. | 3% zzgl 20% Ust
-AVAILABLE_DATE_FREETEXT,str,171,8.3,Q2/2026 | 2025 | 2027
-CONTACT/PHONE2,str,466,22.6,00436648373481 | 00436603775467 | 00436606400663
-CONTACT/IMMOCARD_ID,str,111,5.4,01014605 | 01009340 | 01009758
-ESTATE_PRICE/MONTHCOSTS_GROSS,str,219,10.6,"187,32 | 140,8 | 191,64"
-ENERGY_HWB_CLASS,str,532,25.8,A | B | D
-IMPORT_EXTERNAL_ADVERTISER_ID,str,628,30.4,ABGC201409121331341939b42ivz8oc | ABGC202602231015094625002b8c375 | keyliving
-CONTACT/URL,str,678,32.8,www.ehl.at || www.ehl.at | www.keyliving.at || www.keyliving.at | www.value-one.com || www.value-one.com
-CONTACT/NAME,str,705,34.1,"Andrea PÖCHHACKER; MSc | Milot Bunjaku | Ing. Matthias Mischek, MA MBA"
-ENERGY_FGEE_CLASS,str,488,23.6,A+ | A | B
-ESTATE_SIZE/LIVING_AREA,str,559,27.1,"46,36 | 56,32 | 48,05"
-ENERGY_FGEE,str,531,25.7,"0,81 | 0,7 | 0,83"
-IMPORT_XML_SOFTWARE,str,690,33.4,JUSTIMMO | PROPSTACK | OOF
-CONTACT/PHONE,str,718,34.8,004315127690411 | 069910530900 | 004369919015860
-OWNAGETYPE,str,799,38.7,Kauf | Miete
-CONTACT/IMMOCARD_COMPANY_ID,str,57,2.8,AT01008203 | 12804 | 2248
-ESTATE_PRICE/PRICE_SUGGESTION,str,499,24.2,501000 | 155000 | 449000
-IMPORT_EXTERNAL_ADVERT_ID,str,689,33.4,OBGC2025092315551826961c4641fa1 | OBGC20260628001345972cc8100e189 | OBGC2025092315552047153b2e60e39
-ESTATE_PRICE/HEATINGCOSTSNET,str,92,4.5,"34,39 | 35,62 | 34,42"
-ESTATE_PRICE/PRICE_SUGGESTION_FOR_DISPLAY,str,499,24.2,€ 501.000 | € 155.000 | € 449.000
-PRICE,str,791,38.3,501000 | 155000 | 449000
-PRICE_FOR_DISPLAY,str,791,38.3,€ 501.000 | € 155.000 | € 449.000
-AREA_ID,str,799,38.7,117224
-REGION_AREA_ID,str,799,38.7,117224
-LOCATION/ADDRESS_1,str,389,18.8,Obere Donaustraße | Karmelitermarkt | Obere Donaustraße 23
-LOCATION/ADDRESS_2,str,767,37.1,"Wien, 02. Bezirk, Leopoldstadt | Wien"
-LOCATION/ADDRESS_3,str,767,37.1,Wien
-LOCATION/ADDRESS_4,str,767,37.1,Wien
-COORDINATES,str,642,31.1,"48.218285,16.372688 | 48.21738,16.37695 | 48.22829,16.387651"
-SHOW_MAP,str,767,37.1,true | false
-SHOW_SHADOWMAP,str,767,37.1,false | true
-CONTACT/COMPANY,str,707,34.2,EHL Immobilien GmbH | Dual Immobilien GmbH | KeyLiving GmbH
-CONTACT/ADDRESS_STREET,str,707,34.2,Rathausstraße 1 | Novaragasse | Gallmeyergasse 18 /4/3
-CONTACT/ADDRESS_POSTCODE,str,707,34.2,1010 | 1020 | 1190
-CONTACT/ADDRESS_TOWN,str,707,34.2,"Wien, 01. Bezirk, Innere Stadt | Wien, 02. Bezirk, Leopoldstadt | Wien, 19. Bezirk, Döbling"
-ISPRIVATE,str,799,38.7,0 | 1
-DEALER,str,799,38.7,1 | 0
-ORG_TYPE,str,799,38.7,105 | 2
-AVAILABLE_NOW,str,319,15.4,nach Vereinbarung | ab sofort
-PROPERTY_TYPE,str,717,34.7,Geschäfts-/Ladenlokal | Wohnung | Dachgeschoßwohnung
-PROPERTY_TYPE_FLAT,str,717,34.7,false | true
-FLOOR_SURFACE,str,433,21.0,Fliesen | Parkett | Laminat
-BUILDING_CONDITION,str,512,24.8,Sehr gut/gut | Erstbezug | Neuwertig
-ESTATE_PREFERENCE,str,609,29.5,Barrierefrei | Barrierefrei || Fahrstuhl || Abstellraum | Einbauküche || Keller || Garage || Barrierefrei || Fahrstuhl || Parkplatz || Abstellraum
-ESTATE_SIZE/USEABLE_AREA,str,342,16.6,"48 | 63,01 | 90"
-PRICE/UNIT,str,165,8.0,gesamt | pro m²
-PROPERTY_TYPE_ID,str,717,34.7,10 | 3 | 110
-ESTATE_SIZE,str,311,15.1,48 | 90 | 52
-PRICE/SQUARE_METER,str,622,30.1,3229.1667 | 7972.3013 | 6666.1113
-PRICE/SQUARE_METER_FOR_DISPLAY,str,622,30.1,"€ 3.229,17 | € 7.972,30 | € 6.666,11"
-PRICE/SQUARE_METER_FOR_DISPLAY_WITH_UNIT,str,622,30.1,"€ 3.229,17/m² | € 7.972,30/m² | € 6.666,11/m²"
-FLOOR,str,519,25.1,1 | 5 | 4
-CONSTRUCTION_YEAR,str,432,20.9,2026 | 2016 | 2025
-FREE_AREA/FREE_AREA_AREA,str,318,15.4,"6,69 | 10,89 | 35,12"
-BUILDING_TYPE,str,459,22.2,Neubau | Altbau
-AVAILABLE_DATE,str,326,15.8,28.06.2026 | 17.09.2026 | 07.09.2026
-NO_OF_ROOMS,str,512,24.8,2 | 3 | 4
-HEATING,str,495,24.0,Fußbodenheizung | Etagenheizung | Luftwärmepumpe
-FREE_AREA/FREE_AREA_TYPE,str,389,18.8,Loggia | Balkon | Terrasse || Balkon
-FREE_AREA/FREE_AREA_TYPE_AND_AREA,str,389,18.8,"Loggia 6,69 m² | Balkon 10,89 m² | Balkon 35,12 m² || Terrasse"
-POSITION_RADIUS_METERS,str,242,11.7,267 | 268 | 253
-INFOLINK/URL,str,119,5.8,https://my.matterport.com/show/?m=aP2HwDBNHq7 | https://storage.justimmo.at/file/6RKYVzlshQTcJ08S5sDVlF.pdf || https://storage.justimmo.at/file/3gGX1IYMkTfi5V58YuXp4n.pdf || https://storage.justimmo.a
-UNIT_NUMBER,str,143,6.9,132A/02/23 | 67 | 85
-GENERAL_TEXT_ADVERT/Sonstiges,str,164,7.9,"Alle Angaben basieren auf Informationen, die uns vom Eigentümer und/oder der Hausverwaltung übermittelt wurden. Für deren Richtigkeit und Vollständigkeit übernehmen wir keine Haftung. Irrtum und Änder"
-INFOLINK/NAME,str,119,5.8,Virtueller Rundgang | Grundriss Top 67 || Broschüre Grünblick || Bau- und Ausstattungsbeschreibung Kurzform | Maison 29
-VIRTUAL_VIEW_LINK/URL,str,33,1.6,https://my.matterport.com/show/?m=aP2HwDBNHq7 | https://my.matterport.com/show/?m=m8yEVaaDoJG | https://my.matterport.com/show/?m=xFXzVxS27Zp
-UNIT_TITLE,str,143,6.9,Etage 5/Top 132A/02/23 | Etage 4/Top 67 | Etage 6/Top 85
-PROJECT/STATUS,str,117,5.7,Bezugsfertig | In Bau/Planung
-PROJECT/UNIT_PRICE_FROM,str,196,9.5,780100 | 333000 | 572000
-PROJECT/UNIT_SIZE_TO,str,196,9.5,"133,06 | 108,24 | 197"
-PROJECT/UNIT_COUNT_BUY,str,196,9.5,23 | 89 | 10
-PROJECT/UNIT_SIZE_FROM,str,196,9.5,"80,66 | 34,63 | 40"
-PROJECT/UNIT_PRICE_TO,str,196,9.5,1962200 | 1138000 | 2290000
-PROJECT/FINISHED_BY,str,141,6.8,01.10.2026 | 01.04.2026 | 01.09.2026
-PROJECT_ID,str,196,9.5,680790005 | 1099010239 | 595788042
-PROJECT_NAME,str,196,9.5,"Wohnen beim grünen Prater - ein Paradies im Herbst | City Life. Green Soul. | ""DAS ARTMANN"" Urban * Am Fluss * Beim Park"
-PROJECT_SEO_URL,str,196,9.5,immobilien/d/neubauprojekt/wien/wien-1020-leopoldstadt/wohnen-beim-gruenen-prater-ein-paradies-im-herbst-680790005/ | immobilien/d/neubauprojekt/wien/wien-1020-leopoldstadt/city-life-green-soul-109901
-PROJECT_ADDETAIL_URL,str,196,9.5,https://publicapi.willhaben.at/atdetail/v1/680790005 | https://publicapi.willhaben.at/atdetail/v1/1099010239 | https://publicapi.willhaben.at/atdetail/v1/595788042
-PROJECT_IMAGE_URL,str,196,9.5,https://cache.willhaben.at/mmo/5/680/790/005_1330239743.jpg | https://cache.willhaben.at/mmo/9/109/901/0239_598768604.jpg | https://cache.willhaben.at/mmo/2/595/788/042_-145454965.jpg
-GENERAL_TEXT_ADVERT/Flächen,str,209,10.1,<ul><li>Kellerfläche: 5.69 m²</li></ul> | <ul><li>Kellerfläche: 2 m²</li></ul> | <ul><li>Kellerfläche: 4 m²</li></ul>
-ESTATE_PRICE/ONENQUIRY,str,8,0.4,Preis auf Anfrage
-ESTATE_SIZE/GROSS_AREA,str,51,2.5,"172,94 | 193,5 | 69,97"
-RESULT_LIST_TOPAD,str,6,0.3,topad_result
-PLOT/AREA,str,12,0.6,620 | 589 | 333
-ESTATE_PRICE/PRICE_DESCRIPTION,str,30,1.5,"siehe Preis - Detailinformation | Tiefgarage (Anzahl: 1): 39.990,00 EUR | Anlegerpreis: EUR 1.495.300 zzgl. 20% USt"
-ADDITIONAL_COST/AMOUNT,str,6,0.3,"196,44 | 316,53 | 185,68"
-ESTATE_PRICE/OTHERCOSTS_NET,str,14,0.7,"116,63 | 55,65 | 144,35"
-PRICE_REDUCTION_SET_DATE,str,51,2.5,1790606848644 | 1786007946292 | 1782472946697
-OLD_PRICE,str,51,2.5,498000 | 150 | 295000
-RENTAL_PRICE/PER_MONTH_FOR_DISPLAY,str,284,13.8,"€ 89 | € 93 | € 19,45 pro m²"
-PROPERTY_TYPE_HOUSE,str,7,0.3,true
+listing_id,str,1764,100.0,1000416310 | 1002628896 | 1004030040
+listing_type,str,1764,100.0,elado | kiado
+url,str,1762,99.9,https://www.willhaben.at/iad/immobilien/d/sonstige/sonstige/investieren-profitieren-langfristig-absichern-1000416310/ | https://www.willhaben.at/iad/immobilien/d/gewerbeimmobilien-kaufen/wien/wien-102
+cim_teljes,str,1764,100.0,"Donaustraße 23, 1020 Wien | Wien, 02. Bezirk, Leopoldstadt | Ausstellungsstraße 29, 1020 Wien"
+iranyitoszam,str,1682,95.4,1020
+varos,str,1764,100.0,Wien
+utca,str,685,38.8,Donaustraße | Ausstellungsstraße | Darwingasse
+hazszam,str,685,38.8,23 | 29 | 19
+cim_minoseg,str,1764,100.0,szoveges | korzet
+leiras,str,1762,99.9,"Investieren, profitieren, langfristig absichern LeopoldQuartier - Kapitalanlage in einer der gefragtesten Lagen Wiens Das LeopoldQuartier verbindet höchste Bauqualität mit einem Standort, der sowohl f"
+fenykepek_szama,float64,1754,99.4,29.0 | 3.0 | 36.0
+crawl_datuma,str,1764,100.0,2026-10-08
+forras_fajl,str,1764,100.0,1000416310.html | 1002628896.html | 1004030040.html
+seo_title,str,1762,99.9,"Investieren, profitieren, langfristig absichern, € 501.000,-, (1020 Wien) - willhaben | 2 Marktstände am Karmelitermarkt -- 48m² Nutzfläche, 48 m², € 155.000,-, (1020 Wien) - willhaben | Erstbezug, 2."
+published_date,str,1762,99.9,2026-10-05T13:52:00+0200 | 2026-09-09T13:40:59+0200 | 2026-10-04T02:43:00+0200
+title,str,1764,100.0,"Investieren, profitieren, langfristig absichern1020 Wien, 02. Bezirk, Leopoldstadt, Obere DonaustraßeEHL Immobilien GmbH€ 10.891,31/m²€ 501.000 | 2 Marktstände am Karmelitermarkt -- 48m² Nutzfläche102"
+oldal_allapot,str,1764,100.0,hirdetes | egyeb
+GENERAL_TEXT_ADVERT/Ausstattung,str,1465,83.0,"<ul><li>Balkonanzahl:1</li><li>Loggiaanzahl: 1</li><li>Abstellraum Anzahl: 1</li><li>Balkonfläche:3,36 m²</li><li>Loggiafläche: 4,68 m2</li><li>Bad mit Dusche</li><li>Boden: Fliesenboden</li><li>Boden"
+GENERAL_TEXT_ADVERT/Lage,str,1694,96.0,<strong>Region:</strong> Augarten<br><br><br><strong>Infrastruktur / Entfernungen</strong><br><br><strong>Gesundheit</strong><br>Arzt <500m<br>Apotheke <500m<br>Klinik <500m<br>Krankenhaus <1250m<br><
+DESCRIPTION,str,1759,99.7,"<p><strong>LeopoldQuartier - Kapitalanlage in einer der gefragtesten Lagen Wiens</strong></p><br><p>Das LeopoldQuartier verbindet höchste Bauqualität mit einem Standort, der sowohl für Investoren als "
+GENERAL_TEXT_ADVERT/Preis - Detailinformation,str,1493,84.6,"<ul><li>Heizkosten (exkl. MWSt): 34,39 Eur</li><li>monatliche Kosten (exkl. MWSt): 167,75 Eur</li><li>monatliche Kosten (inkl. MWSt): 187,32 Eur</li><li>Grunderwerbssteuer: 3.5% </li><li>Grundbucheint"
+CONTACT/COMPANYNAME,str,1601,90.8,EHL Wohnen GmbH | Dual Immobilien GmbH | KeyLiving GmbH
+GENERAL_TEXT_ADVERT/Zusatzinformationen,str,1516,85.9,<ul><li>Stockwerk: 5. Etage / 5. Etage</li><li>Stiege: 2</li><li>Anzahl Badezimmer: 1</li><li>Klimatisiert</li><li>Stellplatz: TIEFGARAGE</li><li>Energiepass gültig bis: 2032-12-15</li><li>Energiepass
+ENERGY_HWB,str,1381,78.3,"23 | 30 | 23,9"
+ESTATE_MISC_CATEGORY,str,174,9.9,Kapitalanlagen / Rendite | Garagen / Einstellplätze | Diverse
+ADDITIONAL_COST/FEE,str,1174,66.6,Provision bezahlt der Abgeber. | 3% des Kaufpreises zzgl. 20% USt. | 3% vom Kaufpreis zzgl. 20% UST.
+AVAILABLE_DATE_FREETEXT,str,359,20.4,Q2/2026 | 2025 | 2027
+CONTACT/PHONE2,str,1053,59.7,00436648373481 | 00436603775467 | 00436606400663
+CONTACT/IMMOCARD_ID,str,275,15.6,01014605 | 01009340 | 01005595
+ESTATE_PRICE/MONTHCOSTS_GROSS,str,529,30.0,"187,32 | 140,8 | 191,64"
+ENERGY_HWB_CLASS,str,1243,70.5,A | B | D
+IMPORT_EXTERNAL_ADVERTISER_ID,str,1419,80.4,ABGC201409121331341939b42ivz8oc | ABGC202602231015094625002b8c375 | keyliving
+CONTACT/URL,str,1555,88.2,www.ehl.at || www.ehl.at | www.keyliving.at || www.keyliving.at | https://www.3si.at || www.3si.at
+CONTACT/NAME,str,1609,91.2,"Andrea PÖCHHACKER; MSc | Milot Bunjaku | Ing. Matthias Mischek, MA MBA"
+ENERGY_FGEE_CLASS,str,1154,65.4,A+ | A | B
+ESTATE_SIZE/LIVING_AREA,str,1238,70.2,"46,36 | 56,32 | 48,05"
+ENERGY_FGEE,str,1235,70.0,"0,81 | 0,7 | 0,83"
+IMPORT_XML_SOFTWARE,str,1571,89.1,JUSTIMMO | PROPSTACK | OOF
+CONTACT/PHONE,str,1624,92.1,004315127690411 | 069910530900 | 004369919015860
+OWNAGETYPE,str,1762,99.9,Kauf | Miete
+CONTACT/IMMOCARD_COMPANY_ID,str,138,7.8,AT01008203 | 9877 | 1588
+ESTATE_PRICE/PRICE_SUGGESTION,str,1142,64.7,501000 | 155000 | 449000
+IMPORT_EXTERNAL_ADVERT_ID,str,1566,88.8,OBGC2025092315551826961c4641fa1 | OBGC20260628001345972cc8100e189 | OBGC2025092315552047153b2e60e39
+ESTATE_PRICE/HEATINGCOSTSNET,str,217,12.3,"34,39 | 35,62 | 34,42"
+ESTATE_PRICE/PRICE_SUGGESTION_FOR_DISPLAY,str,1142,64.7,€ 501.000 | € 155.000 | € 449.000
+PRICE,str,1741,98.7,501000 | 155000 | 449000
+PRICE_FOR_DISPLAY,str,1741,98.7,€ 501.000 | € 155.000 | € 449.000
+AREA_ID,str,1762,99.9,117224
+REGION_AREA_ID,str,1762,99.9,117224
+LOCATION/ADDRESS_1,str,844,47.8,Obere Donaustraße | Karmelitermarkt | Obere Donaustraße 23
+LOCATION/ADDRESS_2,str,1682,95.4,"Wien, 02. Bezirk, Leopoldstadt | Wien"
+LOCATION/ADDRESS_3,str,1682,95.4,Wien
+LOCATION/ADDRESS_4,str,1682,95.4,Wien
+COORDINATES,str,1404,79.6,"48.218285,16.372688 | 48.21738,16.37695 | 48.22829,16.387651"
+SHOW_MAP,str,1682,95.4,true | false
+SHOW_SHADOWMAP,str,1682,95.4,false | true
+CONTACT/COMPANY,str,1612,91.4,EHL Immobilien GmbH | Dual Immobilien GmbH | KeyLiving GmbH
+CONTACT/ADDRESS_STREET,str,1612,91.4,Rathausstraße 1 | Novaragasse | Gallmeyergasse 18 /4/3
+CONTACT/ADDRESS_POSTCODE,str,1612,91.4,1010 | 1020 | 1190
+CONTACT/ADDRESS_TOWN,str,1612,91.4,"Wien, 01. Bezirk, Innere Stadt | Wien, 02. Bezirk, Leopoldstadt | Wien, 19. Bezirk, Döbling"
+ISPRIVATE,str,1762,99.9,0 | 1
+DEALER,str,1762,99.9,1 | 0
+ORG_TYPE,str,1762,99.9,105 | 2
+AVAILABLE_NOW,str,653,37.0,nach Vereinbarung | ab sofort
+PROPERTY_TYPE,str,1588,90.0,Geschäfts-/Ladenlokal | Wohnung | Dachgeschoßwohnung
+PROPERTY_TYPE_FLAT,str,1588,90.0,false | true
+FLOOR_SURFACE,str,962,54.5,Fliesen | Parkett | Laminat
+BUILDING_CONDITION,str,1132,64.2,Sehr gut/gut | Erstbezug | Neuwertig
+ESTATE_PREFERENCE,str,1347,76.4,Barrierefrei | Barrierefrei || Fahrstuhl || Abstellraum | Einbauküche || Keller || Garage || Barrierefrei || Fahrstuhl || Parkplatz || Abstellraum
+ESTATE_SIZE/USEABLE_AREA,str,730,41.4,"48 | 63,01 | 90"
+PRICE/UNIT,str,360,20.4,gesamt | pro m²
+PROPERTY_TYPE_ID,str,1588,90.0,10 | 3 | 110
+ESTATE_SIZE,str,622,35.3,48 | 90 | 52
+PRICE/SQUARE_METER,str,1369,77.6,3229.1667 | 7972.3013 | 6666.1113
+PRICE/SQUARE_METER_FOR_DISPLAY,str,1369,77.6,"€ 3.229,17 | € 7.972,30 | € 6.666,11"
+PRICE/SQUARE_METER_FOR_DISPLAY_WITH_UNIT,str,1369,77.6,"€ 3.229,17/m² | € 7.972,30/m² | € 6.666,11/m²"
+FLOOR,str,1182,67.0,1 | 5 | 2
+CONSTRUCTION_YEAR,str,973,55.2,2026 | 2016 | 2025
+FREE_AREA/FREE_AREA_AREA,str,737,41.8,"6,69 | 10,89 | 4,33"
+BUILDING_TYPE,str,1025,58.1,Neubau | Altbau
+AVAILABLE_DATE,str,680,38.5,28.06.2026 | 17.09.2026 | 24.09.2026
+NO_OF_ROOMS,str,1143,64.8,2 | 3 | 4
+HEATING,str,1069,60.6,Fußbodenheizung | Etagenheizung | Luftwärmepumpe
+FREE_AREA/FREE_AREA_TYPE,str,885,50.2,Loggia | Balkon | Balkon || Loggia
+FREE_AREA/FREE_AREA_TYPE_AND_AREA,str,885,50.2,"Loggia 6,69 m² | Balkon 10,89 m² | Loggia 4,33 m²"
+POSITION_RADIUS_METERS,str,533,30.2,267 | 262 | 268
+INFOLINK/URL,str,272,15.4,https://my.matterport.com/show/?m=aP2HwDBNHq7 | https://storage.justimmo.at/file/6RKYVzlshQTcJ08S5sDVlF.pdf || https://storage.justimmo.at/file/3gGX1IYMkTfi5V58YuXp4n.pdf || https://storage.justimmo.a
+UNIT_NUMBER,str,354,20.1,132A/02/23 | 33 | 80
+GENERAL_TEXT_ADVERT/Sonstiges,str,348,19.7,"Alle Angaben basieren auf Informationen, die uns vom Eigentümer und/oder der Hausverwaltung übermittelt wurden. Für deren Richtigkeit und Vollständigkeit übernehmen wir keine Haftung. Irrtum und Änder"
+INFOLINK/NAME,str,272,15.4,Virtueller Rundgang | Grundriss Top 67 || Broschüre Grünblick || Bau- und Ausstattungsbeschreibung Kurzform | Maison 29
+VIRTUAL_VIEW_LINK/URL,str,78,4.4,https://my.matterport.com/show/?m=aP2HwDBNHq7 | https://my.matterport.com/show/?m=m8yEVaaDoJG | https://my.matterport.com/show/?m=xFXzVxS27Zp
+UNIT_TITLE,str,354,20.1,Etage 5/Top 132A/02/23 | Etage 2/Top 33 | Etage 6/Top 80
+GENERAL_TEXT_ADVERT/Flächen,str,521,29.5,<ul><li>Kellerfläche: 1.37 m²</li></ul> | <ul><li>Kellerfläche: 7.51 m²</li></ul> | <ul><li>Kellerfläche: 5.69 m²</li></ul>
+PROJECT/UNIT_PRICE_FROM,str,456,25.9,333000 | 349000 | 780100
+PROJECT/UNIT_SIZE_TO,str,456,25.9,"108,24 | 161,31 | 133,06"
+PROJECT/UNIT_COUNT_BUY,str,456,25.9,89 | 8 | 23
+PROJECT/UNIT_SIZE_FROM,str,456,25.9,"34,63 | 38,29 | 80,66"
+PROJECT/UNIT_PRICE_TO,str,456,25.9,1138000 | 2667000 | 1962200
+PROJECT/FINISHED_BY,str,336,19.0,01.04.2026 | 01.10.2026 | 01.01.2027
+PROJECT_ID,str,456,25.9,1099010239 | 1277960882 | 680790005
+PROJECT_NAME,str,456,25.9,City Life. Green Soul. | GOLDENER PFAU | EXKLUSIVES WOHNEN IM KARMELITERVIERTEL | Wohnen beim grünen Prater - ein Paradies im Herbst
+PROJECT_SEO_URL,str,456,25.9,immobilien/d/neubauprojekt/wien/wien-1020-leopoldstadt/city-life-green-soul-1099010239/ | immobilien/d/neubauprojekt/wien/wien-1020-leopoldstadt/goldener-pfau-exklusives-wohnen-im-karmeliterviertel-12
+PROJECT_ADDETAIL_URL,str,456,25.9,https://publicapi.willhaben.at/atdetail/v1/1099010239 | https://publicapi.willhaben.at/atdetail/v1/1277960882 | https://publicapi.willhaben.at/atdetail/v1/680790005
+PROJECT_IMAGE_URL,str,456,25.9,https://cache.willhaben.at/mmo/9/109/901/0239_598768604.jpg | https://cache.willhaben.at/mmo/2/127/796/0882_-101357200.jpg | https://cache.willhaben.at/mmo/5/680/790/005_1330239743.jpg
+PROJECT/STATUS,str,280,15.9,Bezugsfertig | In Bau/Planung
+ESTATE_SIZE/GROSS_AREA,str,105,6.0,"105,46 | 172,94 | 61,91"
+ESTATE_PRICE/ONENQUIRY,str,14,0.8,Preis auf Anfrage
+OLD_PRICE,str,102,5.8,285000 | 590000 | 1270000
+PRICE_REDUCTION_SET_DATE,str,102,5.8,1782472953142 | 1782473355779 | 1791192744975
+ESTATE_PRICE/PRICE_DESCRIPTION,str,84,4.8,"Tiefgarage (Anzahl: 1): 39.990,00 EUR | siehe Preis - Detailinformation | Betriebskosten inkl. Reparaturrücklage, Verwaltung und USt."
+RESULT_LIST_TOPAD,str,7,0.4,topad_result
+ADDITIONAL_COST/DEPOSIT,str,174,9.9,160 | 400 € | 100 (Drücker + Schlüssel)
+RENTAL_PRICE/PER_MONTH_FOR_DISPLAY,str,587,33.3,€ 160 | € 89 | € 132
+PLOT/AREA,str,20,1.1,620 | 589 | 333
+ADDITIONAL_COST/AMOUNT,str,15,0.9,"196,44 | 316,53 | 185,68"
+ESTATE_PRICE/OTHERCOSTS_NET,str,36,2.0,"116,63 | 101 | 116,26"
+PROPERTY_TYPE_HOUSE,str,15,0.9,true
+OLD_PRICE_FOR_DISPLAY,str,22,1.2,€ 830.000 | € 459.000 | € 479.000
 ADDITIONAL_COST/AMOUNT_NET,str,2,0.1,"243,59 | 201,78"
-RENTAL_PRICE/FURNITURE_COST,str,22,1.1,0 | 130000 | 2000
-ADDITIONAL_COST/DEPOSIT,str,90,4.4,"100 (Drücker + Schlüssel) | 450,00 | 540"
-OLD_PRICE_FOR_DISPLAY,str,11,0.5,€ 849.999 | € 570.000 | € 799.000
-UPSELLING_RESULT_LIST_AD_IN_MOTION,str,1,0.0,ad_in_motion
-UPSELLING_RESULT_LIST_AD_IN_MOTION_SCALE_MODE,str,1,0.0,ASPECT_FIT
-DURATION/TERMLIMITTEXT,str,194,9.4,Miete-Befristet | 5 Jahre | 5 Jahr(e)
-RENTAL_PRICE/TOTAL_ENCUMBRANCE,str,103,5.0,"19,45 | 1410 | 1467,09"
-DURATION/HASTERMLIMIT,str,231,11.2,befristet | unbefristet
-RENTAL_PRICE/PER_MONTH_NET,str,141,6.8,"19,45 | 1294,71 | 1281,82"
-RENTAL_PRICE/PRICE_DESCRIPTION,str,116,5.6,"siehe Preis - Detailinformation | Die Wohnung ist sehr sauber und neu , wir können auch Reinigungspersonal zur Verfügung stellen, | Miete (netto): 23,00 EUR / m2, Betriebskosten inklusive Heizung und "
-RENTAL_PRICE/NET,str,96,4.6,"19,45 | 1140 | 6540,05"
-RENTAL_PRICE/PER_MONTH,str,282,13.7,"19,45 | 1380,13 | 1294,71"
-RENTAL_PRICE/PER_MONTH_GROSS,str,54,2.6,"19,45 | 11850,55 | 16718,4"
-PRICE_RANGE/PRICE_FROM,str,1,0.0,1800
-NO_OF_BEDROOMS,str,1,0.0,2
-NO_OF_BEDS,str,1,0.0,2
-RENTAL_PRICE/ADDITIONAL_COST_NET,str,126,6.1,"154,71 | 130,19 | 1990,45"
-RENTAL_PRICE/VAT,str,104,5.0,"258,94 | 128,18 | 133,37"
-RENTAL_PRICE/ADDITIONAL_COSTS_NET,str,16,0.8,"16,63 | 56,81 | 33,18"
-RENTAL_PRICE/HEATINGCOSTSNET,str,19,0.9,"405,11 | 350,2 | 91,5"
-RESULT_LIST_STYLE2,str,5,0.2,style2
-RENTAL_PRICE/ADDITIONAL_COST_GROSS,str,6,0.3,"255,47 | 244,38 | 179,97"
-RENTAL_PRICE/GROSS,str,8,0.4,"1900 | 1654,62 | 1500"
-INFOURL/OBJECTINFOS,str,6,0.3,https://www.leopoldquartier.at/ | https://youtu.be/iyG7fqcfU7E?is=UXSon-JjF2ADoNEJ | https://www.theblueground.com/de/p/furnished-apartments/vie-125?utm_source=Willhaben&utm_medium=Feed
-RENTAL_PRICE/HEATINGCOSTSGROSS,str,2,0.1,"103,92 | 26,39"
-RENTAL_PRICE/ONENQUIRY,str,1,0.0,Preis auf Anfrage
-INFOURL/STATUSREPORT,str,1,0.0,https://youtu.be/o5oS_lhohzw
-RENTAL_PRICE/ADDITIONAL_COSTS_GROSS,str,1,0.0,"21,13"
+RENTAL_PRICE/FURNITURE_COST,str,36,2.0,0 | 130000 | 2000
+INFOURL/OBJECTINFOS,str,17,1.0,https://www.pagoni.at/immobilien/karmeliterdg2/ | https://www.pagoni.at/immobilien/karmelitermarktdg1/ | https://www.immo-hagenbrunn.at/objekt/16950796?from=1695616
+RESULT_LIST_STYLE2,str,6,0.3,style2
+UPSELLING_RESULT_LIST_AD_IN_MOTION,str,1,0.1,ad_in_motion
+UPSELLING_RESULT_LIST_AD_IN_MOTION_SCALE_MODE,str,1,0.1,ASPECT_FIT
+DURATION/TERMLIMITTEXT,str,419,23.8,10 Jahr(e) | Miete-Befristet | 5 Jahr(e)
+RENTAL_PRICE/TOTAL_ENCUMBRANCE,str,220,12.5,"1613,93 | 2604,67 | 19,45"
+DURATION/HASTERMLIMIT,str,471,26.7,befristet | unbefristet
+RENTAL_PRICE/PER_MONTH_NET,str,291,16.5,"1344,94 | 2170,56 | 19,45"
+RENTAL_PRICE/PRICE_DESCRIPTION,str,236,13.4,"siehe Preis - Detailinformation | Die Wohnung ist sehr sauber und neu , wir können auch Reinigungspersonal zur Verfügung stellen, | Miete (netto): 23,00 EUR / m2, Betriebskosten inklusive Heizung und "
+RENTAL_PRICE/PER_MONTH,str,582,33.0,"1613,93 | 16 | 2604,67"
+RENTAL_PRICE/VAT,str,230,13.0,"268,99 | 434,11 | 258,94"
+RENTAL_PRICE/PER_MONTH_GROSS,str,124,7.0,"1613,93 | 2604,67 | 19,45"
+RENTAL_PRICE/NET,str,194,11.0,"19,45 | 1140 | 6540,05"
+PRICE_RANGE/PRICE_FROM,str,1,0.1,1800
+NO_OF_BEDROOMS,str,1,0.1,2
+NO_OF_BEDS,str,1,0.1,2
+RENTAL_PRICE/ADDITIONAL_COST_NET,str,269,15.2,"154,71 | 130,19 | 1990,45"
+RENTAL_PRICE/ADDITIONAL_COSTS_NET,str,36,2.0,"16,63 | 56,81 | 16,72"
+RENTAL_PRICE/HEATINGCOSTSNET,str,37,2.1,"405,11 | 350,2 | 65,57"
+RENTAL_PRICE/ADDITIONAL_COST_GROSS,str,10,0.6,"255,47 | 244,38 | 179,97"
+RENTAL_PRICE/GROSS,str,14,0.8,"1900 | 1654,62 | 2536"
+RENTAL_PRICE/ADDITIONAL_COSTS_GROSS,str,5,0.3,"1000 | 34,02 | 13,62"
+RENTAL_PRICE/HEATINGCOSTSGROSS,str,6,0.3,"195,23 | 103,92 | 70,64"
+RENTAL_PRICE/ONENQUIRY,str,1,0.1,Preis auf Anfrage
+INFOURL/STATUSREPORT,str,1,0.1,https://youtu.be/o5oS_lhohzw

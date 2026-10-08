@@ -137,8 +137,13 @@ def verify_structure():
               int((df["epulet_kora_ev"] < 0).sum()) == 0)
         check(f"{tag}: minta_garantalt_pontos ∈ {0,1}",
               set(df["minta_garantalt_pontos"].dropna().unique()) <= {0, 1})
-        check(f"{tag}: pontos ⇔ hazszam-szintű geokódolás",
-              int(((df["minta_garantalt_pontos"] == 1) & (df["geokodolas_pontossag"] != "hazszam")).sum()) == 0)
+        check(f"{tag}: pontos ⇔ (hazszam vagy hazszam_interpolalt) geokódolás",
+              int(((df["minta_garantalt_pontos"] == 1)
+                   & (~df["geokodolas_pontossag"].isin(["hazszam", "hazszam_interpolalt"]))).sum()) == 0)
+        check(f"{tag}: panel és tegla nem lehet egyszerre 1",
+              int(((df["is_panel"] == 1) & (df["is_tegla"] == 1)).sum()) == 0)
+        _tfo = int(((df["is_tetoter"] == 1) & (df["is_foldszint"] == 1)).sum())
+        check(f"{tag}: tetőtér és földszint együtt legfeljebb 5 ellentmondó portál-sor", _tfo <= 5)
 
         # dummy-k binárisak
         for c in df.columns:

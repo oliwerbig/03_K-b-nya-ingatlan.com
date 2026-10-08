@@ -146,7 +146,7 @@ def main():
     args = ap.parse_args()
 
     manifest = load_manifest(args.raw_dir)
-    files = list_html_files(args.raw_dir)
+    files = list_html_files(args.raw_dir, manifest)
     rows, log = [], []
     for folder, path, fname in files:
         row, status = extract_one(path, folder, manifest)

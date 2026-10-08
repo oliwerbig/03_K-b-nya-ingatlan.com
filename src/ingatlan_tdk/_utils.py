@@ -582,35 +582,53 @@ def fit_canonical_hedonic(df):
     phys = [c for c in CANON_PHYSICAL if c in d.columns and d[c].nunique(dropna=False) > 1]
     rail = canonical_rail_dummies(d)
     zones, ref_zone = build_immission_dummies(d)
-    # VÁROSRÉSZ-FIXED EFFECTEK: a városrészi minőség (Óhegy-prémium stb.)
-    # elnyelése nélkül a sáv-együtthatók összetételi torzítást kapnak
-    # (a referencia-zóna a prémium városrészekkel esik egybe).
+    # TÉRBELI TREND-FELÜLET (x, y, x², y², xy — vetített koordináták): a lokációkontroll
+    # KANONIKUS formája. Skálázható (dummymentes, tetszőleges területméretre azonos
+    # struktúra), és elnyeli a városrészi minőségkülönbségek fő részét.
+    _mid = float(d['geokodolt_lat'].median())
+    _ls = 111320.0 * np.cos(np.radians(_mid))
+    d = d.copy()
+    d['trend_x'] = (d['geokodolt_lon'] - d['geokodolt_lon'].mean()) * _ls / 1000.0
+    d['trend_y'] = (d['geokodolt_lat'] - d['geokodolt_lat'].mean()) * 110540.0 / 1000.0
+    d['trend_x2'] = d['trend_x'] ** 2
+    d['trend_y2'] = d['trend_y'] ** 2
+    d['trend_xy'] = d['trend_x'] * d['trend_y']
+    trend_cols = ['trend_x', 'trend_y', 'trend_x2', 'trend_y2', 'trend_xy']
+    # VÁROSRÉSZ-FE mint ALTERNATÍV robusztusság-specifikáció (ha van érdemi variancia)
     _vr = pd.get_dummies(d['varosresz'].fillna('Ismeretlen'), drop_first=True)
     vr_cols = [c for c in _vr.columns if 0.02 < _vr[c].mean() < 0.98]
-    vr = _vr[vr_cols]
-    # FŐ MODELL: fizikai + VASÚTÁLLOMÁS TOD-dummyk + immissziós sávok + városrész-FE EGYÜTT
-    # (a sáv–TOD kollinearitás mérsékelt: max VIF ~3,6 — a kettős hatás
-    # egyetlen modellben azonosítható; ez a kutatás központi specifikációja).
+    vr = _vr[vr_cols] if vr_cols else pd.DataFrame(index=d.index)
+    # FŐ MODELL: fizikai + VASÚTÁLLOMÁS TOD-dummyk + immissziós sávok + TREND-FELÜLET
     tod_cols = [c for c in rail.columns if c.startswith('tod')]
-    X = sm.add_constant(pd.concat([d[phys], rail[tod_cols], zones, vr], axis=1).astype(float))
+    X = sm.add_constant(pd.concat([d[phys], rail[tod_cols], zones, d[trend_cols]], axis=1).astype(float))
     y = d['log_nm_ar']
     model = sm.OLS(y, X).fit(cov_type='HC1')
-    # ROBUSZTUSSÁG A: fizikai + sávok + városrész-FE (TOD nélkül)
-    Xz = sm.add_constant(pd.concat([d[phys], zones, vr], axis=1).astype(float))
+    # ROBUSZTUSSÁG A: fizikai + sávok + trend (TOD nélkül)
+    Xz = sm.add_constant(pd.concat([d[phys], zones, d[trend_cols]], axis=1).astype(float))
     model_zones = sm.OLS(y, Xz).fit(cov_type='HC1')
-    # ROBUSZTUSSÁG B: fizikai + kötöttpálya-dummyk + sávok + városrész-FE
+    # ROBUSZTUSSÁG B: fizikai + kötöttpálya-dummyk + sávok + trend
     kp_cols = [c for c in rail.columns if c.startswith('kp')]
-    Xk = sm.add_constant(pd.concat([d[phys], rail[kp_cols], zones, vr], axis=1).astype(float))
+    Xk = sm.add_constant(pd.concat([d[phys], rail[kp_cols], zones, d[trend_cols]], axis=1).astype(float))
     model_kp = sm.OLS(y, Xk).fit(cov_type='HC1')
+    # ROBUSZTUSSÁG C (ALTERNATÍVA): városrész-FE a trend helyett — csak ha van variancia
+    model_fe = None
+    fe_cols = []
+    if len(vr_cols) > 0:
+        Xf = sm.add_constant(pd.concat([d[phys], rail[tod_cols], zones, vr], axis=1).astype(float))
+        model_fe = sm.OLS(y, Xf).fit(cov_type='HC1')
+        fe_cols = vr_cols
     return {
         'model': model,
         'model_zones': model_zones,
         'model_kp': model_kp,
+        'model_fe': model_fe,
         'phys': phys,
         'tod_cols': tod_cols,   # vasútállomás TOD (5/10/15p sávok)
         'kp_cols': kp_cols,     # kötöttpálya (robusztusság)
         'zone_cols': list(zones.columns),
+        'trend_cols': trend_cols,
         'vr_cols': vr_cols,
+        'fe_cols': fe_cols,
         'ref_zone': ref_zone,
         'X': X, 'y': y, 'n': int(model.nobs),
     }

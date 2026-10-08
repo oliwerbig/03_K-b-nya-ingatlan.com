@@ -28,6 +28,7 @@ def load_manifest(raw_dir):
                  os.path.join(raw_dir, "kiado", "index.csv")]:
         if not os.path.exists(cand):
             continue
+        _folder = os.path.basename(os.path.dirname(cand)) if "index.csv" in os.path.basename(cand) else os.path.basename(os.path.dirname(cand))
         with io.open(cand, encoding="utf-8", newline="") as f:
             for row in csv.DictReader(f):
                 vals = []
@@ -44,19 +45,33 @@ def load_manifest(raw_dir):
                 title = vals[1] if len(vals) > 1 else ""
                 fname = lf or f"{rid}.html"
                 out[fname] = {"id": rid, "title": title, "url": url,
-                              "local_file": fname, "download_timestamp": ts}
+                              "local_file": fname, "download_timestamp": ts,
+                              "folder": _folder}
     return out
 
 
-def list_html_files(raw_dir):
-    """Rendezett .html fájllista az elado/ és kiado/ almappákból."""
+def list_html_files(raw_dir, manifest=None):
+    """Rendezett .html fájllista az elado/ és kiado/ almappákból.
+
+    Ha manifest van megadva (index.csv), CSAK a manifestben szereplő fájlokat
+    dolgozzuk fel — az elavult (pl. régi scrape-ből maradt 404-es) fájlok kiesnek."""
     files = []
     for sub in ("elado", "kiado"):
         d = os.path.join(raw_dir, sub)
         if os.path.isdir(d):
             for name in sorted(os.listdir(d)):
-                if name.lower().endswith(".html"):
-                    files.append((sub, os.path.join(d, name), name))
+                if not name.lower().endswith(".html"):
+                    continue
+                if manifest is not None:
+                    _m = manifest.get(name)
+                    if _m is None:
+                        continue
+                    # a manifest almappája dönt (ugyanaz az id lehet mindkét mappában)
+                    if _m.get("folder") and _m["folder"] not in ("", "elado", "kiado"):
+                        pass
+                    if _m.get("folder") in ("elado", "kiado") and _m["folder"] != sub:
+                        continue
+                files.append((sub, os.path.join(d, name), name))
     return files
 
 

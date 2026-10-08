@@ -252,8 +252,18 @@ def derive_core(df, area_cfg, mapping):
     em = pd.Series("", index=d.index) if em is None else em.fillna("").astype(str)
     d["is_foldszint"] = (em.str.contains("földszint|foldszint|emelet 0", flags=re.I, na=False)
                          | (_num(d, "emelet_szam") == 0)).astype("int64")
-    d["is_zaroszint"] = em.str.contains("záró|zaro|legfelső|legfelso", flags=re.I, na=False).astype("int64")
-    d["is_tetoter"] = (em.str.contains("tető|teto|padlás|padlas", flags=re.I, na=False)).astype("int64")
+    # zárószint: a portál már nem ad kategóriát — dokumentált proxy:
+    # a lakás a legfelső emeleten van (emelet_szam == epulet_szintjei_szam)
+    d["is_zaroszint"] = (em.str.contains("záró|zaro|legfelső|legfelso", flags=re.I, na=False)
+                         | ((_num(d, "emelet_szam") == _num(d, "epulet_szintjei_szam"))
+                            & _num(d, "emelet_szam").notna() & _num(d, "epulet_szintjei_szam").notna())).astype("int64")
+    # tetőtér: a DEDIKÁLT tetőtér-mezőből (param_Tetoter / bécsi Dachgeschoss típus)
+    tt = d.get("tetoter")
+    tt = pd.Series("", index=d.index) if tt is None else tt.fillna("").astype(str)
+    # a "nem tetőtéri" negációt kizárjuk
+    d["is_tetoter"] = ((tt.str.contains("tető|teto", flags=re.I, na=False)
+                        & ~tt.str.contains("nem tető|nem teto|nemtető", flags=re.I, na=False))
+                       | alt.str.contains("dachgeschoss|dachgeschoß|dachgeschosswohnung", flags=re.I, na=False)).astype("int64")
     if "is_magas_emelet_lift_nelkul" not in d.columns:
         emelet_szam = _num(d, "emelet_szam")
         lift = _num(d, "has_lift").fillna(0)
@@ -319,12 +329,17 @@ def join_geocode(df, area_id):
     g = pd.read_csv(csv_path, dtype={"listing_id": str})
     df["listing_id"] = df["listing_id"].astype(str)
     g = g.drop_duplicates(subset=["listing_id"], keep="first")
-    df = df.merge(g[["listing_id", "geokodolt_lat", "geokodolt_lon", "geokodolas_pontossag"]],
+    df = df.merge(g[["listing_id", "geokodolt_lat", "geokodolt_lon", "geokodolas_pontossag",
+                     "varosresz_geokodolt", "geokodolas_szolgaltato", "felhasznalt_hazszam"]],
                   on="listing_id", how="left")
     df["geokodolas_modszere"] = "cim_nominatim"
     df["geokodolas_pontossag"] = df["geokodolas_pontossag"].fillna("nincs")
-    # KIZÁRÓLAG a hazszam-szintű címgeokódolás garantáltan pontos
-    df["minta_garantalt_pontos"] = (df["geokodolas_pontossag"] == "hazszam").astype("int64")
+    # városrész a geokódolásból (a portál slug-ja helyett)
+    _vr_geo = df.get("varosresz_geokodolt")
+    if _vr_geo is not None:
+        df["varosresz"] = _vr_geo.where(_vr_geo.notna() & (_vr_geo.astype(str) != ""), df.get("varosresz"))
+    # pontos: hazszam (exakt) VAGY hazszam_interpolalt (legközelebbi házszám, dokumentált közelítés)
+    df["minta_garantalt_pontos"] = (df["geokodolas_pontossag"].isin(["hazszam", "hazszam_interpolalt"])).astype("int64")
     return df
 
 

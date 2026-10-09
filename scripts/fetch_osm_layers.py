@@ -61,6 +61,48 @@ def bbox_for(center_lat, center_lon, buffer_m):
     return (center_lat - dlat, center_lon - dlon, center_lat + dlat, center_lon + dlon)
 
 
+def listing_extent_bbox(area_cfg, buffer_m=2000.0):
+    """A HIRDETÉSEK tényleges koordináta-kiterjedéséből számolt bbox + puffer.
+
+    A hirdetések (főleg a kerületszéli címek) túlnyúlhatnak a fix középpont körüli
+    bboxon — akkor az úthálózat hiányos lenne és a hálózati távolságok kimaradnának.
+    Ezért a letöltési bbox a geokódolt címek szélső értékeiből + legalább 2000 m pufferből
+    számolódik."""
+    import pandas as _pd
+    rel = area_cfg.get("data", {}).get("extracted_xlsx")
+    lat0 = lon0 = lat1 = lon1 = None
+    if rel:
+        xp = os.path.join(ROOT, rel)
+        if os.path.exists(xp):
+            try:
+                d = _pd.read_excel(xp)
+                if {"lat_jsonld", "lon_jsonld"}.issubset(d.columns):
+                    d = d.dropna(subset=["lat_jsonld", "lon_jsonld"])
+                g = _pd.read_csv(os.path.join(ROOT, "data", "geocoding",
+                                              area_cfg["id"] + "_geocode_eredmeny.csv"),
+                                 dtype={"listing_id": str})
+                g = g.dropna(subset=["geokodolt_lat", "geokodolt_lon"])
+                # a geokódolási outlierek (rossz országba ugró találatok) kizárása:
+                # csak a terület-középpont 30 km-es környezetében lévő pontok számítanak
+                clat = float((area_cfg.get("spatial") or {}).get("center_lat", 48.0))
+                clon = float((area_cfg.get("spatial") or {}).get("center_lon", 16.0))
+                g = g[(g["geokodolt_lat"] - clat).abs() < 0.30]
+                g = g[(g["geokodolt_lon"] - clon).abs() < 0.40]
+                if len(g) >= 5:
+                    lat0, lat1 = float(g["geokodolt_lat"].quantile(0.02)), float(g["geokodolt_lat"].quantile(0.98))
+                    lon0, lon1 = float(g["geokodolt_lon"].quantile(0.02)), float(g["geokodolt_lon"].quantile(0.98))
+            except Exception:
+                pass
+    spatial = area_cfg.get("spatial", {})
+    if lat0 is None:
+        clat, clon = float(spatial["center_lat"]), float(spatial["center_lon"])
+        return bbox_for(clat, clon, buffer_m)
+    buf = max(MIN_BUFFER_M, buffer_m) + MARGIN_M
+    dlat = buf / 110540.0
+    dlon_mid = buf / (111320.0 * math.cos(math.radians((lat0 + lat1) / 2)))
+    return (lat0 - dlat, lon0 - dlon_mid, lat1 + dlat, lon1 + dlon_mid)
+
+
 ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
     "https://lz4.overpass-api.de/api/interpreter",
@@ -134,21 +176,21 @@ def main():
     buffers = areas.get("buffers", {})
     for aid, cfg in (areas.get("areas") or {}).items():
         spatial = cfg.get("spatial", {})
-        clat = float(spatial["center_lat"])
-        clon = float(spatial["center_lon"])
         data = cfg["data"]
-        print(f"=== {aid} (középpont {clat}, {clon}) ===")
+        _bbox = listing_extent_bbox(cfg, buffers.get("network_buffer_m", MIN_BUFFER_M))
+        print(f"=== {aid} (hirdetés-kiterjedés + {MIN_BUFFER_M} m puffer: "
+              f"{_bbox[0]:.4f}, {_bbox[1]:.4f} .. {_bbox[2]:.4f}, {_bbox[3]:.4f}) ===")
         # 1) utcahálózat
-        fetch(STREET_QUERY, bbox_for(clat, clon, buffers.get("network_buffer_m", MIN_BUFFER_M)),
+        fetch(STREET_QUERY, _bbox,
               os.path.join(ROOT, data["street_file"]), "utcahálózat")
         time.sleep(8)
         # 2) vasút + tranzit
-        fetch(TRANSIT_QUERY, bbox_for(clat, clon, buffers.get("rail_buffer_m", MIN_BUFFER_M)),
+        fetch(TRANSIT_QUERY, _bbox,
               os.path.join(ROOT, data["transit_file"]), "vasút+tranzit")
         time.sleep(8)
         # 3) POI-k (GeoJSON-lá konvertálva)
         _poi_path = os.path.join(ROOT, data["poi_file"])
-        _s, _w, _n, _e = bbox_for(clat, clon, buffers.get("poi_buffer_m", MIN_BUFFER_M))
+        _s, _w, _n, _e = _bbox
         _q = POI_QUERY.replace("{bbox}", f"{_s:.4f},{_w:.4f},{_n:.4f},{_e:.4f}")
         _raw = None
         for _attempt in range(1, 6):

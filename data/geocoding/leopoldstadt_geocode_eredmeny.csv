@@ -171,7 +171,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1248623759,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
 1252064767,"19 Donaustraße, 1020 Wien",48.2894131,16.3445499,hazszam,"19, Donaustraße, Kuchelau, Katastralgemeinde Kahlenbergerdorf, Döbling, Wien, 1190, Österreich",nominatim/photon,19.0,Katastralgemeinde Kahlenbergerdorf
 1252703103,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1253662839,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1253662839,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1261121513,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1263839012,"2A Fichtegasse, 1020 Wien",48.2036561,16.3738708,hazszam,"2a, Fichtegasse, Kärntner Viertel, Katastralgemeinde Innere Stadt, Innere Stadt, Wien, 1010, Österreich",nominatim/photon,2.0,Innere Stadt
 1265016497,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
@@ -1086,11 +1086,11 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1035929043,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1038206243,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1039816286,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1040216895,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1040216895,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1040503544,"81 Donaustraße, 1020 Wien",48.2152424,16.3756717,hazszam,"81, Obere Donaustraße, Karmeliterviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,81.0,Leopoldstadt
 1042516726,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1046591798,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1046670041,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1046670041,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1050800994,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
 1051931118,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1056344840,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1100,7 +1100,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1067779928,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1074959693,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1076106522,"50 Ausstellungsstraße, 1020 Wien",48.2176916,16.4098044,hazszam,"50, Ausstellungsstraße, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,50.0,Leopoldstadt
-1079618047,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1079618047,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1080216614,"111 Taborstraße, 1020 Wien",48.2282589,16.3910115,hazszam,"111, Taborstraße, Alliiertenviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,111.0,Leopoldstadt
 1080536968,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1083179951,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1117,7 +1117,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1119915072,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1120047892,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1124345758,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1126767311,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1126767311,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1129050770,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1129449744,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1130645058,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1125,11 +1125,11 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1134851644,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1136403358,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1142179264,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1144863663,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1144863663,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1145511635,"14 Meiereistraße, 1020 Wien",48.2092365,16.4195141,hazszam,"14A, Meiereistraße, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,14.0,Katastralgemeinde Leopoldstadt
 1150142533,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1150958574,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1153264411,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1153264411,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1155498477,"119 Taborstraße, 1020 Wien",48.2289932,16.3931546,hazszam,"119, Taborstraße, Alliiertenviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,119.0,Leopoldstadt
 1157189568,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1162505514,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1139,7 +1139,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1183275250,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1185563502,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1186935211,"1 Walcherstraße, 1020 Wien",48.2203801,16.3925993,hazszam,"Bank Austria, 1, Walcherstraße, Volkertviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,1.0,Leopoldstadt
-1187285071,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1187285071,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1192180702,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1193259698,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1197834938,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1164,7 +1164,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1235120495,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1235259269,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1235781039,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1235900980,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1235900980,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1236714270,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1239286984,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1239789622,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1173,7 +1173,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1250653071,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1252839633,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1252840617,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1253425479,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1253425479,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1254858751,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1255107654,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1255217405,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1200,7 +1200,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1313584797,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1314079892,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1316844770,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1316864718,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1316864718,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1319352003,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1320802143,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1322699951,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
@@ -1223,7 +1223,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1361369988,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1367938644,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1368234567,"137 Engerthstraße, 1020 Wien",48.233496,16.3940961,hazszam,"137, Engerthstraße, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,137.0,Leopoldstadt
-1370032751,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1370032751,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1370132468,"9 Stadtgutgasse, 1020 Wien",48.2196464,16.3886523,hazszam,"9, Kleine Stadtgutgasse, Jägerzeile, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,9.0,Leopoldstadt
 1371468652,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1376304345,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
@@ -1243,7 +1243,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1416648364,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1417227144,"50 Ausstellungsstraße, 1020 Wien",48.2176916,16.4098044,hazszam,"50, Ausstellungsstraße, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,50.0,Leopoldstadt
 1417991991,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1422904469,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1422904469,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1423440847,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1423974008,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1425839806,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1260,10 +1260,10 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1465279888,"1-3 Mumbgasse, 1020 Wien",48.2194155,16.3981868,hazszam,"1-3, Mumbgasse, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,1.0,Leopoldstadt
 1465359017,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1466796563,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
-1467575844,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1467575844,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1469193567,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1469680847,"60/1 Aßmayergasse, 1020 Wien",48.1776149,16.3379891,hazszam,,nominatim/photon,60.0,Meidling
-1470940161,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1470940161,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1471649427,"3 Taborstraße, 1020 Wien",48.2132366,16.3793778,hazszam_interpolalt,3 Taborstraße (legközelebbi házszám: 7),overpass,7.0,
 1482030405,"24 Innstraße, 1020 Wien",48.2333997,16.3937255,hazszam,"24, Innstraße, Zwischenbrücken, Brigittenau, Katastralgemeinde Brigittenau, Brigittenau, Wien, 1200, Österreich",nominatim/photon,24.0,Brigittenau
 1482761097,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
@@ -1284,9 +1284,9 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1511435659,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1518269863,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1522442460,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
-1524831304,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1524831304,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1524912298,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1526028363,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1526028363,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1527496769,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1529590353,"7 Lassallestraße,  Wien",48.2220942,16.3973094,hazszam,"7, Lassallestraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,7.0,Leopoldstadt
 1529831156,"47 Donaustraße, 1020 Wien",48.2141204,16.3898396,hazszam,"47, Untere Donaustraße, Czerninviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,47.0,Leopoldstadt
@@ -1302,7 +1302,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1559297199,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1560941942,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1561870478,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1562350825,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1562350825,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1563113684,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1564931325,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1572250051,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1329,7 +1329,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1615509795,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1615844103,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
 1617044355,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1617071666,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1617071666,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1618487222,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1622199513,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1622249607,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1343,14 +1343,14 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1638649747,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1644774256,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1648586007,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1649236031,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1649236031,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1650960398,"60 Stuwerstraße, 1020 Wien",48.2186578,16.406672,hazszam,"60, Stuwerstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,60.0,Leopoldstadt
-1652158676,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1652158676,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1653397496,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1654104489,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1654104489,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1654392367,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1655187607,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1656068787,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1656068787,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1656847508,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1657275786,"7B Lassallestraße, 1020 Wien",48.2225907,16.3981827,hazszam,"SAP Österreich GmbH, 7b, Lassallestraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,7.0,Leopoldstadt
 1658824458,"60 Stuwerstraße, 1020 Wien",48.2186578,16.406672,hazszam,"60, Stuwerstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,60.0,Leopoldstadt
@@ -1366,17 +1366,17 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1680503410,"37 Rotensterngasse, 1020 Wien",48.2164075,16.386711,hazszam,"37, Rotensterngasse, Czerninviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,37.0,Leopoldstadt
 1688212286,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1689628427,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1690514595,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1690514595,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1690677572,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1692895158,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1694418981,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1699912279,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1703877795,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1703877795,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1705278153,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
 1707087500,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1712132181,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1712132181,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1714178765,"9 Stadtgutgasse,  Wien",48.2196464,16.3886523,hazszam,"9, Kleine Stadtgutgasse, Jägerzeile, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,9.0,Leopoldstadt
-1717636093,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1717636093,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1718120802,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1719207248,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1729042096,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1385,23 +1385,23 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1736021562,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1738010933,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1739027146,"60 Stuwerstraße, 1020 Wien",48.2186578,16.406672,hazszam,"60, Stuwerstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,60.0,Leopoldstadt
-1740649485,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1740649485,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1741058986,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1747932783,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1748601469,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1748601469,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1750492385,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1757839569,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1767062001,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1767988459,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
-1771938146,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1771938146,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1772557368,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1773345968,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1773345968,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1775113350,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1776489126,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1779681296,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1784375863,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1785100106,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
-1786141886,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1786141886,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1786150428,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1787016419,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1788253082,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1416,7 +1416,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1801179504,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1803782845,"7 Lassallestraße, 1020 Wien",48.2220942,16.3973094,hazszam,"7, Lassallestraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,7.0,Leopoldstadt
 1804067687,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1804356705,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1804356705,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1804772146,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1806896510,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
 1807621618,"202 Handelskai, 1020 Wien",48.230038,16.3994331,utca,"Handelskai, Nordbahnviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,,Leopoldstadt
@@ -1441,19 +1441,19 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1837189567,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1838617684,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1839399403,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1839689391,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1839689391,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1841318330,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1843478076,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1847627741,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
 1848547884,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1850799737,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
-1855294379,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1855294379,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1858576275,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1859804003,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1861441376,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1865286375,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1866161173,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1872767735,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1872767735,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1874191569,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1876910372,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1879772231,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1477,7 +1477,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1908372851,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
 1908465879,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1910434180,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1910482231,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1910482231,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1911554848,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1916304683,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1918201470,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1509,14 +1509,14 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1958534353,"8 Machstraße, 1020 Wien",48.2184841,16.4135574,hazszam,"8, Machstraße, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,8.0,Leopoldstadt
 1958801197,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1958928651,"60 Stuwerstraße, 1020 Wien",48.2186578,16.406672,hazszam,"60, Stuwerstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,60.0,Leopoldstadt
-1959324028,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1959324028,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1959938621,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1960298793,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1960298793,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1960838761,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1960953813,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
 1962399575,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1962850374,"114 Taborstraße, 1020 Wien",48.2275298,16.3912373,hazszam,"114, Taborstraße, Alliiertenviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,114.0,Leopoldstadt
-1963891593,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1963891593,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1966088745,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1967574783,"1 Rothschildplatz, 1020 Wien",48.222865,16.3947331,hazszam,"UniCredit Bank Austria Headquarters, 1, Rothschildplatz, Austria Campus, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,1.0,Leopoldstadt
 1969462990,"1 Rothschildplatz, 1020 Wien",48.222865,16.3947331,hazszam,"UniCredit Bank Austria Headquarters, 1, Rothschildplatz, Austria Campus, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,1.0,Leopoldstadt
@@ -1525,7 +1525,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 1981377207,"1 Walcherstraße, 1020 Wien",48.2203801,16.3925993,hazszam,"Bank Austria, 1, Walcherstraße, Volkertviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,1.0,Leopoldstadt
 1982432456,"2 Aspernbrückengasse, 1020 Wien",48.2133465,16.3826936,hazszam,"2, Aspernbrückengasse, Afrikanerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,2.0,Leopoldstadt
 1985720728,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-1986439609,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+1986439609,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 1987932864,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 1989487245,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
 1989803228,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1545,7 +1545,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 2014727978,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2015684123,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2017678760,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-2020751757,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+2020751757,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 2022622048,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2022899967,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2025062333,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1569,18 +1569,18 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 2067396986,"1 Rothschildplatz, 1020 Wien",48.222865,16.3947331,hazszam,"UniCredit Bank Austria Headquarters, 1, Rothschildplatz, Austria Campus, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,1.0,Leopoldstadt
 2071473566,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2072159161,"37 Nordbahnstraße, 1020 Wien",48.2252083,16.3893476,hazszam,"37, Nordbahnstraße, Alliiertenviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,37.0,Leopoldstadt
-2073829256,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+2073829256,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 2076089120,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
 2076712758,"111 Taborstraße, 1020 Wien",48.2282589,16.3910115,hazszam,"111, Taborstraße, Alliiertenviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,111.0,Leopoldstadt
-2077142225,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+2077142225,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 2078323458,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2078552599,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-2083611017,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+2083611017,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 2085286554,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2086162291,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2086552511,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
-2088140123,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-2088647980,"25 Stellplatz, 1020 Wien",52.1635464,16.4621175,hazszam,Urząd Gminy Kamieniec,nominatim/photon,25.0,
+2088140123,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+2088647980,"25 Stellplatz, 1020 Wien",48.2231241,16.4036647,utca,Studio A25,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2091733396,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2092755231,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 2093713712,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1614,24 +1614,24 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 727779755,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 727780099,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 727780378,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-746056464,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056507,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056522,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056751,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056770,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056773,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056775,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056930,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056935,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056938,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
-746056954,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+746056464,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056507,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056522,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056751,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056770,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056773,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056775,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056930,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056935,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056938,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
+746056954,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 756111215,"1 Lassallstraße, 1020 Wien",48.2135929,16.4082366,hazszam,Wirtschaftsuniversität Wien,nominatim/photon,1.0,Katastralgemeinde Leopoldstadt
 756111713,"1 Lassallstraße, 1020 Wien",48.2135929,16.4082366,hazszam,Wirtschaftsuniversität Wien,nominatim/photon,1.0,Katastralgemeinde Leopoldstadt
 756112200,"1 Lassallstraße, 1020 Wien",48.2135929,16.4082366,hazszam,Wirtschaftsuniversität Wien,nominatim/photon,1.0,Katastralgemeinde Leopoldstadt
 762932570,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 762932575,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 764581368,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-774922045,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+774922045,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 777401574,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 777402927,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 780366779,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
@@ -1640,7 +1640,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 783968963,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 789315029,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 792152868,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-792409709,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+792409709,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 795127320,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 796254069,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 800913441,"23 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,"23, Obere Donaustraße, Rembrandtviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,23.0,Leopoldstadt
@@ -1652,7 +1652,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 815713961,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 816114533,"169 Engerthstraße, 1020 Wien",48.2277083,16.3996668,hazszam,"169, Engerthstraße, Nordbahnviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,169.0,Leopoldstadt
 816596703,"137 Engerthstraße, 1020 Wien",48.233496,16.3940961,hazszam,"137, Engerthstraße, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,137.0,Leopoldstadt
-817535406,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+817535406,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 824643489,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 826100072,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 829003057,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1667,7 +1667,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 849762541,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 852073051,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 852760814,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-853145650,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+853145650,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 856063357,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 857223042,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 857980253,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1697,7 +1697,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 895957006,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
 899129425,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 900358037,"23-27 Donaustraße, 1020 Wien",48.2231925,16.3710362,hazszam,,nominatim/photon,23.0,Katastralgemeinde Leopoldstadt
-901401827,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+901401827,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 901531414,"5 Flossgasse, 1020 Wien",48.2171666,16.3745623,hazszam,"5, Floßgasse, Karmeliterviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,5.0,Leopoldstadt
 901996913,"7 Lassallestraße, 1020 Wien",48.2220942,16.3973094,hazszam,"7, Lassallestraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,7.0,Leopoldstadt
 902227414,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1724,7 +1724,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 938858229,"213 Engerthstraße, 1020 Wien",48.220291,16.4093504,hazszam,"213, Engerthstraße, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,213.0,Leopoldstadt
 940705523,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 942210190,"55m Taborstrasse, 1020 Wien",48.2265214,16.3858606,utca,"Taborstraße, Alliiertenviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,,Leopoldstadt
-943634523,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+943634523,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 943854688,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 945390675,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 945753722,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
@@ -1735,7 +1735,7 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 950693281,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 953843064,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 954605675,"60 Stuwerstraße, 1020 Wien",48.2186578,16.406672,hazszam,"60, Stuwerstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,60.0,Leopoldstadt
-955735099,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+955735099,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 956152928,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 958835571,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 959173857,"3 Karmelitergasse, 1020 Wien",48.2167671,16.3787227,hazszam,"3, Karmelitergasse, Karmeliterviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,3.0,Leopoldstadt
@@ -1754,12 +1754,12 @@ listing_id,cim_query,geokodolt_lat,geokodolt_lon,geokodolas_pontossag,geokodolt_
 976438089,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 977341493,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 982251536,"7 Lassallestraße, 1020 Wien",48.2220942,16.3973094,hazszam,"7, Lassallestraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,7.0,Leopoldstadt
-984896185,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+984896185,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 988614116,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 989395958,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-989992254,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+989992254,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,
 990874795,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 993577715,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
 993918802,"60 Stuwerstraße, 1020 Wien",48.2186578,16.406672,hazszam,"60, Stuwerstraße, Stuwerviertel, Leopoldstadt, Katastralgemeinde Leopoldstadt, Leopoldstadt, Wien, 1020, Österreich",nominatim/photon,60.0,Leopoldstadt
 997083326,"Wien, 02. Bezirk, Leopoldstadt, Wien",48.216508,16.3798939,korzet,Bezirksmuseum Leopoldstadt,nominatim/photon,,Katastralgemeinde Leopoldstadt
-999165886,"Wien, Wien",44.9019561,-90.0250311,korzet,"Wien, Town of Wien, Marathon County, Wisconsin, 54426, United States",nominatim/photon,,
+999165886,"Wien, Wien",48.2083537,16.3725042,korzet,Wien,nominatim/photon,,

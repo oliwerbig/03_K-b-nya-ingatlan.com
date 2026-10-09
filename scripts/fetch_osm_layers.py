@@ -89,8 +89,10 @@ def listing_extent_bbox(area_cfg, buffer_m=2000.0):
                 g = g[(g["geokodolt_lat"] - clat).abs() < 0.30]
                 g = g[(g["geokodolt_lon"] - clon).abs() < 0.40]
                 if len(g) >= 5:
-                    lat0, lat1 = float(g["geokodolt_lat"].quantile(0.02)), float(g["geokodolt_lat"].quantile(0.98))
-                    lon0, lon1 = float(g["geokodolt_lon"].quantile(0.02)), float(g["geokodolt_lon"].quantile(0.98))
+                    # TELJES kiterjedés (min/max): a pontos sorok 100%-os lefedettsége a cél —
+                    # az ország-validált geokódolás után outlierek már nincsenek
+                    lat0, lat1 = float(g["geokodolt_lat"].min()), float(g["geokodolt_lat"].max())
+                    lon0, lon1 = float(g["geokodolt_lon"].min()), float(g["geokodolt_lon"].max())
             except Exception:
                 pass
     spatial = area_cfg.get("spatial", {})

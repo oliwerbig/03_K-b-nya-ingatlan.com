@@ -16,7 +16,7 @@ import pandas as pd
 from scipy.spatial import cKDTree
 
 WALK_M_PER_MIN = 75.0          # 1.25 m/s
-MAX_NET = 2000.0               # Dijkstra-cutoff: a folytonos távolságokhoz
+MAX_NET = 5000.0               # Dijkstra-cutoff: a folytonos távolságokhoz (a SÁVOK változatlanul 375/750/1125 m)
 # (a POI/izokrón SÁVOK ettől függetlenül 375/750/1125 m — lásd POI_BANDS)
 MAX_SNAP = 300.0               # max. csatlakoztatási távolság az úthálózathoz (növelve a lefedettségért)
 RAIL_EPS = 0.1                 # m
@@ -57,20 +57,30 @@ class StreetGraph:
         self.mid_lat = None
         self._load(street_file)
 
+    ROUTABLE = {"residential", "tertiary", "secondary", "primary", "service",
+                "living_street", "unclassified", "track", "cycleway", "road",
+                "primary_link", "secondary_link", "tertiary_link", "trunk", "trunk_link"}
+
     def _load(self, path):
         data = json.load(open(path, encoding="utf-8"))
         ways = [e for e in data.get("elements", [])
                 if e.get("type") == "way" and len(e.get("geometry") or []) >= 2]
         lats = [p["lat"] for e in ways for p in e["geometry"]]
         self.mid_lat = float(np.median(lats))
+        routable_ids = set()
         for e in ways:
             g = e["geometry"]
             nids = e.get("nodes") or []
             if len(nids) != len(g):
                 nids = ["%s_%d" % (e["id"], i) for i in range(len(g))]
+            hw = (e.get("tags") or {}).get("highway")
+            routable = hw in self.ROUTABLE
             pts = []
             for nid, p in zip(nids, g):
+                nid = str(nid)  # egységesen string azonosítók (a heapq rendezéséhez)
                 self.coords[nid] = _proj(p["lat"], p["lon"], self.mid_lat)
+                if routable:
+                    routable_ids.add(nid)
                 pts.append(nid)
             for a, b in zip(pts, pts[1:]):
                 d = math.dist(self.coords[a], self.coords[b])
@@ -82,9 +92,20 @@ class StreetGraph:
         arr = np.array([self.coords[i] for i in ids])
         self.tree = cKDTree(arr)
         self.node_ids = ids
+        # külön fa a JÁRHATÓ (út) csomópontokra: a snapping ezt preferálja,
+        # mert a footway/path fragmentek gyakran leválasztott komponensek
+        rid = list(routable_ids)
+        self.routable_idx = rid
+        self.routable_tree = cKDTree(np.array([self.coords[i] for i in rid])) if rid else None
 
     def snap(self, lat, lon):
+        """Routable-first snapping: először a járművel járható hálózatra, ha az
+        MAX_SNAP-on belül van; különben a teljes hálózatra (footway-ekkel)."""
         x, y = _proj(lat, lon, self.mid_lat)
+        if self.routable_tree is not None:
+            d, i = self.routable_tree.query(np.array([x, y]), k=1)
+            if float(d) <= MAX_SNAP:
+                return self.routable_idx[int(i)], float(d)
         d, i = self.tree.query(np.array([x, y]), k=1)
         return self.node_ids[int(i)], float(d)
 
@@ -198,8 +219,8 @@ def compute_area(area_id, df, street_file, transit_file, poi_geojson_path):
         if node is not None:
             attach_map[key] = (cat, snap, nm)
 
-    # --- Ingatlanok: MINDEN geokódolt sor (nem csak a pontos alminta) ---
-    idxs = df.index[df["geokodolt_lat"].notna()]
+    # --- Ingatlanok: CSAK a pontos (házszám-szintű) sorok ---
+    idxs = df.index[df["minta_garantalt_pontos"] == 1]
     out = {c: pd.Series(np.nan, index=df.index) for c in [
         "tavolsag_vasut_halozati_m", "tavolsag_metro_halozati_m",
         "tavolsag_villamos_halozati_m", "tavolsag_busz_halozati_m",

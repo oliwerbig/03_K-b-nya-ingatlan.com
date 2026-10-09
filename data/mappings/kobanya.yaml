@@ -3,7 +3,7 @@ schema_version: 2
 source: ingatlan.com
 
 vocab:
-  panel_re: "panel|zsalus"
+  panel_re: "panel"
   tegla_re: "tegla"
   garazs_re: "garázs|garazs|beálló|beallo"
   futes_categories:
